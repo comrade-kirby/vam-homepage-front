@@ -21,6 +21,9 @@
 	"type": "module",
 	"dependencies": {
 		"@wix/data": "^1.0.79",
-		"@wix/sdk": "^1.7.5"
+		"@wix/sdk": "^1.7.5",
+		"3d-force-graph": "^1.73.2",
+		"d3-array": "^3.2.4",
+		"d3-hierarchy": "^3.1.2"
 	}
 }

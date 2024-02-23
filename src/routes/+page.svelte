@@ -1,8 +1,35 @@
 <script>
+  import { onMount } from 'svelte';
+  import { hierarchy } from 'd3-hierarchy'
+
   export let data
+
+  onMount( async () => {
+    const ForceGraph3D = await import('3d-force-graph')
+    const videos = []
+    const root = hierarchy(data.groupedWorks)
+    const container = document.getElementById('force-graph-container')
+    const graph = ForceGraph3D.default({controlType: 'orbit'})
+      // .backgroundColor(this.backgroundColor)
+      .dagMode('radialout')
+      .dagLevelDistance(100)
+      .nodeRelSize(1)
+      .nodeId('data')
+      .linkOpacity(1)
+      .linkWidth(0.1)
+      .enableNodeDrag(false)
+      .linkDirectionalParticles(50)
+      .linkDirectionalParticleWidth(0.4)
+      .linkDirectionalParticleSpeed(0.0002)
+      .linkDirectionalParticleResolution(1)
+      .linkColor(() => '#FFAA99')
+      .linkDirectionalParticleColor(() => '#AA3922')(container)
+
+    graph.graphData({
+      nodes: root.descendants(),
+      links: root.links()
+    })
+  })
 </script>
 
-<p>{data.works.length}</p>
-<p>{data.works[0].data.title}</p>
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<div id='force-graph-container'></div>

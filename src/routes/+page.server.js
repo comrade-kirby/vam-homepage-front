@@ -1,6 +1,8 @@
 import { items } from '@wix/data'
 import { createClient, OAuthStrategy } from '@wix/sdk';
 
+import { group } from 'd3-array'
+
 const wixClient = createClient({
   modules: {
     items
@@ -12,12 +14,12 @@ const wixClient = createClient({
 })
 
 export async function load({ params }) {
-  
-
-  // console.log(wixClient)
   const { items } = await wixClient.items.queryDataItems({
     dataCollectionId: 'Works'
-  }).find();
+  }).find()
 
-  return {works: items}
+  const groupedWorks = group(items, d => d.data.categories[0], d => d.data.client)
+
+
+    return { groupedWorks }
 }

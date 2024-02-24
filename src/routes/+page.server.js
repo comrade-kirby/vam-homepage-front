@@ -4,9 +4,7 @@ import { createClient, OAuthStrategy } from '@wix/sdk';
 import { group } from 'd3-array'
 
 const wixClient = createClient({
-  modules: {
-    items
-  },
+  modules: { items },
   auth: OAuthStrategy({
     clientId: '284c68b6-4500-4a6f-a612-fc2827166a30',
     tokens: null
@@ -18,8 +16,18 @@ export async function load({ params }) {
     dataCollectionId: 'Works'
   }).find()
 
-  const groupedWorks = group(items, d => d.data.categories[0], d => d.data.client)
+  const hydratedtItems = await items.map( async (item) => {
+    const clientId = item.data.client
+    if (clientId) {
+      const client = await wixClient.items.getDataItem(item.data.client, { dataCollectionId: 'Clients'})
+      item.data = {...item.data, client}
+    }
 
+    return item
+  })
 
-    return { groupedWorks }
-}
+  const fulfilled = await Promise.all(hydratedtItems)
+  const groupedWorks = group(fulfilled, d => d.data.categories[0], d => d.data.client.data.name)
+  
+  return { works: groupedWorks}
+}  

@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { PUBLIC_CMS_URL } from '$env/static/public'
 import SpriteText from 'three-spritetext'
 import { hierarchy } from 'd3-hierarchy'
 
@@ -29,13 +30,11 @@ export class ForceGraph {
       .linkDirectionalParticleColor(() => '#AA3922')
       .onNodeClick(() => console.log('clicked'))
       .nodeThreeObject((node) => {
-        // console.log(node.data)
-        // if (node.data.thumbnail) {
-        //   console.log(node.data.thumbnail)
-        //   return this.#imageNode(node)
-        // } else {
+        if (node.data.attributes) {
+          return this.#imageNode(node)
+        } else {
           return this.#textNode(node)
-        // }
+        }
       })
   }
 
@@ -60,12 +59,14 @@ export class ForceGraph {
   }
 
   #imageNode(node) {
-    const imgTexture = new THREE.TextureLoader().load(node.data.thumbnailURL);
+    const thumbnailUrl = node.data.attributes.thumbnail.data.attributes.url
+    const url = PUBLIC_CMS_URL + thumbnailUrl
+    const imgTexture = new THREE.TextureLoader().load(url)
     
-    imgTexture.colorSpace = THREE.SRGBColorSpace;
+    imgTexture.colorSpace = THREE.SRGBColorSpace
     const material = new THREE.MeshBasicMaterial({ map: imgTexture })
-    const plane = new THREE.Mesh(new THREE.PlaneGeometry(64, 36), material);
-    plane.material.side = THREE.DoubleSide;
+    const plane = new THREE.Mesh(new THREE.PlaneGeometry(64, 36), material)
+    plane.material.side = THREE.DoubleSide
     
     return plane
   }
@@ -75,10 +76,10 @@ export class ForceGraph {
       ? node.data.data.title
       : node.data[0]
 
-    const sprite = new SpriteText(text);
-    sprite.material.depthWrite = false; // make sprite background transparent
-    sprite.color = '#AA3922';
-    sprite.textHeight = 4;
+    const sprite = new SpriteText(text)
+    sprite.material.depthWrite = false // make sprite background transparent
+    sprite.color = '#AA3922'
+    sprite.textHeight = 4
 
     return sprite
   }

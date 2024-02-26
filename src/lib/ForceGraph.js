@@ -4,15 +4,11 @@ import SpriteText from 'three-spritetext'
 import { hierarchy } from 'd3-hierarchy'
 
 export class ForceGraph {
-  constructor() {
-    console.log('FORCEGRAPH constructor')
-
-    // const videos = []
-  }
+  #thumbnails = []
 
   async initialize() {
     const ForceGraph3D = await import('3d-force-graph')
-
+    
     this.graph = ForceGraph3D.default({controlType: 'orbit'})
       // .backgroundColor(this.backgroundColor)
       .dagMode('radialout')
@@ -28,10 +24,16 @@ export class ForceGraph {
       .linkDirectionalParticleResolution(1)
       .linkColor(() => '#FFAA99')
       .linkDirectionalParticleColor(() => '#AA3922')
+      .cooldownTicks(60)
+      .onEngineStop(() => {
+        this.graph.zoomToFit(600, -200)
+      })
       .onNodeClick(() => console.log('clicked'))
       .nodeThreeObject((node) => {
         if (node.data.attributes) {
-          return this.#imageNode(node)
+          const thumbnail = this.#imageNode(node)
+          this.#thumbnails.push(thumbnail)
+          return thumbnail
         } else {
           return this.#textNode(node)
         }
@@ -39,15 +41,22 @@ export class ForceGraph {
   }
 
   attach(container) {
-    console.log('FORCEGRAPH attach')
     if (this.graph) {
       this.graph(container)
+      this.graph.d3Force('charge').strength(-1000)
+
+      const scene = this.graph.scene()
+      const renderer = this.graph.renderer()
+
+      renderer.setAnimationLoop(() => {
+        this.#thumbnails.forEach(video => {
+          video.lookAt(scene.position)
+        })
+      })
     }
   }
 
   updateWorks(works) {
-    console.log('FORCEGRAPH updateWorks')
-
     const root = hierarchy(works)
     
     if (this.graph) {

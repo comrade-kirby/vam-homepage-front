@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 import { PUBLIC_CMS_URL } from '$env/static/public'
 import SpriteText from 'three-spritetext'
-import { hierarchy } from 'd3-hierarchy'
 
 export class ForceGraph {
   #thumbnails = []
@@ -49,15 +48,15 @@ export class ForceGraph {
       const renderer = this.graph.renderer()
 
       renderer.setAnimationLoop(() => {
-        this.#thumbnails.forEach(video => {
-          video.lookAt(scene.position)
+        this.#thumbnails.forEach(thumbnail => {
+          thumbnail.lookAt(scene.position)
         })
       })
     }
   }
 
-  updateWorks(works) {
-    const root = hierarchy(works)
+  updateWorks(root) {
+    
     
     if (this.graph) {
       this.graph.graphData({

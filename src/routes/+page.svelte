@@ -20,13 +20,17 @@
     forceGraph.updateWorks(root)
   })
 
-  const selectCallback = (work) => {
-    forceGraph.selectNode(work)
+  const selectCallback = (node) => {
+    forceGraph.selectNode(node)
+  }
+
+  const hoverCallback = (node) => {
+    forceGraph.highlight(node)
   }
 </script>
 
 <nav class="flex">
-  <NavItem data={root} hidden={false} {selectCallback} />  
+  <NavItem node={root} hidden={false} {selectCallback} {hoverCallback}/>  
 </nav>
 
 <div id='force-graph-container'></div>

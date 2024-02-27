@@ -3,36 +3,37 @@ import { PUBLIC_CMS_URL } from '$env/static/public'
 import SpriteText from 'three-spritetext'
 
 export class ForceGraph {
-  #thumbnails = []
+  #thumbnails = new Set()
+  #highlightNodes = new Set()
+
   #selected = null
 
   async initialize() {
     const ForceGraph3D = await import('3d-force-graph')
     
     this.graph = ForceGraph3D.default({controlType: 'orbit'})
-      // .backgroundColor(this.backgroundColor)
       .dagMode('radialout')
       .dagLevelDistance(100)
       .nodeRelSize(1)
       .nodeId('data')
       .linkOpacity(1)
-      .linkWidth(0.1)
+      .linkWidth(1)
       .enableNodeDrag(false)
       .linkDirectionalParticles(50)
       .linkDirectionalParticleWidth(0.4)
       .linkDirectionalParticleSpeed(0.0002)
       .linkDirectionalParticleResolution(1)
-      .linkColor(() => '#FFAA99')
+      .linkColor(link => this.#highlightNodes.has(link.source) ? "green" : "red")
       .linkDirectionalParticleColor(() => '#AA3922')
       .cooldownTicks(60)
       .onEngineStop(() => {
-        this.graph.zoomToFit(600, -200)
+        // this.graph.zoomToFit(600, -200)
       })
       .onNodeClick(this.rotateToSelected())
       .nodeThreeObject((node) => {
         if (node.data.attributes) {
           const thumbnail = this.#imageNode(node)
-          this.#thumbnails.push(thumbnail)
+          this.#thumbnails.add(thumbnail)
           return thumbnail
         } else {
           return this.#textNode(node)
@@ -56,12 +57,23 @@ export class ForceGraph {
     }
   }
 
-  selectNode(work) {
-    const selected = this.root.find(d => {
-      return d.data.attributes?.title === work
-    })
+  highlight(node) {
+    if ((!node && !this.#highlightNodes) || (node && this.#selected === node)) return
+
+    this.#highlightNodes.clear()
+    this.#selected = this.root.find(d => d === node)
+
+    this.#highlightNodes.add(this.#selected)
+    this.#selected.descendants().forEach(node => this.#highlightNodes.add(node))
     
-    this.rotateToSelected()(selected)
+    this.graph
+      .nodeThreeObject(this.graph.nodeThreeObject())
+      .linkColor(this.graph.linkColor())
+  }
+
+  selectNode(node) {
+    this.#selected = this.root.find(d => d === node)
+    this.rotateToSelected()(this.#selected)
   }
 
   updateWorks(root) {
@@ -77,7 +89,7 @@ export class ForceGraph {
 
   rotateToSelected() {
     return (node) => {
-      const distance = 100;
+      const distance = 100 * (node.height + 1);
       const distRatio = 1 + distance/Math.hypot(node.x, node.y, node.z);
   
       const newPos = node.x || node.y || node.z
@@ -106,13 +118,15 @@ export class ForceGraph {
   }
 
   #textNode(node) {
+    const highlight = this.#highlightNodes.has(node)
+
     const text = node.data.data
       ? node.data.data.title
       : node.data[0]
 
     const sprite = new SpriteText(text)
     sprite.material.depthWrite = false // make sprite background transparent
-    sprite.color = '#AA3922'
+    sprite.color = highlight ? 'green' :  '#AA3922'
     sprite.textHeight = 4
 
     return sprite

@@ -7,20 +7,26 @@
 
   export let data
   
+  let forceGraph
+
   const root = hierarchy(data.works)
   root.data[0] = "All Works"
-  console.log(root.data)
+
   onMount( async () => {
     const container = document.getElementById('force-graph-container')
-    const forceGraph = new ForceGraph()
+    forceGraph = new ForceGraph()
     await forceGraph.initialize()
     forceGraph.attach(container)
     forceGraph.updateWorks(root)
   })
+
+  const selectCallback = (work) => {
+    forceGraph.selectNode(work)
+  }
 </script>
 
 <nav class="flex">
-  <NavItem data={root} hidden={false} />  
+  <NavItem data={root} hidden={false} {selectCallback} />  
 </nav>
 
 <div id='force-graph-container'></div>

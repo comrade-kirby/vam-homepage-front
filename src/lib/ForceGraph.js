@@ -4,6 +4,7 @@ import SpriteText from 'three-spritetext'
 
 export class ForceGraph {
   #thumbnails = []
+  #selected = null
 
   async initialize() {
     const ForceGraph3D = await import('3d-force-graph')
@@ -27,7 +28,7 @@ export class ForceGraph {
       .onEngineStop(() => {
         this.graph.zoomToFit(600, -200)
       })
-      .onNodeClick(() => console.log('clicked'))
+      .onNodeClick(this.rotateToSelected())
       .nodeThreeObject((node) => {
         if (node.data.attributes) {
           const thumbnail = this.#imageNode(node)
@@ -55,14 +56,39 @@ export class ForceGraph {
     }
   }
 
+  selectNode(work) {
+    const selected = this.root.find(d => {
+      return d.data.attributes?.title === work
+    })
+    
+    this.rotateToSelected()(selected)
+  }
+
   updateWorks(root) {
-    
-    
+    this.root = root
+
     if (this.graph) {
       this.graph.graphData({
-        nodes: root.descendants(),
-        links: root.links()
+        nodes: this.root.descendants(),
+        links: this.root.links()
       })
+    }
+  }
+
+  rotateToSelected() {
+    return (node) => {
+      const distance = 100;
+      const distRatio = 1 + distance/Math.hypot(node.x, node.y, node.z);
+  
+      const newPos = node.x || node.y || node.z
+        ? { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }
+        : { x: 0, y: 0, z: distance }; // special case if node is in (0,0,0)
+  
+      this.graph.cameraPosition(
+        newPos, 
+        this.graph.scene.position,
+        300  
+      );
     }
   }
 

@@ -64,8 +64,20 @@ export class ForceGraph {
     }
   }
 
-  getSelected() {
-    return this.#selectedNode
+  getWorksList() {
+    const worksSet = this.#selectedNode.ancestors().reduce(ForceGraph.reducer, new Set())
+    
+    return Array.from(worksSet)
+  }
+
+  static reducer(acc, curr) {
+    if (curr.data.attributes && !acc.has(curr)) {
+      acc.add(curr)
+    } else if (curr.children) {
+      curr.children.reduce(ForceGraph.reducer, acc)
+    }
+
+    return acc
   }
 
   focusNode(node) {

@@ -41,5 +41,5 @@
 
 <div id='force-graph-container' class="z-0"></div>
 {#if playerOpen}
-  <Player {forceGraph} {closePlayer}/>
+  <Player worksList={forceGraph.getWorksList()} {closePlayer} />
 {/if}

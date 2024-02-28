@@ -5,7 +5,6 @@ import SpriteText from 'three-spritetext'
 export class ForceGraph {
   #thumbnails = new Set()
   #highlightNodes = new Set()
-
   #selectedNode = null
 
   async initialize() {
@@ -63,6 +62,10 @@ export class ForceGraph {
         links: this.root.links()
       })
     }
+  }
+
+  getSelected() {
+    return this.#selectedNode
   }
 
   focusNode(node) {

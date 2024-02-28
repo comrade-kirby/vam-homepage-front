@@ -8,7 +8,7 @@
   export let data
   
   let forceGraph
-
+  let navOpen = false
   const root = hierarchy(data.works)
   root.data[0] = "All Works"
 
@@ -19,18 +19,18 @@
     forceGraph.attach(container)
     forceGraph.updateWorks(root)
   })
-
-  const selectCallback = (node) => {
-    forceGraph.selectNode(node)
-  }
-
-  const hoverCallback = (node) => {
-    forceGraph.highlight(node)
-  }
 </script>
 
-<nav class="flex">
-  <NavItem node={root} hidden={false} {selectCallback} {hoverCallback}/>  
+<nav class="">
+  <li on:click={() => navOpen = !navOpen}>{navOpen ? "Close" : "Menu"}</li>
+
+  {#if navOpen}
+    <div class="flex">
+      {#each root.children as child}
+        <NavItem node={child} hidden={false} {forceGraph}/>  
+      {/each}
+    </div>
+  {/if}
 </nav>
 
 <div id='force-graph-container'></div>

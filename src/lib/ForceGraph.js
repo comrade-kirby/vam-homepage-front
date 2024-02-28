@@ -6,7 +6,7 @@ export class ForceGraph {
   #thumbnails = new Set()
   #highlightNodes = new Set()
 
-  #selected = null
+  #selectedNode = null
 
   async initialize() {
     const ForceGraph3D = await import('3d-force-graph')
@@ -26,10 +26,7 @@ export class ForceGraph {
       .linkColor(link => this.#highlightNodes.has(link.source) ? "green" : "red")
       .linkDirectionalParticleColor(() => '#AA3922')
       .cooldownTicks(60)
-      .onEngineStop(() => {
-        // this.graph.zoomToFit(600, -200)
-      })
-      .onNodeClick(this.rotateToSelected())
+      .onNodeClick((node) => this.focusNode(node))
       .nodeThreeObject((node) => {
         if (node.data.attributes) {
           const thumbnail = this.#imageNode(node)
@@ -57,25 +54,6 @@ export class ForceGraph {
     }
   }
 
-  highlight(node) {
-    if ((!node && !this.#highlightNodes) || (node && this.#selected === node)) return
-
-    this.#highlightNodes.clear()
-    this.#selected = this.root.find(d => d === node)
-
-    this.#highlightNodes.add(this.#selected)
-    this.#selected.descendants().forEach(node => this.#highlightNodes.add(node))
-    
-    this.graph
-      .nodeThreeObject(this.graph.nodeThreeObject())
-      .linkColor(this.graph.linkColor())
-  }
-
-  selectNode(node) {
-    this.#selected = this.root.find(d => d === node)
-    this.rotateToSelected()(this.#selected)
-  }
-
   updateWorks(root) {
     this.root = root
 
@@ -87,21 +65,45 @@ export class ForceGraph {
     }
   }
 
+  focusNode(node) {
+    if ((!node && !this.#highlightNodes) || (node && this.#selectedNode === node)) return
+
+    this.clearFocus()
+    this.#selectedNode = this.root.find(d => d === node)
+    this.#highlightNodes.add(this.#selectedNode)
+    this.#selectedNode.descendants().forEach(node => this.#highlightNodes.add(node))
+   
+    this.updateHighlight()
+    this.rotateToSelected()
+  }
+
+  clearFocus() {
+    console.log('clear!')
+    this.#selectedNode = null
+    this.#highlightNodes.clear()
+    this.updateHighlight()
+  }
+
+  updateHighlight() {
+    this.graph
+      .nodeThreeObject(this.graph.nodeThreeObject())
+      .linkColor(this.graph.linkColor())
+  }
+
   rotateToSelected() {
-    return (node) => {
-      const distance = 100 * (node.height + 1);
-      const distRatio = 1 + distance/Math.hypot(node.x, node.y, node.z);
+    const selected = this.#selectedNode
+    const distance = 100 * (selected.height + 1);
+    const distRatio = 1 + distance/Math.hypot(selected.x, selected.y, selected.z);
   
-      const newPos = node.x || node.y || node.z
-        ? { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }
-        : { x: 0, y: 0, z: distance }; // special case if node is in (0,0,0)
+    const newPos = selected.x || selected.y || selected.z
+      ? { x: selected.x * distRatio, y: selected.y * distRatio, z: selected.z * distRatio }
+      : { x: 0, y: 0, z: distance }; // special case if selected is in (0,0,0)
   
-      this.graph.cameraPosition(
-        newPos, 
-        this.graph.scene.position,
-        300  
-      );
-    }
+    this.graph.cameraPosition(
+      newPos, 
+      this.graph.scene.position,
+      500  
+    );
   }
 
   #imageNode(node) {

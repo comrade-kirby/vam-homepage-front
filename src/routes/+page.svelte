@@ -4,34 +4,38 @@
   import { hierarchy } from 'd3-hierarchy'
 
   import NavItem from '$lib/NavItem.svelte';
-  import Player from '$lib/Player.svelte';
+  import Player from '$lib/PlayerModal/PlayerModal.svelte';
   
   export let data
   
   let forceGraph
   let navOpen = false
   let playerOpen = false
-
+  let breadcrumb = 'breadcrumb'
   const root = hierarchy(data.works)
   root.data[0] = "All Works"
 
   const openPlayer = () => playerOpen = true
   const closePlayer = () => playerOpen = false
+  const updateBreadcrumb = (text) => breadcrumb = text
 
   onMount( async () => {
     const container = document.getElementById('force-graph-container')
-    forceGraph = new ForceGraph()
+    forceGraph = new ForceGraph(updateBreadcrumb)
     await forceGraph.initialize()
     forceGraph.attach(container)
     forceGraph.updateWorks(root)
   })
 </script>
 
-<nav class="z-1">
-  <li on:click={() => navOpen = !navOpen}>{navOpen ? "Close" : "Menu"}</li>
+<nav class="absolute top-0 left-0 w-full z-10 bg-red-200">
+  <button on:click={() => navOpen = !navOpen} class="flex justify-between w-full p-2" >
+    <p>{breadcrumb}</p>
+    <p>{navOpen ? "Close" : "Menu"}</p>
+  </button>
 
   {#if navOpen}
-    <div class="flex">
+    <div class="flex w-full mt-4">
       {#each root.children as child}
         <NavItem node={child} hidden={false} {forceGraph} {openPlayer}/>  
       {/each}
@@ -39,7 +43,8 @@
   {/if}
 </nav>
 
-<div id='force-graph-container' class="z-0"></div>
+<div id='force-graph-container' class="absolute z-0 w-screen h-screen"></div>
+
 {#if playerOpen}
   <Player worksList={forceGraph.getWorksList()} {closePlayer} />
 {/if}

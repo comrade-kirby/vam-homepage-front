@@ -1,11 +1,14 @@
 import * as THREE from 'three'
-import { PUBLIC_CMS_URL } from '$env/static/public'
 import SpriteText from 'three-spritetext'
 
 export class ForceGraph {
   #thumbnails = new Set()
   #highlightNodes = new Set()
   #selectedNode = null
+
+  constructor(updateBreadcrumbCallback) {
+    this.updateBreadcrumbCallback = updateBreadcrumbCallback
+  }
 
   async initialize() {
     const ForceGraph3D = await import('3d-force-graph')
@@ -27,7 +30,7 @@ export class ForceGraph {
       .cooldownTicks(60)
       .onNodeClick((node) => this.focusNode(node))
       .nodeThreeObject((node) => {
-        if (node.data.attributes) {
+        if (node.data.oembedData) {
           const thumbnail = this.#imageNode(node)
           this.#thumbnails.add(thumbnail)
           return thumbnail
@@ -66,15 +69,14 @@ export class ForceGraph {
 
   getWorksList() {
     const worksSet = this.#selectedNode.ancestors().reduce(ForceGraph.reducer, new Set())
-    
     return Array.from(worksSet)
   }
 
   static reducer(acc, curr) {
-    if (curr.data.attributes && !acc.has(curr)) {
-      acc.add(curr)
-    } else if (curr.children) {
+    if (curr.children) {
       curr.children.reduce(ForceGraph.reducer, acc)
+    } else if (!acc.has(curr)) {
+      acc.add(curr)
     }
 
     return acc
@@ -88,12 +90,21 @@ export class ForceGraph {
     this.#highlightNodes.add(this.#selectedNode)
     this.#selectedNode.descendants().forEach(node => this.#highlightNodes.add(node))
    
+    this.updateBreadcrumb()
     this.updateHighlight()
     this.rotateToSelected()
   }
 
+  updateBreadcrumb() {
+    const breadcrumb = this.root.path(this.#selectedNode)
+      .map((node) => node.data[0] || node.data.title)
+      .join('/')
+      .replace(/\s+/g, '_')
+      .toLowerCase()
+    this.updateBreadcrumbCallback(breadcrumb)
+  }
+
   clearFocus() {
-    console.log('clear!')
     this.#selectedNode = null
     this.#highlightNodes.clear()
     this.updateHighlight()
@@ -122,15 +133,14 @@ export class ForceGraph {
   }
 
   #imageNode(node) {
-    const thumbnailUrl = node.data.attributes.thumbnail.data.attributes.url
-    const url = PUBLIC_CMS_URL + thumbnailUrl
-    const imgTexture = new THREE.TextureLoader().load(url)
+    const thumbnail = node.data.oembedData.thumbnail
+    const imgTexture = new THREE.TextureLoader().load(thumbnail)
     
     imgTexture.colorSpace = THREE.SRGBColorSpace
     const material = new THREE.MeshBasicMaterial({ map: imgTexture })
     const plane = new THREE.Mesh(new THREE.PlaneGeometry(64, 36), material)
     plane.material.side = THREE.DoubleSide
-    
+  
     return plane
   }
 

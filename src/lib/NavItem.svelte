@@ -22,9 +22,7 @@
     } 
   }
 
-  const itemLabel = node.data.attributes
-    ? node.data.attributes.title
-    : node.data[0]
+  const itemLabel = node.data.title || node.data[0]
 </script>
 
 <li class="flex flex-col ml-4" class:collapse={hidden}>

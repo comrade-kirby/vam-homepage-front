@@ -19,18 +19,18 @@
 <section class="w-screen h-screen fixed top-0 left-0 z-20 overflow-hidden p-4">
   
   <!-- content -->
-  <div class="w-full h-full sticky top-0 bg-slate-200">
+  <div class="w-full h-full sticky top-0 bg-slate-200 overflow-hidden">
     <!-- header -->
-    <div class="w-full flex justify-end absolute top-0 z-40">
+    <div class="w-full flex justify-end absolute top-0 z-40 bg-red-200">
       <button class="p-2" on:click={prev}>prev</button>
       <button class="p-2" on:click={next}>next</button>
       <button class="p-2" on:click={closePlayer}>close</button> 
     </div>
     <!-- scroll -->
-    <div class="w-full h-full sticky top-0 overflow-y-scroll">
+    <div class="w-full h-full sticky top-10 overflow-y-scroll">
 
       <!-- player -->
-      <Player videoUrl={currentWork.videoUrl} />
+      <Player work={currentWork} />
 
       <!-- additional content -->
       <div class="flex justify-center relative w-full h-full space-x-6 z-30 bg-red-200 p-4 pt-10 ">

@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import SpriteText from 'three-spritetext'
+import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/Addons.js';
 
 export class ForceGraph {
   #thumbnails = new Set()
@@ -13,7 +14,10 @@ export class ForceGraph {
   async initialize() {
     const ForceGraph3D = await import('3d-force-graph')
     
-    this.graph = ForceGraph3D.default({controlType: 'orbit'})
+    this.graph = ForceGraph3D.default({
+      controlType: 'orbit',
+      extraRenderers: [new CSS3DRenderer()]
+    })
       .dagMode('radialout')
       .dagLevelDistance(100)
       .nodeRelSize(1)
@@ -30,7 +34,11 @@ export class ForceGraph {
       .cooldownTicks(60)
       .onNodeClick((node) => this.focusNode(node))
       .nodeThreeObject((node) => {
-        if (node.data.oembedData) {
+        if (node.data.animatedThumbnails?.data.length) {
+          let thumb = this.#animatedNode(node)
+          this.#thumbnails.add(thumb)
+          return thumb
+        } else if (node.data.oembedData) {
           const thumbnail = this.#imageNode(node)
           this.#thumbnails.add(thumbnail)
           return thumbnail
@@ -38,15 +46,18 @@ export class ForceGraph {
           return this.#textNode(node)
         }
       })
+      // .nodeThreeObjectExtend(true)
   }
 
-  attach(container) {
+  attach(container, w, h) {
     if (this.graph) {
       this.graph(container)
       this.graph.d3Force('charge').strength(-1000)
 
       const scene = this.graph.scene()
       const renderer = this.graph.renderer()
+      
+      this.setSize(w, h)
 
       renderer.setAnimationLoop(() => {
         this.#thumbnails.forEach(thumbnail => {
@@ -56,8 +67,26 @@ export class ForceGraph {
     }
   }
 
+  setSize(w, h) {
+    if (this.graph) {
+      const renderer = this.graph.renderer()
+      renderer.setPixelRatio(window.devicePixelRatio)
+      renderer.setSize(w , h)
+    }
+  }
+
   updateWorks(root) {
     this.root = root
+
+    this.root.eachAfter(async d => {
+      // let testId = '854513335'
+      if (d.data.videoId) {
+        const response = await fetch(`/api/thumbnail/${d.data.videoId}`)
+        const thumbnails = await response.json()
+
+        d.data.animatedThumbnails = thumbnails
+      }
+    })
 
     if (this.graph) {
       this.graph.graphData({
@@ -133,7 +162,8 @@ export class ForceGraph {
   }
 
   #imageNode(node) {
-    const thumbnail = node.data.oembedData.thumbnail
+    let thumbnail = node.data.oembedData.thumbnail
+
     const imgTexture = new THREE.TextureLoader().load(thumbnail)
     
     imgTexture.colorSpace = THREE.SRGBColorSpace
@@ -142,6 +172,18 @@ export class ForceGraph {
     plane.material.side = THREE.DoubleSide
   
     return plane
+  }
+
+  #animatedNode(node) {
+    const animatedThumbnails = node.data.animatedThumbnails
+    const hq = animatedThumbnails.data[0].sizes[2]
+    const img = document.createElement('img')
+    img.src = hq.link
+    const thumbnail = new CSS3DObject(img)
+
+    thumbnail.scale.set(0.1, 0.1, 0.1);
+    
+    return thumbnail
   }
 
   #textNode(node) {

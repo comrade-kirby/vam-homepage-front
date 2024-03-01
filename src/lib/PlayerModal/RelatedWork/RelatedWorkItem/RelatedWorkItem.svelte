@@ -4,8 +4,6 @@
   export let work
   export let selectWork
   export let index
-
-  console.log(work.data.client)
 </script>
 
 <!-- related work item -->

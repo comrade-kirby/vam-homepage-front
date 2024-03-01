@@ -9,6 +9,8 @@
   export let data
   
   let forceGraph
+  let innerWidth
+  let innerHeight
   let navOpen = false
   let playerOpen = false
   let breadcrumb = 'breadcrumb'
@@ -19,16 +21,23 @@
   const closePlayer = () => playerOpen = false
   const updateBreadcrumb = (text) => breadcrumb = text
 
+  $: if (forceGraph) { forceGraph.setSize(innerWidth, innerHeight) }
+  
   onMount( async () => {
     const container = document.getElementById('force-graph-container')
     forceGraph = new ForceGraph(updateBreadcrumb)
     await forceGraph.initialize()
-    forceGraph.attach(container)
+    forceGraph.attach(container, innerWidth, innerHeight)
     forceGraph.updateWorks(root)
   })
+  
 </script>
 
+<svelte:window bind:innerWidth  bind:innerHeight  />
+
 <nav class="absolute top-0 left-0 w-full z-10 bg-red-200">
+  <p>{innerHeight}</p>
+  <p>{innerWidth}</p>
   <button on:click={() => navOpen = !navOpen} class="flex justify-between w-full p-2" >
     <p>{breadcrumb}</p>
     <p>{navOpen ? "Close" : "Menu"}</p>
@@ -43,7 +52,8 @@
   {/if}
 </nav>
 
-<div id='force-graph-container' class="absolute z-0 w-screen h-screen"></div>
+<div id='force-graph-container' class="absolute z-0 w-screen h-screen">
+</div>
 
 {#if playerOpen}
   <Player worksList={forceGraph.getWorksList()} {closePlayer} />

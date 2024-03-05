@@ -19,7 +19,7 @@ export class ForceGraph {
       extraRenderers: [new CSS3DRenderer()]
     })
       .dagMode('radialout')
-      .dagLevelDistance(50)
+      .dagLevelDistance(10)
       .nodeRelSize(1)
       .nodeId('data')
       .linkOpacity(0.1)
@@ -53,7 +53,7 @@ export class ForceGraph {
   attach(container, w, h) {
     if (this.graph) {
       this.graph(container)
-      this.graph.d3Force('charge').strength(-300)
+      this.graph.d3Force('charge').strength(-500)
       this.graph.cameraPosition({x: 0, y: 0, z: 0})
       
       this.scene = this.graph.scene()
@@ -157,19 +157,21 @@ export class ForceGraph {
 
   rotateToSelected() {
     const selected = this.#selectedNode
-    const distance = -10
+    const distance = -30
     const distRatio = distance/Math.hypot(selected.x, selected.y, selected.z);
     
-    const fov = selected.depth * 25
-    this.camera.setFocalLength(fov)
+    const fov = selected.depth * 18
+ 
     
     const newPosition =  { x: selected.x * distRatio, y: selected.y * distRatio, z: selected.z * distRatio }
     
     this.graph.cameraPosition(
       newPosition, 
       this.graph.scene.position,
-      500  
-    );
+      1000  
+    )
+
+    this.camera.setFocalLength(fov)
   }
 
   #imageNode(node) {
@@ -197,16 +199,18 @@ export class ForceGraph {
 
   #textNode(node) {
     const highlight = this.#highlightNodes.has(node)
-
-    const text = node.data.data
+    let text = ""
+    if (node.depth > 0) {
+      text = node.data.data
       ? node.data.data.title
       : node.data[0]
-
+    } 
+    
     const sprite = new SpriteText(text)
     sprite.material.depthWrite = false // make sprite background transparent
-    sprite.color = highlight ? 'green' :  '#AA3922'
+    sprite.color = highlight ? 'green' :  'transparent'
     sprite.textHeight = 4
-
+    
     return sprite
   }
 }

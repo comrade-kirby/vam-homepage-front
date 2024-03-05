@@ -19,19 +19,20 @@ export class ForceGraph {
       extraRenderers: [new CSS3DRenderer()]
     })
       .dagMode('radialout')
-      .dagLevelDistance(100)
+      .dagLevelDistance(50)
       .nodeRelSize(1)
       .nodeId('data')
-      .linkOpacity(1)
-      .linkWidth(1)
+      .linkOpacity(0.1)
+      .linkWidth(0.1)
+      .backgroundColor('aliceblue')
       .enableNodeDrag(false)
-      .linkDirectionalParticles(50)
-      .linkDirectionalParticleWidth(0.4)
-      .linkDirectionalParticleSpeed(0.0002)
+      .linkDirectionalParticles(10)
+      .linkDirectionalParticleWidth(0.2)
+      .linkDirectionalParticleSpeed(0.002)
       .linkDirectionalParticleResolution(1)
       .linkColor(link => this.#highlightNodes.has(link.source) ? "green" : "red")
       .linkDirectionalParticleColor(() => '#AA3922')
-      .cooldownTicks(60)
+      .cooldownTicks(160)
       .onNodeClick((node) => this.focusNode(node))
       .nodeThreeObject((node) => {
         if (node.data.animatedThumbnails?.data.length) {
@@ -52,14 +53,20 @@ export class ForceGraph {
   attach(container, w, h) {
     if (this.graph) {
       this.graph(container)
-      this.graph.d3Force('charge').strength(-1000)
-
-      const scene = this.graph.scene()
-      const renderer = this.graph.renderer()
+      this.graph.d3Force('charge').strength(-300)
+      this.graph.cameraPosition({x: 0, y: 0, z: 0})
+      
+      this.scene = this.graph.scene()
+      this.renderer = this.graph.renderer()
+      this.controls = this.graph.controls()
+      this.camera = this.controls.object 
+      
+      this.controls.rotateSpeed = -1
+      this.camera.setFocalLength(10)
       
       this.setSize(w, h)
 
-      renderer.setAnimationLoop(() => {
+      this.renderer.setAnimationLoop(() => {
         this.#thumbnails.forEach(thumbnail => {
           thumbnail.lookAt(scene.position)
         })
@@ -69,9 +76,8 @@ export class ForceGraph {
 
   setSize(w, h) {
     if (this.graph) {
-      const renderer = this.graph.renderer()
-      renderer.setPixelRatio(window.devicePixelRatio)
-      renderer.setSize(w , h)
+      this.renderer.setPixelRatio(window.devicePixelRatio)
+      this.renderer.setSize(w , h)
     }
   }
 
@@ -79,13 +85,17 @@ export class ForceGraph {
     this.root = root
 
     this.root.eachAfter(async d => {
-      // let testId = '854513335'
-      if (d.data.videoId) {
-        const response = await fetch(`/api/thumbnail/${d.data.videoId}`)
-        const thumbnails = await response.json()
+      // const provider = d.data.oembedData?.rawData.provider_name
+      // console.log(provider)
+      // if (provider === "YouTube") {
+        // bypass cors block for image url
+      // }
+      // if (provider == "Vimeo" && d.data.videoId) {
+      //   const response = await fetch(`/api/thumbnail/${d.data.videoId}`)
+      //   const thumbnails = await response.json()
 
-        d.data.animatedThumbnails = thumbnails
-      }
+      //   d.data.animatedThumbnails = thumbnails
+      // }
     })
 
     if (this.graph) {
@@ -147,15 +157,16 @@ export class ForceGraph {
 
   rotateToSelected() {
     const selected = this.#selectedNode
-    const distance = 100 * (selected.height + 1);
-    const distRatio = 1 + distance/Math.hypot(selected.x, selected.y, selected.z);
-  
-    const newPos = selected.x || selected.y || selected.z
-      ? { x: selected.x * distRatio, y: selected.y * distRatio, z: selected.z * distRatio }
-      : { x: 0, y: 0, z: distance }; // special case if selected is in (0,0,0)
-  
+    const distance = -10
+    const distRatio = distance/Math.hypot(selected.x, selected.y, selected.z);
+    
+    const fov = selected.depth * 25
+    this.camera.setFocalLength(fov)
+    
+    const newPosition =  { x: selected.x * distRatio, y: selected.y * distRatio, z: selected.z * distRatio }
+    
     this.graph.cameraPosition(
-      newPos, 
+      newPosition, 
       this.graph.scene.position,
       500  
     );
@@ -163,9 +174,7 @@ export class ForceGraph {
 
   #imageNode(node) {
     let thumbnail = node.data.oembedData.thumbnail
-
     const imgTexture = new THREE.TextureLoader().load(thumbnail)
-    
     imgTexture.colorSpace = THREE.SRGBColorSpace
     const material = new THREE.MeshBasicMaterial({ map: imgTexture })
     const plane = new THREE.Mesh(new THREE.PlaneGeometry(64, 36), material)

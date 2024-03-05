@@ -14,13 +14,12 @@ export async function load({ params }) {
   })
   
   let works = await response.json();
-  
   works = works.data.map(work => {
-    
+    const { id } = work
     const oembedData = JSON.parse(work.attributes.videoUrl)
     const videoId = oembedData.rawData.video_id
 
-    return {...work.attributes, oembedData, videoId}
+    return {id, ...work.attributes, oembedData, videoId}
   })
 
   return { works: groupWorks(works)}

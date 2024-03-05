@@ -36,8 +36,6 @@
 <svelte:window bind:innerWidth  bind:innerHeight  />
 
 <nav class="absolute top-0 left-0 w-full z-10 bg-red-200">
-  <p>{innerHeight}</p>
-  <p>{innerWidth}</p>
   <button on:click={() => navOpen = !navOpen} class="flex justify-between w-full p-2" >
     <p>{breadcrumb}</p>
     <p>{navOpen ? "Close" : "Menu"}</p>

@@ -11,11 +11,10 @@
   let forceGraph
   let innerWidth
   let innerHeight
-  let navOpen = false
+  let navOpen = true
   let playerOpen = false
-  let breadcrumb = 'breadcrumb'
+  let breadcrumb
   const root = hierarchy(data.works)
-  root.data[0] = "All Works"
 
   const openPlayer = () => playerOpen = true
   const closePlayer = () => playerOpen = false
@@ -35,18 +34,21 @@
 
 <svelte:window bind:innerWidth  bind:innerHeight  />
 
-<nav class="absolute top-0 left-0 w-full z-10 bg-red-200">
-  <button on:click={() => navOpen = !navOpen} class="flex justify-between w-full p-2" >
-    <p>{breadcrumb}</p>
+<nav class="absolute flex flex-col top-0 left-0 p-4 z-10 h-full bg-gray-300">
+  <button on:click={() => navOpen = !navOpen} class="w-min self-end p-2" >
     <p>{navOpen ? "Close" : "Menu"}</p>
   </button>
 
   {#if navOpen}
-    <div class="flex w-full mt-4">
+    <div class="flex flex-col grow w-full mt-4 ">
       {#each root.children as child}
         <NavItem node={child} hidden={false} {forceGraph} {openPlayer}/>  
       {/each}
     </div>
+  {/if}
+
+  {#if breadcrumb}
+    <p class="p-2">{breadcrumb}</p>
   {/if}
 </nav>
 

@@ -1,4 +1,6 @@
 import * as THREE from 'three'
+import { forceCollide } from 'd3-force';
+import { mean } from 'd3-array'
 import SpriteText from 'three-spritetext'
 import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/Addons.js';
 
@@ -6,9 +8,13 @@ export class ForceGraph {
   #thumbnails = new Set()
   #highlightNodes = new Set()
   #selectedNode = null
-
+  #currentFocalLength = 18
+  #maxFocalLength = 100
+  #minFocalLength = 10
+  
   constructor(updateBreadcrumbCallback) {
     this.updateBreadcrumbCallback = updateBreadcrumbCallback
+    this.ready = false
   }
 
   async initialize() {
@@ -19,20 +25,13 @@ export class ForceGraph {
       extraRenderers: [new CSS3DRenderer()]
     })
       .dagMode('radialout')
-      .dagLevelDistance(10)
-      .nodeRelSize(1)
+      .nodeRelSize(34)
       .nodeId('data')
-      .linkOpacity(0.1)
+      .linkOpacity(1)
       .linkWidth(0.1)
-      .backgroundColor('aliceblue')
+      .backgroundColor('rgba(0, 0, 0, 0)')
       .enableNodeDrag(false)
-      .linkDirectionalParticles(10)
-      .linkDirectionalParticleWidth(0.2)
-      .linkDirectionalParticleSpeed(0.002)
-      .linkDirectionalParticleResolution(1)
       .linkColor(link => this.#highlightNodes.has(link.source) ? "green" : "red")
-      .linkDirectionalParticleColor(() => '#AA3922')
-      .cooldownTicks(160)
       .onNodeClick((node) => this.focusNode(node))
       .nodeThreeObject((node) => {
         if (node.data.animatedThumbnails?.data.length) {
@@ -47,22 +46,24 @@ export class ForceGraph {
           return this.#textNode(node)
         }
       })
-      // .nodeThreeObjectExtend(true)
+      // .nodeThreeObjectExtend(d => d.height === 0 ? true : false)
   }
 
   attach(container, w, h) {
     if (this.graph) {
       this.graph(container)
-      this.graph.d3Force('charge').strength(-500)
-      this.graph.cameraPosition({x: 0, y: 0, z: 0})
-      
+      this.graph.d3Force('collide', forceCollide(d => d.height === 0 ? this.graph.nodeRelSize() : 0))
+      this.graph.d3Force('charge').strength(-1000).distanceMin(100)
+      this.graph.cameraPosition({x: 0, y: -80, z: 0})
       this.scene = this.graph.scene()
       this.renderer = this.graph.renderer()
       this.controls = this.graph.controls()
       this.camera = this.controls.object 
       
       this.controls.rotateSpeed = -1
-      this.camera.setFocalLength(10)
+      this.controls.enablePan = false
+      this.controls.enableZoom = false
+      this.camera.setFocalLength(this.#currentFocalLength)
       
       this.setSize(w, h)
 
@@ -103,38 +104,75 @@ export class ForceGraph {
         nodes: this.root.descendants(),
         links: this.root.links()
       })
+
+      return true
+    } else { 
+      return false
     }
   }
 
   getWorksList() {
-    const worksSet = this.#selectedNode.ancestors().reduce(ForceGraph.reducer, new Set())
+    const reducer = (acc, curr) => {
+      if (curr.children) {
+        curr.children.reduce(reducer, acc)
+      } else if (!acc.has(curr)) {
+        acc.add(curr)
+      }
+
+      return acc
+    }
+
+    const worksSet = this.#selectedNode.ancestors().reduce(reducer, new Set())
     return Array.from(worksSet)
   }
 
-  static reducer(acc, curr) {
-    if (curr.children) {
-      curr.children.reduce(ForceGraph.reducer, acc)
-    } else if (!acc.has(curr)) {
-      acc.add(curr)
-    }
-
-    return acc
-  }
-
   focusNode(node) {
-    if ((!node && !this.#highlightNodes) || (node && this.#selectedNode === node)) return
+    // if ((!node && !this.#highlightNodes) || (node && this.#selectedNode === node)) return
 
     this.clearFocus()
     this.#selectedNode = this.root.find(d => d === node)
     this.#highlightNodes.add(this.#selectedNode)
     this.#selectedNode.descendants().forEach(node => this.#highlightNodes.add(node))
    
-    this.updateBreadcrumb()
-    this.updateHighlight()
-    this.rotateToSelected()
+    this.#updateBreadcrumb()
+    this.#updateHighlight()
+    this.#rotateToSelected()
   }
 
-  updateBreadcrumb() {
+  clearFocus() {
+    this.#selectedNode = null
+    this.#highlightNodes.clear()
+    this.#updateHighlight()
+  }
+
+  onWheel(event) {
+    const dy = event.deltaY
+    if (dy === 0) return 
+    
+    dy > 0 
+      ? this.#focalLengthDown()
+      : this.#focalLengthUp() 
+  }
+
+  #focalLengthUp() {
+    console.log('up')
+    if (this.#currentFocalLength >= this.#maxFocalLength) return 
+    this.#currentFocalLength++
+    this.#updateFocalLength()
+  }
+
+  #focalLengthDown() {
+    console.log('down')
+    if (this.#currentFocalLength <= this.#minFocalLength) return 
+    this.#currentFocalLength-- 
+    this.#updateFocalLength()
+  }
+
+  #updateFocalLength() {
+    this.camera.setFocalLength(this.#currentFocalLength)
+  }
+
+  #updateBreadcrumb() {
     const breadcrumb = this.root.path(this.#selectedNode)
       .map((node) => node.data[0] || node.data.title)
       .join('/')
@@ -143,35 +181,27 @@ export class ForceGraph {
     this.updateBreadcrumbCallback(breadcrumb)
   }
 
-  clearFocus() {
-    this.#selectedNode = null
-    this.#highlightNodes.clear()
-    this.updateHighlight()
-  }
-
-  updateHighlight() {
+  #updateHighlight() {
     this.graph
       .nodeThreeObject(this.graph.nodeThreeObject())
       .linkColor(this.graph.linkColor())
   }
 
-  rotateToSelected() {
+  #rotateToSelected() {
     const selected = this.#selectedNode
-    const distance = -30
+    const descendants = selected.descendants()
+    const distance = -100
     const distRatio = distance/Math.hypot(selected.x, selected.y, selected.z);
+    const focalLength = selected.depth * 24
     
-    const fov = selected.depth * 18
- 
+    const newPosition = {
+      x: mean(descendants, d => d.x) * distRatio,
+      y: mean(descendants, d => d.y) * distRatio,
+      z: mean(descendants, d => d.z) * distRatio
+    }
     
-    const newPosition =  { x: selected.x * distRatio, y: selected.y * distRatio, z: selected.z * distRatio }
-    
-    this.graph.cameraPosition(
-      newPosition, 
-      this.graph.scene.position,
-      1000  
-    )
-
-    this.camera.setFocalLength(fov)
+    this.graph.cameraPosition(newPosition, this.graph.scene.position, 1000)
+    this.camera.setFocalLength(focalLength)
   }
 
   #imageNode(node) {
@@ -208,7 +238,8 @@ export class ForceGraph {
     
     const sprite = new SpriteText(text)
     sprite.material.depthWrite = false // make sprite background transparent
-    sprite.color = highlight ? 'green' :  'transparent'
+    sprite.color = 'green'
+    // sprite.color = highlight ? 'green' :  'transparent'
     sprite.textHeight = 4
     
     return sprite

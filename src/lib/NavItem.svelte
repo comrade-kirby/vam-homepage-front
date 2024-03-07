@@ -5,46 +5,52 @@
   export let hoverCallback
   export let openPlayer
   
-  const isCollapsable = node.height === 1 
-  const isLeaf = node.height === 0
-  const bottomMargin = (node.height * 2) || 1
-  const leftMargin = node.depth === 1 ? 0 : 4
-  
-  const handleClick = () => {
-    if (isLeaf) {
-      console.log('opening player')
-      openPlayer()
-    } else if (isCollapsable) {
-      console.log('toggle collaps')
-      hideChildren = !hideChildren
-    } else {
-      console.log('no action')
-    } 
-  }
-
-  const multipleChildren = node.children?.length > 1
+  const isLeafNode = node.height === 0
+  const leavesCount = node.leaves().length
+  const childrenCount = node.children?.length
+  const hasChildren = childrenCount > 0
+  const hasMultipleChildren = childrenCount > 1
   const nodeTitle = node.data.title || node.data[0]
-  let hideChildren = false
+  const fontSize = node.depth === 1 ? 'text-base' : 'text-sm'
 
-  const navText = node.children
-    ? multipleChildren 
-      ? nodeTitle
-      : `${nodeTitle} | ${node.children[0].data.title}`
-    : nodeTitle
+  let isCollapsed = hasChildren && !hasMultipleChildren
+
+  const toggleCollapse = () => isCollapsed = !isCollapsed
 </script>
 
-<li class="flex flex-col ml-{leftMargin} mt-2 mb-{bottomMargin}" class:collapse={hidden}>
-  <a class="truncate ... w-100"
-    on:click={handleClick} 
-    on:pointerenter={() => forceGraph.focusNode(node)}
-    on:pointerleave={() => forceGraph.clearFocus()}
-  >
-    {navText}
-  </a>
+<li class="flex flex-col pl-1">
+  {#if isLeafNode }
+    <!-- use router to open video details -->
+    <a href="#" class="truncate ... w-100 opacity-60 text-sm"
+      on:pointerenter={() => forceGraph.focusNode(node)}
+      on:pointerleave={() => forceGraph.clearFocus()}
+    >
+      {nodeTitle}
+    </a>
+  {:else}
+    <button type="button" class="truncate flex items-center ... w-100 text-left opacity-90 {fontSize} "
+      on:click={toggleCollapse} 
+      on:pointerenter={() => forceGraph.focusNode(node)}
+      on:pointerleave={() => forceGraph.clearFocus()}
+    >
+      {nodeTitle}
+      {#if isCollapsed}
+        <span class="opacity-60 ml-1 text-sm">
+          {#if !hasMultipleChildren}
+            / {node.children[0].data.title}
+          {:else}
+            +{leavesCount}
+          {/if}
+        </span>
+      {/if}
+    </button>
+  {/if}
   
-  {#if multipleChildren}
-    {#each node.children as child}
-      <svelte:self node={child} hidden={hideChildren} {forceGraph} {openPlayer} />
-    {/each}
+  {#if hasChildren}
+    <ul class="space-y-1" class:collapse={isCollapsed}>
+      {#each node.children as child}
+        <svelte:self node={child} {forceGraph} {openPlayer} />
+      {/each}
+    </ul>
   {/if}
 </li>

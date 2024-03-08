@@ -3,12 +3,10 @@
   import CollapseLeftButton from "$lib/CollapseLeftButton.svelte"
   
   export let selected
-  export let currentIndex
   export let focused
 </script>
 
 <div class="flex flex-col h-full max-w-96 p-4 pl-8 border-l-2 border-black-olive/10">
-  {currentIndex}
   <CollapseLeftButton text="close" />
   <h1 class="text-base text-black-olive/90">{focused.data.title}</h1>
   <h2 class="text-sm text-black-olive/60">{focused.data.client.data.attributes.name}</h2>

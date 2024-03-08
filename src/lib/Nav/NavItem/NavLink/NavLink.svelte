@@ -1,12 +1,8 @@
 <script>
-  export let node, openPlayer, forceGraph, breadcrumb
-
-  let hover = false
+  export let node, forceGraph
 </script>
 
-<!-- use router to open video details -->
-<!-- on:click={openPlayer}  -->
-<a href="{breadcrumb}" class="flex items-end group truncate ... max-w-100 text-black-olive/50 hover:text-black-olive/60 text-sm"
+<a href="{node.data.href}" class="flex items-end group truncate ... max-w-100 text-black-olive/50 hover:text-black-olive/60 text-sm"
   on:pointerenter={() => forceGraph.focusNode(node)}
   on:pointerleave={() => forceGraph.clearFocus()} >
   <span class="group-hover:truncate ...">{node.data.title}</span>

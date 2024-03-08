@@ -3,20 +3,15 @@ import { forceCollide } from 'd3-force';
 import { mean } from 'd3-array'
 import SpriteText from 'three-spritetext'
 import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/Addons.js';
-import { buildBreadcrumb } from './helpers';
+
 export class ForceGraph {
   #thumbnails = new Set()
   #highlightNodes = new Set()
-  #selectedNode = null
+  #focusedNode = null
   #currentFocalLength = 18
   #maxFocalLength = 100
   #minFocalLength = 10
   
-  constructor(updateBreadcrumbCallback) {
-    this.updateBreadcrumbCallback = updateBreadcrumbCallback
-    this.ready = false
-  }
-
   async initialize() {
     const ForceGraph3D = await import('3d-force-graph')
     
@@ -72,6 +67,7 @@ export class ForceGraph {
           thumbnail.lookAt(scene.position)
         })
       })
+      
     }
   }
 
@@ -83,53 +79,37 @@ export class ForceGraph {
   }
 
   updateWorks(root) {
-    this.root = root
-
-    this.root.eachAfter(async d => {
-      // const provider = d.data.oembedData?.rawData.provider_name
-      // console.log(provider)
-      // if (provider === "YouTube") {
-        // bypass cors block for image url
-      // }
-      // if (provider == "Vimeo" && d.data.videoId) {
-      //   const response = await fetch(`/api/thumbnail/${d.data.videoId}`)
-      //   const thumbnails = await response.json()
-
-      //   d.data.animatedThumbnails = thumbnails
-      // }
-    })
-
     if (this.graph) {
       this.graph.graphData({
-        nodes: this.root.descendants(),
-        links: this.root.links()
+        nodes: root.descendants(),
+        links: root.links()
       })
-
+      
       return true
     } else { 
       return false
     }
   }
 
-  
-
   focusNode(node) {
-    if (this.#selectedNode !== node) {
+    if (this.graph && this.#focusedNode !== node) {
       this.clearFocus()
-      this.#selectedNode = node
-      this.#highlightNodes.add(this.#selectedNode)
-      this.#selectedNode.descendants().forEach(node => this.#highlightNodes.add(node))
-      this.#updateBreadcrumb()
+      this.#focusedNode = node
+      this.#highlightNodes.add(this.#focusedNode)
+      this.#focusedNode.descendants().forEach(node => this.#highlightNodes.add(node))
+
       this.#updateHighlight()
+      this.#rotateToFocused()
     }
-   
-    this.#rotateToSelected()
   }
 
   clearFocus() {
-    this.#selectedNode = null
+    this.#focusedNode = null
     this.#highlightNodes.clear()
-    this.#updateHighlight()
+
+    if (this.graph) {
+      this.#updateHighlight()
+    }
   }
 
   onWheel(event) {
@@ -157,25 +137,18 @@ export class ForceGraph {
     this.camera.setFocalLength(this.#currentFocalLength)
   }
 
-  #updateBreadcrumb() {
-    const path = this.root.path(this.#selectedNode)
-    const breadcrumb = buildBreadcrumb(path)
-   
-    this.updateBreadcrumbCallback(breadcrumb)
-  }
-
   #updateHighlight() {
     this.graph
       .nodeThreeObject(this.graph.nodeThreeObject())
       .linkColor(this.graph.linkColor())
   }
 
-  #rotateToSelected() {
-    const selected = this.#selectedNode
-    const descendants = selected.descendants()
+  #rotateToFocused() {
+    const focused = this.#focusedNode
+    const descendants = focused.descendants()
     const distance = -100
-    const distRatio = distance/Math.hypot(selected.x, selected.y, selected.z);
-    const focalLength = selected.depth * 24
+    const distRatio = distance/Math.hypot(focused.x, focused.y, focused.z);
+    const focalLength = focused.depth * 24
     
     const newPosition = {
       x: mean(descendants, d => d.x) * distRatio,

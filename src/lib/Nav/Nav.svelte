@@ -2,7 +2,7 @@
   import NavItem from './NavItem/NavItem.svelte'
   import CollapseLeftButton from '$lib/CollapseLeftButton.svelte'
 
-  export let openPlayer, forceGraph, breadcrumb
+  export let openPlayer, forceGraph, root
 
   let navOpen = true
 </script>
@@ -12,13 +12,12 @@
 
   {#if  navOpen}
     <ul class="flex flex-col grow w-full space-y-4 ">
-      {#each forceGraph.root.children as node}
-        <NavItem {node} {forceGraph} {openPlayer} {breadcrumb}/>  
+      {#each root.children as node}
+        <NavItem {node} {forceGraph} {openPlayer} />  
       {/each}
     </ul>
   {/if}
 
-  {#if breadcrumb}
-    <p class="p-2 text-sm opacity-60">{breadcrumb}</p>
-  {/if}
+  <!-- return breadcrumb here on item hover -->
+  <!-- or on main page -->
 </nav>

@@ -13,7 +13,6 @@
   let forceGraph
   let innerWidth
   let innerHeight
-  let breadcrumb
   let selected
   let focused
   let currentIndex
@@ -23,13 +22,12 @@
   const root = hierarchy(data.works)
  
   const openPlayer = () => playerOpen = true
-  const updateBreadcrumb = (text) => breadcrumb = text
 
   $: currentIndex = data.index
   $: selected = findSelectedFromPath(root, data.path)
   $: if (selected && selected.data.relatedWorks) focused = findFocusedFromPath(selected, data.index)
-  $: if (forceGraph) { forceGraph.setSize(innerWidth, innerHeight) }
-  $: if (forceGraph) forceGraph.focusNode(focused)
+  $: if (graphIsReady) { forceGraph.setSize(innerWidth, innerHeight) }
+  $: if (focused && focused.x) forceGraph.focusNode(focused)
 
   onMount( async () => {
     root.eachAfter(async d => {
@@ -40,19 +38,22 @@
     })
     
     const container = document.getElementById('force-graph-container')
-    forceGraph = new ForceGraph(updateBreadcrumb)
+    forceGraph = new ForceGraph()
     await forceGraph.initialize()
     forceGraph.attach(container, innerWidth, innerHeight)
     graphIsReady = forceGraph.updateWorks(root)
+    // improve this to wait for graph to cooldown
+    if (focused) setTimeout(() => forceGraph.focusNode(focused), 1000)
   })
   
 </script>
 
 <svelte:window bind:innerWidth  bind:innerHeight  />
 {#if graphIsReady }
+<p>hello</p>
   <div class="flex absolute top-0 left-0 h-full z-20 bg-blue-100/70 backdrop-blur-sm">
     <!-- find current selection to highlight in nav -->
-    <Nav {openPlayer} {forceGraph} {breadcrumb} />
+    <Nav {openPlayer} {forceGraph} {root} />
     {#if selected && focused}
       <Details {selected} {focused} />
     {/if}
@@ -62,6 +63,6 @@
   on:wheel={(event) => forceGraph.onWheel(event)} 
 ></div>
 
-{#if playerOpen}
+<!-- {#if playerOpen} -->
   <!-- <Player worksList={forceGraph.getWorksList()} {closePlayer} /> -->
-{/if}
+<!-- {/if} -->

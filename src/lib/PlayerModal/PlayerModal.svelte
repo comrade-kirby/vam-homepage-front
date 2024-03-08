@@ -30,7 +30,7 @@
     <div class="w-full h-full sticky top-10 overflow-y-scroll">
 
       <!-- player -->
-      <Player work={currentWork} />
+      <Player work={currentWork.videoId} />
 
       <!-- additional content -->
       <div class="flex justify-center relative w-full h-full space-x-6 z-30 bg-red-200 p-4 pt-10 ">

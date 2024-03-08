@@ -8,18 +8,18 @@
   const hasMultipleChildren = childrenCount > 1
   
   let isCollapsed = !hasMultipleChildren
-  
+
   const toggleCollapse = () => isCollapsed = !isCollapsed
 </script>
 
-<button type="button" class="truncate ... flex items-center w-100 text-left opacity-90 {fontSize} "
+<button type="button" class="group truncate ... flex items-center w-100 text-left text-black-olive/90 {fontSize} "
   on:click={toggleCollapse} 
   on:pointerenter={() => forceGraph.focusNode(node)}
   on:pointerleave={() => forceGraph.clearFocus()}
 >
   {node.data[0]}
   {#if isCollapsed}
-    <span class="opacity-60 ml-1 text-sm truncate ...">
+    <span class="text-black-olive/40 group-hover:text-black-olive/60 ml-1 text-sm truncate ...">
       {#if !hasMultipleChildren}
         / {node.children[0].data.title}
       {:else}

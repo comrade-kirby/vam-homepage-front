@@ -1,20 +1,19 @@
 <script>
-  import NavItem from './NavItem/NavItem.svelte';
+  import NavItem from './NavItem/NavItem.svelte'
+  import CollapseLeftButton from '$lib/CollapseLeftButton.svelte'
 
   export let openPlayer, forceGraph, breadcrumb
 
   let navOpen = true
 </script>
 
-<nav class="flex flex-col absolute top-0 left-0 h-full max-w-80 p-4 z-20 bg-base-light/70 backdrop-blur-sm text-text-dark">
-  <button on:click={() => navOpen = !navOpen} class="w-min self-end p-2" >
-    <p class="text-sm opacity-90">{navOpen ? "Close" : "Menu"}</p>
-  </button>
+<nav class="flex flex-col h-full max-w-96 p-4 pl-8 text-black-olive">
+  <CollapseLeftButton text="close" />
 
   {#if  navOpen}
-    <ul class="flex flex-col grow w-full mt-4 space-y-4 ">
+    <ul class="flex flex-col grow w-full space-y-4 ">
       {#each forceGraph.root.children as node}
-        <NavItem {node} {forceGraph} {openPlayer}/>  
+        <NavItem {node} {forceGraph} {openPlayer} {breadcrumb}/>  
       {/each}
     </ul>
   {/if}

@@ -3,7 +3,7 @@ import { forceCollide } from 'd3-force';
 import { mean } from 'd3-array'
 import SpriteText from 'three-spritetext'
 import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/Addons.js';
-
+import { buildBreadcrumb } from './helpers';
 export class ForceGraph {
   #thumbnails = new Set()
   #highlightNodes = new Set()
@@ -111,31 +111,18 @@ export class ForceGraph {
     }
   }
 
-  getWorksList() {
-    const reducer = (acc, curr) => {
-      if (curr.children) {
-        curr.children.reduce(reducer, acc)
-      } else if (!acc.has(curr)) {
-        acc.add(curr)
-      }
-
-      return acc
-    }
-
-    const worksSet = this.#selectedNode.ancestors().reduce(reducer, new Set())
-    return Array.from(worksSet)
-  }
+  
 
   focusNode(node) {
-    // if ((!node && !this.#highlightNodes) || (node && this.#selectedNode === node)) return
-
-    this.clearFocus()
-    this.#selectedNode = this.root.find(d => d === node)
-    this.#highlightNodes.add(this.#selectedNode)
-    this.#selectedNode.descendants().forEach(node => this.#highlightNodes.add(node))
+    if (this.#selectedNode !== node) {
+      this.clearFocus()
+      this.#selectedNode = node
+      this.#highlightNodes.add(this.#selectedNode)
+      this.#selectedNode.descendants().forEach(node => this.#highlightNodes.add(node))
+      this.#updateBreadcrumb()
+      this.#updateHighlight()
+    }
    
-    this.#updateBreadcrumb()
-    this.#updateHighlight()
     this.#rotateToSelected()
   }
 
@@ -155,14 +142,12 @@ export class ForceGraph {
   }
 
   #focalLengthUp() {
-    console.log('up')
     if (this.#currentFocalLength >= this.#maxFocalLength) return 
     this.#currentFocalLength++
     this.#updateFocalLength()
   }
 
   #focalLengthDown() {
-    console.log('down')
     if (this.#currentFocalLength <= this.#minFocalLength) return 
     this.#currentFocalLength-- 
     this.#updateFocalLength()
@@ -173,11 +158,9 @@ export class ForceGraph {
   }
 
   #updateBreadcrumb() {
-    const breadcrumb = this.root.path(this.#selectedNode)
-      .map((node) => node.data[0] || node.data.title)
-      .join('/')
-      .replace(/\s+/g, '_')
-      .toLowerCase()
+    const path = this.root.path(this.#selectedNode)
+    const breadcrumb = buildBreadcrumb(path)
+   
     this.updateBreadcrumbCallback(breadcrumb)
   }
 

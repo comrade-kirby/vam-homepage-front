@@ -5,8 +5,8 @@
 
   import Nav from '$lib/Nav/Nav.svelte'
   import Details from '$lib/Details/Details.svelte'
-  import Player from '$lib/PlayerModal/PlayerModal.svelte';
-  import { buildBreadcrumb, buildRelatedWorksList } from '$lib/helpers.js';
+  // import Player from '$lib/PlayerModal/PlayerModal.svelte';
+  import { buildBreadcrumb, buildRelatedWorksList, findFocusedFromPath, findSelectedFromPath } from '$lib/helpers.js';
   
   export let data
   
@@ -21,25 +21,24 @@
   let graphIsReady = false
 
   const root = hierarchy(data.works)
-
-  const getFocused = (selected, data) => selected?.data.relatedWorks[data.index]
-
+ 
   const openPlayer = () => playerOpen = true
-  const closePlayer = () => playerOpen = false
   const updateBreadcrumb = (text) => breadcrumb = text
 
-  $: if (forceGraph) { forceGraph.setSize(innerWidth, innerHeight) }
-  $: selected = root.find(d =>  buildBreadcrumb(root.path(d)) === `/${data.path}`)
-  $: relatedWorks = selected?.data.relatedWorks
-  $: focused = relatedWorks ? relatedWorks[data.index] : null
-  // $: focused = selected.data.relatedWorks ? selected.data.relatedWorks[data.index] : null
-  // $: focused = selected.data.relatedWorks ? getFocused(selected, data) : null
   $: currentIndex = data.index
+  $: selected = findSelectedFromPath(root, data.path)
+  $: if (selected && selected.data.relatedWorks) focused = findFocusedFromPath(selected, data.index)
+  $: if (forceGraph) { forceGraph.setSize(innerWidth, innerHeight) }
+  $: if (forceGraph) forceGraph.focusNode(focused)
 
   onMount( async () => {
     root.eachAfter(async d => {
+      d.data.href = buildBreadcrumb(root.path(d))
       d.data.relatedWorks = buildRelatedWorksList(d)
+
+      if (d === selected) focused = findFocusedFromPath(selected, data.index)
     })
+    
     const container = document.getElementById('force-graph-container')
     forceGraph = new ForceGraph(updateBreadcrumb)
     await forceGraph.initialize()
@@ -54,8 +53,8 @@
   <div class="flex absolute top-0 left-0 h-full z-20 bg-blue-100/70 backdrop-blur-sm">
     <!-- find current selection to highlight in nav -->
     <Nav {openPlayer} {forceGraph} {breadcrumb} />
-    {#if selected}
-      <Details {selected} {currentIndex} {root} />
+    {#if selected && focused}
+      <Details {selected} {focused} />
     {/if}
   </div>
 {/if}

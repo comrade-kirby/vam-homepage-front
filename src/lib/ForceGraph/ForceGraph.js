@@ -12,10 +12,12 @@ export class ForceGraph {
   #maxFocalLength = 100
   #minFocalLength = 10
   
-  async initialize() {
-    const ForceGraph3D = await import('3d-force-graph')
-    
-    this.graph = ForceGraph3D.default({
+  constructor(ForceGraphConstructor) {
+    this.ForceGraphConstructor = ForceGraphConstructor
+  }
+
+  initialize() {
+    this.graph = this.ForceGraphConstructor.default({
       controlType: 'orbit',
       extraRenderers: [new CSS3DRenderer()]
     })
@@ -26,7 +28,12 @@ export class ForceGraph {
       .linkWidth(0.1)
       .backgroundColor('rgba(0, 0, 0, 0)')
       .enableNodeDrag(false)
-      .linkColor(link => this.#highlightNodes.has(link.source) ? "green" : "red")
+      .linkColor(link => {
+
+        return link.source.depth === 0 
+          ? 'transparent'
+          : this.#highlightNodes.has(link.source) ? "#292E1E" : "#F6993C"
+      })
       .onNodeClick((node) => this.focusNode(node))
       .nodeThreeObject((node) => {
         if (node.data.animatedThumbnails?.data.length) {
@@ -45,6 +52,7 @@ export class ForceGraph {
   }
 
   attach(container, w, h) {
+    console.log('container: ', container)
     if (this.graph) {
       this.graph(container)
       this.graph.d3Force('collide', forceCollide(d => d.height === 0 ? this.graph.nodeRelSize() : 0))
@@ -194,9 +202,9 @@ export class ForceGraph {
     
     const sprite = new SpriteText(text)
     sprite.material.depthWrite = false // make sprite background transparent
-    sprite.color = 'green'
-    // sprite.color = highlight ? 'green' :  'transparent'
-    sprite.textHeight = 4
+    // sprite.color = ''
+    sprite.color = highlight ? '#292E1E' :  '#9C5207'
+    sprite.textHeight = 2
     
     return sprite
   }

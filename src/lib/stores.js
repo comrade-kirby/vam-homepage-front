@@ -7,7 +7,7 @@ const createFocused = () => {
   return {
     subscribe,
     setFromPath: (selected, index) => {
-      set(selected.getRelatedWorks()[index])
+      set(selected?.getRelatedWorks()[index])
     }
   }
 }

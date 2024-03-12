@@ -15,19 +15,16 @@
   let graphIsReady = false
 
   const root = hierarchy(data.works)
+  root.eachAfter(d => {
+    d.data.href = buildBreadcrumb(root.path(d))
+    d.getRelatedWorks = () => buildRelatedWorksList(d)
+  })
  
   $: selected.setFromPath(root, data.path)
   $: focused.setFromPath($selected, data.index)
   $: if (graphIsReady) { forceGraph.setSize(innerWidth, innerHeight) }
 
   onMount( async () => {
-    root.eachAfter(async d => {
-      d.data.href = buildBreadcrumb(root.path(d))
-      d.data.relatedWorks = buildRelatedWorksList(d)
-
-      if (d === $selected) focused.setFromPath($selected, data.index)
-    })
-    
     const container = document.getElementById('force-graph-container')
     forceGraph = new ForceGraph()
     await forceGraph.initialize()

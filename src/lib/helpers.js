@@ -1,4 +1,4 @@
-export const buildBreadcrumb = (path, index) => {
+export const buildBreadcrumb = (path) => {
   return path.map((node) => node.data[0] || node.data.title)
     .join('/')
     .replace(/\s+/g, '_')

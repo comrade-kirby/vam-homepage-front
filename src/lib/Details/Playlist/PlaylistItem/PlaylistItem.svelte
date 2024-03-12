@@ -1,16 +1,17 @@
 <script>
+  import { selected, focused } from "$lib/stores"
+
   export let node
   export let index
-  export let selected
-  export let focused
 
   let href, isFocused
   
-  $: isFocused = node == focused
-  $: href = `/${index}${selected.data.href}`
+  $: isFocused = node == $focused
+  
+  $: href = `/${index}${$selected.data.href}`
 </script>
 
-<a {href} class="group relative items-center flex w-full mt-2">
+<a {href} class="group relative overflow-show items-center flex w-full mt-2">
   <div class:hidden={!isFocused} class="h-2 w-2 absolute -left-4 bg-orange-500/90 br-10 rounded group-hover:block group-hover:bg-orange-400/70"></div>
   <img class="h-20 aspect-video" src={node.data.oembedData.thumbnail} />
   

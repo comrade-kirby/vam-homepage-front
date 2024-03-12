@@ -8,6 +8,7 @@ export default {
         300: '#D6F5FF'
       },
       'black-olive': '#292E1E',
+      'light-olive': '#B4BF9C',
       'orange': {
         400: "#F6993C",
         500: '#F58F29',

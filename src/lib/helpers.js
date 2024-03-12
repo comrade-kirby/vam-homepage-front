@@ -19,17 +19,3 @@ export const buildRelatedWorksList = (node) => {
   const worksSet = node.ancestors().reduce(reducer, new Set())
   return Array.from(worksSet)
 }
-
-export const findSelectedFromPath = (root, path) => {
-  const selected = root.find(d =>  buildBreadcrumb(root.path(d)) === `/${path}`)
-  return selected
-}
-
-export const getRelatedWorks = () => {
-  return
-}
-
-export const findFocusedFromPath = (selected, index) => {
-  const focused = selected.data.relatedWorks[index]
-  return focused
-}

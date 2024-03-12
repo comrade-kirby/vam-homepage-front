@@ -2,18 +2,18 @@
   import NavLink from "./NavLink/NavLink.svelte"
   import NavSubMenu from "./NavSubMenu/NavSubMenu.svelte"
 
-  export let node, forceGraph, openPlayer
+  export let node, forceGraph, openDetails
   
   const isLeafNode = node.height === 0
 </script>
 
 <li class="flex flex-col pl-2">
   {#if isLeafNode }
-    <NavLink {node} {openPlayer} {forceGraph} />
+    <NavLink {node} {openDetails} {forceGraph} />
   {:else}
     <NavSubMenu {node} {forceGraph}>
       {#each node.children as node}
-        <svelte:self {node} {forceGraph} {openPlayer} />
+        <svelte:self {node} {forceGraph} {openDetails} />
       {/each}
     </NavSubMenu>
   {/if}

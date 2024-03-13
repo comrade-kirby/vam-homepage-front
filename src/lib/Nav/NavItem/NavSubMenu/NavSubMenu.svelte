@@ -1,5 +1,5 @@
 <script>
-  import { navOpen } from "$lib/stores"
+  import { navOpen, selected } from "$lib/stores"
 
   export let node
   export let forceGraph
@@ -10,6 +10,9 @@
   const hasMultipleChildren = childrenCount > 1
   
   let isCollapsed = !hasMultipleChildren
+
+  $: includesSelected = node.children.includes($selected)
+
   const toggleCollapse = () => isCollapsed = !isCollapsed
 
   const onClick = node.depth === 0
@@ -24,7 +27,7 @@
 >
   {node.data[0]}
   {#if isCollapsed}
-    <span class="text-black-olive/40 group-hover:text-black-olive/60 ml-1 text-sm truncate ...">
+    <span class="{includesSelected ? 'text-orange-900/80' : 'text-black-olive/40 group-hover:text-black-olive/60'} ml-1 text-sm truncate ...">
       {#if !hasMultipleChildren}
         / {node.children[0].data.title}
       {:else}

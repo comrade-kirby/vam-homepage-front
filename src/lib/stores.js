@@ -10,12 +10,10 @@ const createSelected = () => {
       const selected = root.find(d =>  {
         let bc = buildBreadcrumb(root.path(d)) 
         let mypath = `${path}`
-        console.log('bc: ', bc)
-        console.log('path: ', mypath)
 
         return bc === mypath
       })
-      console.log('selected: ', selected)
+
       set(selected)
     }
   }

@@ -1,8 +1,10 @@
 export const buildBreadcrumb = (path) => {
-  return path.map((node) => node.data[0] || node.data.title)
+  const bc = path.map((node) => node.data[0] || node.data.title)
     .join('/')
     .replace(/\s+/g, '_')
     .toLowerCase()
+    
+  return bc
 }
 
 export const buildRelatedWorksList = (node) => {

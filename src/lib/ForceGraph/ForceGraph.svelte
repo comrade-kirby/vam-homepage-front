@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { focused } from '$lib/stores'
+  import { selected } from '$lib/stores'
   import { ForceGraph } from './ForceGraph';
 
   export let root
@@ -10,7 +10,7 @@
   let innerHeight
 
   $: forceGraph?.setSize(innerWidth, innerHeight)
-  $: setTimeout(() => forceGraph?.focusNode($focused), 1000)
+  $: setTimeout(() => forceGraph?.focusNode($selected), 1000)
 
   onMount(() => {
     const container = document.getElementById('force-graph-container')

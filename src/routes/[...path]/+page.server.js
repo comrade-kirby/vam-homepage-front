@@ -21,7 +21,7 @@ export async function load({ params }) {
     return {id, ...work.attributes, oembedData, videoId}
   })
 
-  return { works: groupWorks(works), path: params.path, index: params.index || 0}
+  return { works: groupWorks(works), path: params.path }
 }  
 
 const groupWorks = (works) => group(works, d=> d.category, d => d.client.data.attributes.name)

@@ -1,4 +1,6 @@
 <script>
+  import { navOpen } from "$lib/stores"
+
   export let node
   export let forceGraph
 
@@ -8,12 +10,15 @@
   const hasMultipleChildren = childrenCount > 1
   
   let isCollapsed = !hasMultipleChildren
-
   const toggleCollapse = () => isCollapsed = !isCollapsed
+
+  const onClick = node.depth === 0
+    ? () => navOpen.update((open) => !open)
+    : toggleCollapse
 </script>
 
 <button type="button" class="group truncate ... flex items-center w-100 text-left text-black-olive/90 {fontSize} "
-  on:click={toggleCollapse} 
+  on:click={onClick} 
   on:pointerenter={() => forceGraph.focusNode(node)}
   on:pointerleave={() => forceGraph.clearFocus()}
 >

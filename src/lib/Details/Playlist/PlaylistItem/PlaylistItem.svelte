@@ -9,7 +9,10 @@
 <!-- TODO: style for visited -->
 <a href={node.data.href} class="group visited:bg-black-olive relative overflow-show items-center flex w-full mt-2">
   <div class:hidden={!isSelected} class="h-2 w-2 absolute hidden -left-4 bg-orange-500/90 br-10 rounded group-hover:block group-hover:bg-orange-400/70"></div>
-  <img class="h-20 aspect-video" src={node.data.oembedData.thumbnail} />
+ 
+  {#if node.data.oembedData}
+    <img class="h-20 aspect-video" src={node?.data.oembedData.thumbnail} />
+  {/if}
   
   <div class="flex flex-col h-full p-1 ml-1 text-left">
     <h3 class="text-xs text-black-olive/90 line-clamp-[2]">{node.data.title}</h3>

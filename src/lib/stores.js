@@ -6,6 +6,7 @@ const createSelected = () => {
 
   return {
     subscribe,
+    set,
     setFromPath: (root, path) => {
       const selected = root.find(d =>  {
         let bc = buildBreadcrumb(root.path(d)) 
@@ -21,3 +22,4 @@ const createSelected = () => {
 
 export const navOpen = writable(false)
 export const selected = createSelected()
+export const tempFocus = writable(null)

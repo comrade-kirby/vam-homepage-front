@@ -1,5 +1,5 @@
 <script>
-  import { navOpen, selected } from "$lib/stores"
+  import { navOpen, selected, tempFocus } from "$lib/stores"
 
   export let node
   export let forceGraph
@@ -8,7 +8,7 @@
   const leavesCount = node.leaves().length
   const childrenCount = node.children?.length
   const hasMultipleChildren = childrenCount > 1
-  
+
   let isCollapsed = !hasMultipleChildren
 
   $: includesSelected = node.children.includes($selected)
@@ -20,10 +20,13 @@
     : toggleCollapse
 </script>
 
-<button type="button" class="group truncate ... flex items-center w-100 text-left {isTopLevelNav ? 'text-base text-orange-900/80' : 'text-sm text-black-olive/90'}"
+<button type="button" class="group truncate ... pb-0.5 flex items-center w-100 text-left {isTopLevelNav ? 'text-base text-orange-900/80' : 'text-sm text-black-olive/90'}"
   on:click={onClick} 
-  on:pointerenter={() => forceGraph.focusNode(node)}
-  on:pointerleave={() => forceGraph.clearFocus()}
+  on:pointerenter={!isTopLevelNav 
+    ? () => tempFocus.set(node)
+    : null
+  }
+  on:pointerleave={() => tempFocus.set(null)} 
 >
   {node.data[0]}
   {#if isCollapsed}

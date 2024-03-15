@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
+  safelist: ['pl-0', 'pl-1', 'pl-2', 'pl-3'],
   theme: {
     colors: {
       'blue': {
@@ -17,25 +18,11 @@ export default {
         900: '#4E2A04'
       }
     },
-    
-    // colors: {
-    //   'blue': 'rgba(250, 247, 249, 0.5)',
-    //   'purple': '#7e5bef',
-    //   'pink': '#ff49db',
-    //   'orange': '#ff7849',
-    //   'green': '#13ce66',
-    //   'yellow': '#ffc82c',
-    //   'gray-dark': '#273444',
-    //   'gray': '#8492a6',
-    //   'gray-light': '#d3dce6',
-    // },
-    // fontFamily: {
-    //   sans: ['Graphik', 'sans-serif'],
-    //   serif: ['Merriweather', 'serif'],
-    // },
     extend: {
       fontSize: {
-        '2xs': '0.6rem'
+        'sm': '0.7rem',
+        'xs': '0.65rem',
+        '2xs': '0.55rem'
       }
     },
   },

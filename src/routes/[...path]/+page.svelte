@@ -2,8 +2,8 @@
   import { hierarchy } from 'd3-hierarchy'
 
   import { selected } from '$lib/stores.js'
-  import { buildBreadcrumb, buildRelatedWorksList } from '$lib/helpers.js';
-  
+  import { buildBreadcrumb, buildRelatedWorksList } from '$lib/helpers.js'
+
   import ForceGraph from '$lib/ForceGraph/ForceGraph.svelte'
   import Nav from '$lib/Nav/Nav.svelte'
 
@@ -19,8 +19,6 @@
   })
 
   $: selected.setFromPath(root, data.path)
-  // $: focused.setFromPath($selected, data.index)
-  // $: reactive func to set focused after forceGraph cools
 </script>
 
 {#if root}

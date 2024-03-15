@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { selected } from '$lib/stores'
+  import { selected, tempFocus } from '$lib/stores'
   import { ForceGraph } from './ForceGraph';
 
   export let root
@@ -8,9 +8,18 @@
 
   let innerWidth
   let innerHeight
+  let delayTimeout
+
+  const focusDelay = (tempFocus, selected) => {
+    clearTimeout(delayTimeout)
+    
+    delayTimeout = setTimeout(() => forceGraph?.focusNode(tempFocus || selected), 500)
+  }
 
   $: forceGraph?.setSize(innerWidth, innerHeight)
-  $: setTimeout(() => forceGraph?.focusNode($selected), 1000)
+  
+  // TODO: fix for initial load after graph has cooled
+  $: focusDelay($tempFocus, $selected)
 
   onMount(() => {
     const container = document.getElementById('force-graph-container')

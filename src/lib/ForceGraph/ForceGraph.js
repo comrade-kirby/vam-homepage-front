@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { forceCollide } from 'd3-force';
 import { mean } from 'd3-array'
 import SpriteText from 'three-spritetext'
+import Player from '@vimeo/player'
 import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/Addons.js';
 
 export class ForceGraph {
@@ -24,7 +25,14 @@ export class ForceGraph {
       .dagMode('radialout')
       .nodeRelSize(34)
       .nodeId('data')
-      .linkOpacity(1)
+      .linkOpacity('0.5')
+      // .linkOpacity(link => {
+      //   console.
+      //   return link.source.depth === 0 
+      //     ? '0'
+      //     : '1'
+      //     // : this.#highlightNodes.has(link.source) ? "0.3" : "0.1"
+      // })
       .linkWidth(0.1)
       .backgroundColor('rgba(0, 0, 0, 0)')
       .enableNodeDrag(false)
@@ -41,24 +49,24 @@ export class ForceGraph {
           this.#thumbnails.add(thumb)
           return thumb
         } else if (node.data.oembedData) {
-          const thumbnail = this.#imageNode(node)
+          const thumbnail = this.#video2DNode(node)
           this.#thumbnails.add(thumbnail)
           return thumbnail
         } else {
           return this.#textNode(node)
         }
       })
-      // .nodeThreeObjectExtend(d => d.height === 0 ? true : false)
+      .nodeThreeObjectExtend(d => d.height === 0 ? true : false)
   }
 
   attach(container, w, h) {
-    console.log('container: ', container)
     if (this.graph) {
       this.graph(container)
       this.graph.d3Force('collide', forceCollide(d => d.height === 0 ? this.graph.nodeRelSize() : 0))
       this.graph.d3Force('charge').strength(-1000).distanceMin(100)
       this.graph.cameraPosition({x: 0, y: -80, z: 0})
       this.scene = this.graph.scene()
+      this.scene.add(new THREE.DirectionalLight( 0xffffff, 3 ))
       this.renderer = this.graph.renderer()
       this.controls = this.graph.controls()
       this.camera = this.controls.object 
@@ -101,17 +109,38 @@ export class ForceGraph {
 
   focusNode(node) {
     if (this.graph && this.#focusedNode !== node) {
-      this.clearFocus()
+      this.#pauseHighlighted()
+      this.#clearFocus()
+      
       this.#focusedNode = node
       this.#highlightNodes.add(this.#focusedNode)
       this.#focusedNode.descendants().forEach(node => this.#highlightNodes.add(node))
 
+      this.#playHighlighted()
       this.#updateHighlight()
       this.#rotateToFocused()
     }
   }
 
-  clearFocus() {
+  #pauseHighlighted() {
+    if (!this.#highlightNodes) return 
+
+    this.#highlightNodes.forEach(node => {
+      if (node.videoPlayer) {
+        node.videoPlayer.pause()
+      }
+    })
+  }
+
+  #playHighlighted() {
+    this.#highlightNodes.forEach(node => {
+      if (node.videoPlayer) {
+        node.videoPlayer.play()
+      }
+    })
+  }
+
+  #clearFocus() {
     this.#focusedNode = null
     this.#highlightNodes.clear()
 
@@ -147,8 +176,9 @@ export class ForceGraph {
 
   #updateHighlight() {
     this.graph
-      .nodeThreeObject(this.graph.nodeThreeObject())
+      // .nodeThreeObject(this.graph.nodeThreeObject())
       .linkColor(this.graph.linkColor())
+      .linkOpacity(this.graph.linkOpacity())
   }
 
   #rotateToFocused() {
@@ -189,6 +219,73 @@ export class ForceGraph {
     thumbnail.scale.set(0.1, 0.1, 0.1);
     
     return thumbnail
+  }
+
+  #video2DNode(node) {
+    const container = document.createElement('div')
+    container.setAttribute('class', 'mycontainer')
+    node.videoPlayer = new Player(container, {
+      id: node.data.videoId,
+      // id will not work for unlisted videos.
+      // will need to use video link url instead (url needs 'h' parameter)
+      // url: 'https://player.vimeo.com/video/854513335?h=4341926ce1',
+      portrait: false,
+      quality_selector: false,
+      title: false,
+      transcript: false,
+      vimeo_logo: false,
+      chromecast: false,
+      width: 720,
+      byline: false,
+      color: '9C5207',
+      loop: true,
+      progress_bar: false,
+      airplay: false,
+      speed: false,
+      muted: true,
+      pip: false
+    })
+    
+    node.videoPlayer.on('play', () => {
+      if (this.#highlightNodes.has(node)) {
+        this.console.log('already focused')
+      } else {
+        this.focusNode(node)
+      }
+    })
+
+    console.log(node.videoPlayer)
+    // player.on('ended', () => focus and restart next if current focus)
+    const videoNode = new CSS3DObject(node.videoPlayer.element)
+
+    videoNode.scale.set(0.1, 0.1, 0.1);
+
+    return videoNode
+  }
+  
+  // unused + broken
+  #video3DNode(node) {
+    const videoUrl = "https://player.vimeo.com/progressive_redirect/playback/854513335/rendition/1080p/file.mp4?loc=external&log_user=0&signature=4403e3e0dea912f874f474ba766db92faea7546ad2a7eb0c1603bdc4c76dde8a"
+    
+    const video = document.createElement('video')
+    video.setAttribute('width', '320')
+    video.setAttribute('height', '320')
+    video.setAttribute('src', videoUrl)
+    
+    const videoTexture = new THREE.VideoTexture( video )
+    
+    videoTexture.colorSpace = THREE.SRGBColorSpace
+    videoTexture.format = THREE.RGBFormat;
+    videoTexture.needsUpdate = true
+
+    const parameters = {color: 0xffffff, map: videoTexture}
+    const material = new THREE.MeshLambertMaterial( parameters );
+    material.needsUpdate = true
+    const geometry = new THREE.BoxGeometry( 36, 36, 36 );
+    const mesh = new THREE.Mesh( geometry, material );
+    console.log(mesh)
+    
+    return mesh
   }
 
   #textNode(node) {

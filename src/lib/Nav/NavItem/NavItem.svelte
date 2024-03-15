@@ -7,10 +7,17 @@
   export let node, forceGraph, openDetails
   
   const isLeafNode = node.height === 0
-  
+  const isTopLevelNav = node.depth === 0
 </script>
 
-<li class="flex flex-col pl-2">
+<li class="flex flex-col 
+  { isTopLevelNav 
+    ? 'pl-0' 
+    : node.depth % 2
+      ? 'pl-1'
+      : 'pl-2'
+  }
+">
   {#if isLeafNode }
     <NavLink {node} {openDetails} {forceGraph} />
   {:else}

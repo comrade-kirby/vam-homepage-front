@@ -15,8 +15,8 @@ export async function load({ params }) {
   let works = await response.json();
   works = works.data.map(work => {
     const { id } = work
-    const oembedData = JSON.parse(work.attributes.videoUrl)
-    const videoId = oembedData.rawData.video_id
+    const oembedData = JSON.parse(work.attributes.vimeoUrl)
+    const videoId = oembedData?.rawData?.video_id
 
     return {id, ...work.attributes, oembedData, videoId}
   })

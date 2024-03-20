@@ -22,11 +22,9 @@
     <NavLink {node} {openDetails} {forceGraph} />
   {:else}
     <NavSubMenu {node} {forceGraph}>
-      {#if  $navOpen}
-        {#each node.children as node}
-          <svelte:self {node} {forceGraph} {openDetails} />
-        {/each}
-      {/if}
+      {#each node.children as node}
+        <svelte:self {node} {forceGraph} {openDetails} />
+      {/each}
     </NavSubMenu>
   {/if}
 </li>

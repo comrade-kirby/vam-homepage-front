@@ -1,7 +1,7 @@
 <script>
-  import { selected, tempFocus } from "$lib/stores"
+  import { selected } from "$lib/stores"
 
-  export let node, openDetails
+  export let node, forceGraph
   let isSelected
   
   $: isSelected = node === $selected
@@ -9,9 +9,8 @@
 
 <a href="{node.data.href}" 
   class="flex items-end group truncate ... max-w-100 text-black-olive/50 hover:text-black-olive/60 text-xs"
-  on:click={openDetails}
-  on:pointerenter={() => tempFocus.set(node)}
-  on:pointerleave={() => tempFocus.set(null)}
+  on:pointerenter={() => forceGraph.onNavHover(node)}
+  on:pointerleave={() => forceGraph.cancelNavHover()}
 >
   
   <span class="{isSelected ? 'truncate ... text-orange-900/80' : 'group-hover:truncate ...'}">{node.data.title}</span>

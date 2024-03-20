@@ -1,32 +1,31 @@
 <script>
   import { onMount } from 'svelte';
-  import { selected, tempFocus } from '$lib/stores'
+  import { selected } from '$lib/stores'
   import { ForceGraph } from './ForceGraph';
+
+  import { cameraTarget, cameraFocalLength } from '$lib/stores'
 
   export let root
   export let forceGraph
 
   let innerWidth
   let innerHeight
-  let delayTimeout
 
-  const focusDelay = (tempFocus, selected) => {
-    clearTimeout(delayTimeout)
-    
-    delayTimeout = setTimeout(() => forceGraph?.focusNode(tempFocus || selected), 500)
-  }
+  const onEngineStopCallback = () => forceGraph?.select($selected)
 
   $: forceGraph?.setSize(innerWidth, innerHeight)
-  
+  $: forceGraph?.setFocalLength($cameraFocalLength)
+  $: forceGraph?.setCameraTargetCoordinates($cameraTarget)
+
   // TODO: fix for initial load after graph has cooled
-  $: focusDelay($tempFocus, $selected)
+  $: forceGraph?.select($selected)
 
   onMount(() => {
     const container = document.getElementById('force-graph-container')
     
     import('3d-force-graph').then((module) => {
       forceGraph = new ForceGraph(module)
-      forceGraph.initialize()
+      forceGraph.initialize(onEngineStopCallback)
       forceGraph.attach(container, innerWidth, innerHeight)
       forceGraph.updateWorks(root)
     })

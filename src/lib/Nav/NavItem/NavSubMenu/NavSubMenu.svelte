@@ -1,36 +1,37 @@
 <script>
-  import { navOpen, selected, tempFocus } from "$lib/stores"
+  import { page } from '$app/stores'
+  import { selected } from "$lib/stores"
 
   export let node
   export let forceGraph
 
-  const isTopLevelNav = node.depth === 0
+  let expanded = false
+
   const leavesCount = node.leaves().length
   const childrenCount = node.children?.length
+  const isTopLevelNav = node.depth === 0
+  const isCurrentRoute = `/${$page.params.path}` === node.data.href 
   const hasMultipleChildren = childrenCount > 1
 
-  let isCollapsed = !hasMultipleChildren
-
+  const toggleExpanded = () => {
+    // TODO: FIX! collapse if parent of current selection
+    console.log(expanded)
+    if (isCurrentRoute) expanded = !expanded
+    console.log(expanded)
+  }
+  
   $: includesSelected = node.children.includes($selected)
-
-  const toggleCollapse = () => isCollapsed = !isCollapsed
-
-  const onClick = node.depth === 0
-    ? () => navOpen.update((open) => !open)
-    : toggleCollapse
+  $: expanded = `/${$page.params.path}`.includes(node.data.href)
 </script>
 
-<button type="button" class="group truncate ... pb-0.5 flex items-center w-100 text-left {isTopLevelNav ? 'text-base text-orange-900/80' : 'text-sm text-black-olive/90'}"
-  on:click={onClick} 
-  on:pointerenter={!isTopLevelNav 
-    ? () => tempFocus.set(node)
-    : null
-  }
-  on:pointerleave={() => tempFocus.set(null)} 
+<a href={node.data.href} class="group truncate ... pb-0.5 flex w-100 text-left {isTopLevelNav ? 'text-base text-orange-900/80' : 'text-sm text-black-olive/90'}"
+  on:click={toggleExpanded}
+  on:pointerenter={() => forceGraph.onNavHover(node)}
+  on:pointerleave={() => forceGraph.cancelNavHover()}
 >
   {node.data[0]}
-  {#if isCollapsed}
-    <span class="{includesSelected ? 'text-orange-900/80' : 'text-black-olive/40 group-hover:text-black-olive/60'} ml-1 text-xs truncate ...">
+  {#if !expanded && !isTopLevelNav}
+    <span class="{includesSelected ? 'text-orange-900/80' : 'text-black-olive/40 group-hover:text-black-olive/60'} flex ml-1 text-xs truncate ...">
       {#if !hasMultipleChildren}
         / {node.children[0].data.title}
       {:else}
@@ -38,8 +39,11 @@
       {/if}
     </span>
   {/if}
-</button>
+</a>
+  
+  {#if expanded}
+    <ul class="space-y-1" class:collapse={!expanded}>
+      <slot />
+    </ul>
+  {/if}
 
-<ul class="space-y-1" class:collapse={isCollapsed}>
-  <slot />
-</ul>

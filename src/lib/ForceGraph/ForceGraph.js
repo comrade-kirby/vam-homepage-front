@@ -1,6 +1,8 @@
 import * as THREE from 'three'
+import { cameraTarget, cameraFocalLength } from '$lib/stores'
+import { goto } from '$app/navigation'
 import { forceCollide } from 'd3-force';
-import { mean } from 'd3-array'
+// import { mean } from 'd3-array'
 import SpriteText from 'three-spritetext'
 import Player from '@vimeo/player'
 import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/Addons.js';
@@ -8,16 +10,20 @@ import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/Addons.js';
 export class ForceGraph {
   #thumbnails = new Set()
   #highlightNodes = new Set()
-  #focusedNode = null
-  #currentFocalLength = 18
+  #selectedNode = null
+  #selectNeedsupdate = false
+  #cameraNeedsUpdate = false
+  #cameraTargetCoordinates = null
+  #focalLength = 18
   #maxFocalLength = 100
   #minFocalLength = 10
+  #initialCooldown = true
   
   constructor(ForceGraphConstructor) {
     this.ForceGraphConstructor = ForceGraphConstructor
   }
 
-  initialize() {
+  initialize(onEngineStopCallback) {
     this.graph = this.ForceGraphConstructor.default({
       controlType: 'orbit',
       extraRenderers: [new CSS3DRenderer()]
@@ -42,7 +48,16 @@ export class ForceGraph {
           ? 'transparent'
           : this.#highlightNodes.has(link.source) ? "#292E1E" : "#F6993C"
       })
-      .onNodeClick((node) => this.focusNode(node))
+      .onNodeClick((node) => goto(node.data.href))
+      .warmupTicks(500)
+      .cooldownTicks(100)
+      .onEngineStop(() => {
+        if (this.#initialCooldown) {
+          this.#selectNeedsupdate = true
+          onEngineStopCallback()
+          this.#initialCooldown = false
+        }
+      })
       .nodeThreeObject((node) => {
         if (node.data.animatedThumbnails?.data.length) {
           let thumb = this.#animatedNode(node)
@@ -62,28 +77,45 @@ export class ForceGraph {
   attach(container, w, h) {
     if (this.graph) {
       this.graph(container)
+      
       this.graph.d3Force('collide', forceCollide(d => d.height === 0 ? this.graph.nodeRelSize() : 0))
       this.graph.d3Force('charge').strength(-1000).distanceMin(100)
-      this.graph.cameraPosition({x: 0, y: -80, z: 0})
+      this.graph.cameraPosition({x: 0, y: 0, z: 0})
+      
       this.scene = this.graph.scene()
       this.scene.add(new THREE.DirectionalLight( 0xffffff, 3 ))
-      this.renderer = this.graph.renderer()
-      this.controls = this.graph.controls()
-      this.camera = this.controls.object 
       
+      this.controls = this.graph.controls()
       this.controls.rotateSpeed = -1
       this.controls.enablePan = false
       this.controls.enableZoom = false
-      this.camera.setFocalLength(this.#currentFocalLength)
       
-      this.setSize(w, h)
-
+      this.camera = this.controls.object 
+      
+      this.renderer = this.graph.renderer()
       this.renderer.setAnimationLoop(() => {
+        this.#updateCamera()
         this.#thumbnails.forEach(thumbnail => {
           thumbnail.lookAt(scene.position)
         })
       })
       
+      this.setSize(w, h)
+    }
+  }
+
+  setFocalLength(focalLength) {
+    if (this.#focalLength !== focalLength) {
+      this.#focalLength = focalLength
+      this.#cameraNeedsUpdate = true
+    }
+  }
+
+  setCameraTargetCoordinates(cameraTargetCoords) {
+
+    if (this.#areNewCoordinates(cameraTargetCoords)) {
+      this.#cameraTargetCoordinates = cameraTargetCoords
+      this.#cameraNeedsUpdate = true
     }
   }
 
@@ -107,19 +139,97 @@ export class ForceGraph {
     }
   }
 
-  focusNode(node) {
-    if (this.graph && this.#focusedNode !== node) {
+  select(node) {
+    const isNewNode = this.#selectedNode !== node
+
+    if (node && this.graph && (isNewNode || this.#selectNeedsupdate)) {
+      this.#selectNeedsupdate = false
       this.#pauseHighlighted()
       this.#clearFocus()
       
-      this.#focusedNode = node
-      this.#highlightNodes.add(this.#focusedNode)
-      this.#focusedNode.descendants().forEach(node => this.#highlightNodes.add(node))
+      this.#selectedNode = node
+      this.#highlightNodes.add(this.#selectedNode)
+      this.#selectedNode.descendants().forEach(node => this.#highlightNodes.add(node))
+
+      const {x, y, z} = this.#selectedNode
 
       this.#playHighlighted()
       this.#updateHighlight()
-      this.#rotateToFocused()
+      if (x && y && z) {
+        cameraTarget.set([this.#selectedNode.x, this.#selectedNode.y, this.#selectedNode.z])
+      }
+      cameraFocalLength.set(this.#selectedNode.depth * 24 || 18)
     }
+  }
+
+  #areNewCoordinates(newTarget) {
+    const old = this.#cameraTargetCoordinates
+
+    if (!old) return true
+    if (old.includes(null)) return true
+    if (newTarget === old) return false;
+    if (newTarget == null) return false;
+    if (newTarget.length !== old.length) return true;
+    let allMatch = newTarget.reduce((acc, curr, index) => {
+      if (!acc) return false
+      if (curr !== old[index]) { return false }
+
+      return true
+    }, true)
+
+    return !allMatch 
+  }
+  
+  #updateCamera() {
+    if (!this.#cameraTargetCoordinates) return
+    if (this.#cameraNeedsUpdate) {
+      const cameraTarget = new THREE.Vector3().fromArray(this.#cameraTargetCoordinates)
+    
+      const distance = -80
+      const distRatio = distance/Math.hypot(cameraTarget.x, cameraTarget.y, cameraTarget.z);
+
+      const cameraPosition = cameraTarget.multiplyScalar(distRatio)
+
+      this.graph.cameraPosition(cameraPosition, this.scene.position)
+      this.camera.setFocalLength(this.#focalLength)
+
+      this.#cameraNeedsUpdate = false
+    }
+    
+  }
+
+  onNavHover(node) {
+    // remove later and add nudge for no selected
+    if (!this.#selectedNode) return 
+
+    const selected = this.#selectedNode
+    const selectedPosition = new THREE.Vector3(selected.x, selected.y, selected.z)
+    const nodePosition = new THREE.Vector3(node.x, node.y, node.z)
+    const direction = new THREE.Vector3().subVectors(selectedPosition, nodePosition)
+    const newTarget = selectedPosition.addScaledVector(direction, -0.1)
+    cameraTarget.set(newTarget.toArray())
+  }
+
+  cancelNavHover() {
+    // remove later and add nudge for no selected
+    if (!this.#selectedNode) return 
+    
+    const selected = this.#selectedNode
+
+    if (selected) {
+
+      const selectedPosition = new THREE.Vector3(selected.x, selected.y, selected.z)
+      cameraTarget.set(selectedPosition.toArray())
+    }
+  }
+
+  onWheel(event) {
+    const dy = event.deltaY
+    if (dy === 0) return 
+    
+    dy > 0 
+      ? this.#focalLengthDown()
+      : this.#focalLengthUp() 
   }
 
   #pauseHighlighted() {
@@ -141,7 +251,7 @@ export class ForceGraph {
   }
 
   #clearFocus() {
-    this.#focusedNode = null
+    this.#selectedNode = null
     this.#highlightNodes.clear()
 
     if (this.graph) {
@@ -149,29 +259,20 @@ export class ForceGraph {
     }
   }
 
-  onWheel(event) {
-    const dy = event.deltaY
-    if (dy === 0) return 
-    
-    dy > 0 
-      ? this.#focalLengthDown()
-      : this.#focalLengthUp() 
-  }
-
   #focalLengthUp() {
-    if (this.#currentFocalLength >= this.#maxFocalLength) return 
-    this.#currentFocalLength++
+    if (this.#focalLength >= this.#maxFocalLength) return 
+    this.#focalLength++
     this.#updateFocalLength()
   }
 
   #focalLengthDown() {
-    if (this.#currentFocalLength <= this.#minFocalLength) return 
-    this.#currentFocalLength-- 
+    if (this.#focalLength <= this.#minFocalLength) return 
+    this.#focalLength-- 
     this.#updateFocalLength()
   }
 
   #updateFocalLength() {
-    this.camera.setFocalLength(this.#currentFocalLength)
+    this.camera.setFocalLength(this.#focalLength)
   }
 
   #updateHighlight() {
@@ -179,23 +280,6 @@ export class ForceGraph {
       // .nodeThreeObject(this.graph.nodeThreeObject())
       .linkColor(this.graph.linkColor())
       .linkOpacity(this.graph.linkOpacity())
-  }
-
-  #rotateToFocused() {
-    const focused = this.#focusedNode
-    const descendants = focused.descendants()
-    const distance = -100
-    const distRatio = distance/Math.hypot(focused.x, focused.y, focused.z);
-    const focalLength = focused.depth * 24
-    
-    const newPosition = {
-      x: mean(descendants, d => d.x) * distRatio,
-      y: mean(descendants, d => d.y) * distRatio,
-      z: mean(descendants, d => d.z) * distRatio
-    }
-    
-    this.graph.cameraPosition(newPosition, this.graph.scene.position, 1000)
-    this.camera.setFocalLength(focalLength)
   }
 
   #imageNode(node) {
@@ -247,14 +331,14 @@ export class ForceGraph {
     })
     
     node.videoPlayer.on('play', () => {
+      // seems a bit slow maybe an onclick callback
       if (this.#highlightNodes.has(node)) {
         this.console.log('already focused')
       } else {
-        this.focusNode(node)
+        goto(node.data.href)
       }
     })
 
-    console.log(node.videoPlayer)
     // player.on('ended', () => focus and restart next if current focus)
     const videoNode = new CSS3DObject(node.videoPlayer.element)
 
@@ -283,7 +367,6 @@ export class ForceGraph {
     material.needsUpdate = true
     const geometry = new THREE.BoxGeometry( 36, 36, 36 );
     const mesh = new THREE.Mesh( geometry, material );
-    console.log(mesh)
     
     return mesh
   }

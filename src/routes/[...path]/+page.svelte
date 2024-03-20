@@ -17,7 +17,7 @@
     d.data.href = "/" + buildBreadcrumb(root.path(d))
     d.getRelatedWorks = () => buildRelatedWorksList(d)
   })
-
+// nav and details open with route
   $: selected.setFromPath(root, data.path)
 </script>
 

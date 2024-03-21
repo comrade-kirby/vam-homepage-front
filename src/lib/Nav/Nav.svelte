@@ -1,12 +1,14 @@
 <script>
+  import { selected } from '$lib/stores'
+
   import NavItem from './NavItem/NavItem.svelte'
   import Details from '$lib/Details/Details.svelte'
-
-  import { selected } from '$lib/stores'
-    import SimpleNavItem from './SimpleNavItem/SimpleNavItem.svelte';
+  import SimpleNavItem from './SimpleNavItem/SimpleNavItem.svelte';
 
   export let forceGraph, root
+
   let detailsOpen = false
+
   const closeDetails = () => detailsOpen = false
   const openDetails = () => detailsOpen = true
 </script>
@@ -17,7 +19,7 @@
     { detailsOpen ? '': 'hover:max-w-96' }">
 
       <ul class="flex flex-col grow w-full space-y-2 ">
-        <NavItem node={root} {forceGraph} {openDetails} />
+        <NavItem node={root} {forceGraph} {detailsOpen} {openDetails} />
         <SimpleNavItem text="Clients" />
         <SimpleNavItem text="About" />  
       </ul>

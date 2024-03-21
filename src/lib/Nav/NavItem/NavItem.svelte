@@ -4,7 +4,7 @@
   import NavLink from "./NavLink/NavLink.svelte"
   import NavSubMenu from "./NavSubMenu/NavSubMenu.svelte"
 
-  export let node, forceGraph, openDetails
+  export let node, forceGraph, detailsOpen, openDetails
   
   const isLeafNode = node.height === 0
   const isTopLevelNav = node.depth === 0
@@ -19,11 +19,11 @@
   }
 ">
   {#if isLeafNode }
-    <NavLink {node} {openDetails} {forceGraph} />
+    <NavLink {node} {forceGraph} {detailsOpen} {openDetails} />
   {:else}
     <NavSubMenu {node} {forceGraph}>
       {#each node.children as node}
-        <svelte:self {node} {forceGraph} {openDetails} />
+        <svelte:self {node} {forceGraph} {detailsOpen} {openDetails} />
       {/each}
     </NavSubMenu>
   {/if}

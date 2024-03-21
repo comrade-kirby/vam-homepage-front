@@ -1,4 +1,5 @@
 <script>
+  import ClampParagraph from '$lib/shared/ClampParagraph.svelte'
   import Playlist from "./Playlist/Playlist.svelte"
   import CollapseLeftButton from "$lib/CollapseLeftButton.svelte"
   import { selected } from "$lib/stores"
@@ -20,12 +21,12 @@
   
   <div class="overflow-scroll pl-4">
     {#if work.description}
-      <p class="text-xs text-black-olive/60 leading-relaxed">{work.description}</p>
+      <ClampParagraph content={work.description} />
     {/if}
-    <!-- show first ~3 lines and hide -->
+
     {#if work.credits}
-      <h3 class="mt-4 text-sm text-black-olive/90">Credits</h3>
-      <p class="text-xs text-black-olive/60 leading-relaxed">{work.credits}</p>
+      <h3 class="mt-4 mb-1 text-sm text-black-olive/90">Credits</h3>
+      <ClampParagraph content={work.credits} short />
     {/if}
     <!-- relatedContent -->
     <Playlist />

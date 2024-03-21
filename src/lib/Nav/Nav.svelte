@@ -11,9 +11,10 @@
 
   const closeDetails = () => detailsOpen = false
   const openDetails = () => detailsOpen = true
+  
+  $: if ($selected.height !== 0) closeDetails()
 </script>
 
-<!-- consider :focus-within tailwind pseudoclass for focus-->
 <div class="flex absolute top-0 left-0 h-full z-20 bg-blue-100/70 backdrop-blur-sm">
   <nav class="flex flex-col h-full max-w-60 p-4 pl-8 text-black-olive border-r border-black-olive/10 
     { detailsOpen ? '': 'hover:max-w-96' }">

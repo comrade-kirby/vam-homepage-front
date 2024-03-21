@@ -1,9 +1,6 @@
 <script>
-  import { PUBLIC_CMS_URL } from "$env/static/public"
-
   export let work
   export let selectWork
-  export let index
 </script>
 
 <!-- related work item -->

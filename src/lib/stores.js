@@ -23,5 +23,8 @@ const createSelected = () => {
 
 export const navOpen = writable(false)
 export const selected = createSelected()
-export const cameraTarget = spring([0, 0, 0])
-export const cameraFocalLength = spring(18)
+export const cameraFocalLength = spring(18, { damping: 0.5 })
+export const cameraTarget = spring([0, 0, 0], {
+  stiffness: 0.1,
+  damping: 0.5,
+})

@@ -15,10 +15,12 @@ export async function load({ params }) {
   let works = await response.json();
   works = works.data.map(work => {
     const { id } = work
+    const clientName = work.attributes.client.data.attributes.name
     const oembedData = JSON.parse(work.attributes.vimeoUrl)
     const videoId = oembedData?.rawData?.video_id
+    const slug = `${clientName}/${work.attributes.title}`.replace(/\s+/g, '_').replace('?', '')
 
-    return {id, ...work.attributes, oembedData, videoId}
+    return {id, ...work.attributes, slug, clientName, oembedData, videoId}
   })
 
   return { works: groupWorks(works), path: params.path }

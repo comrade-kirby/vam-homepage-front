@@ -11,15 +11,16 @@
   }
 
   $: reset(content)
-  $: needsClamp = short ? h > 70 : h > 120
+  $: needsClamp = short ? h > 70 : h > 100
 </script>
 
-<div bind:clientHeight={h} class="flex flex-col text-xs text-black-olive/60 leading-relaxed">
-  <p class={needsClamp && isClamped 
-    ? short
-      ? 'line-clamp-3'
-      : 'line-clamp-6' 
-    : 'line-clamp-none'
+<div bind:clientHeight={h} class="flex flex-col text-xs text-black-olive/80 leading-relaxed">
+  <p class={
+    needsClamp && isClamped 
+      ? short
+        ? 'line-clamp-3'
+        : 'line-clamp-5' 
+      : 'line-clamp-none'
   }>
     {content}
   </p>

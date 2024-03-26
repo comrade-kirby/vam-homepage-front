@@ -20,9 +20,9 @@ export default {
     },
     extend: {
       fontSize: {
-        'sm': '0.7rem',
-        'xs': '0.65rem',
-        '2xs': '0.55rem'
+        'sm': '0.85rem',
+        'xs': '0.75rem',
+        '2xs': '0.65rem'
       }
     },
   },

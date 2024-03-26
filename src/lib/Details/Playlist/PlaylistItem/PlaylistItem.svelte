@@ -7,7 +7,7 @@
 </script>
 
 <!-- TODO: style for visited -->
-<a href={node.data.href} class="group visited:bg-black-olive relative overflow-show items-center flex w-full mt-2">
+<a href="/{node.data.slug}" class="group visited:bg-black-olive relative overflow-show items-center flex w-full mt-2">
   <div class:hidden={!isSelected} class="h-2 w-2 absolute hidden -left-4 bg-orange-500/90 br-10 rounded group-hover:block group-hover:bg-orange-400/70"></div>
  
   {#if node.data.oembedData}

@@ -8,7 +8,7 @@
   $: isSelected = node === $selected
 </script>
 
-<a href="{node.data.href}" 
+<a href="/{node.data.slug}" 
   class="flex items-end group truncate ... max-w-100 text-black-olive/50 hover:text-black-olive/60 text-xs"
   on:click={() => isSelected ? openDetails() : null}
   on:pointerenter={() => forceGraph.onNavHover(node)}

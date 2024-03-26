@@ -12,7 +12,7 @@
   const closeDetails = () => detailsOpen = false
   const openDetails = () => detailsOpen = true
   
-  $: if ($selected.height !== 0) closeDetails()
+  $: if ($selected?.height !== 0) closeDetails()
 </script>
 
 <div class="flex absolute top-0 left-0 h-full z-20 bg-blue-100/70 backdrop-blur-sm">

@@ -1,7 +1,7 @@
 import { writable } from "svelte/store"
-import { spring } from 'svelte/motion'
+import { spring, tweened } from 'svelte/motion'
 
-import { buildBreadcrumb } from "./helpers"
+import { backIn, backOut, bounceOut, circIn, elasticInOut } from "svelte/easing"
 
 const createSelected = () => {
   const { subscribe, set, update } = writable(null)
@@ -9,22 +9,14 @@ const createSelected = () => {
   return {
     subscribe,
     set,
-    setFromPath: (root, path) => {
-      const selected = root.find(d =>  {
-        let bc = buildBreadcrumb(root.path(d)) 
-        let mypath = `${path}`
-        return bc === mypath
-      })
-
-      set(selected)
-    }
+    setFromPath: (root, path) => set(root.find(d => d.data.slug === path))
   }
 }
 
 export const navOpen = writable(false)
 export const selected = createSelected()
 export const cameraFocalLength = spring(18, { damping: 0.5 })
-export const cameraTarget = spring([0, 0, 0], {
-  stiffness: 0.1,
-  damping: 0.5,
+
+export const cameraTarget = tweened([0, 0, 40], {
+  easing: backOut,
 })

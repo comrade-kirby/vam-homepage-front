@@ -16,7 +16,6 @@
   $: forceGraph?.setSize(innerWidth, innerHeight)
   $: forceGraph?.setFocalLength($cameraFocalLength)
   $: forceGraph?.setCameraTargetCoordinates($cameraTarget)
-
   // TODO: fix for initial load after graph has cooled
   $: forceGraph?.select($selected)
 

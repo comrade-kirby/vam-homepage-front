@@ -1,6 +1,4 @@
 <script>
-  import { navOpen } from "$lib/stores"
-  
   import NavLink from "./NavLink/NavLink.svelte"
   import NavSubMenu from "./NavSubMenu/NavSubMenu.svelte"
 
@@ -14,7 +12,7 @@
   { isTopLevelNav 
     ? 'pl-0' 
     : node.depth % 2
-      ? 'pl-1'
+      ? 'pl-2'
       : 'pl-2'
   }
 ">

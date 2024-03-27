@@ -9,11 +9,13 @@ const createSelected = () => {
   return {
     subscribe,
     set,
-    setFromPath: (root, path) => set(root.find(d => d.data.slug === path))
+    setFromPath: (root, path) => {
+      const selected = root.find(d => d.data.slug === path)
+      set(selected)
+    }
   }
 }
 
-export const navOpen = writable(false)
 export const selected = createSelected()
 export const cameraFocalLength = spring(18, { damping: 0.5 })
 

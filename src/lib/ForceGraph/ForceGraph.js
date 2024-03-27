@@ -5,7 +5,8 @@ import { forceCollide } from 'd3-force';
 // import { mean } from 'd3-array'
 import SpriteText from 'three-spritetext'
 import Player from '@vimeo/player'
-import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/Addons.js';
+import { CSS3DRenderer, CSS3DObject, CSS3DSprite } from 'three/examples/jsm/Addons.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
 
 export class ForceGraph {
   #thumbnails = new Set()
@@ -31,15 +32,9 @@ export class ForceGraph {
       .dagMode('radialout')
       .nodeRelSize(34)
       .nodeId('data')
-      .linkOpacity('0.5')
-      // .linkOpacity(link => {
-      //   console.
-      //   return link.source.depth === 0 
-      //     ? '0'
-      //     : '1'
-      //     // : this.#highlightNodes.has(link.source) ? "0.3" : "0.1"
-      // })
-      .linkWidth(0.1)
+      .linkOpacity('0.2')
+      .linkHoverPrecision(100)
+      .linkWidth((link) => this.#highlightNodes.has(link.source) ? 0.3: 0.2)
       .backgroundColor('rgba(0, 0, 0, 0)')
       .enableNodeDrag(false)
       .linkColor(link => {
@@ -48,9 +43,9 @@ export class ForceGraph {
           ? 'transparent'
           : this.#highlightNodes.has(link.source) ? "#292E1E" : "#F6993C"
       })
-      .onNodeClick((node) => goto(node.data.href))
-      .warmupTicks(500)
-      .cooldownTicks(100)
+      .onNodeClick((node) => goto('/' + node.data.slug))
+      // .warmupTicks(800)
+      // .cooldownTicks(1000)
       .onEngineStop(() => {
         if (this.#initialCooldown) {
           this.#selectNeedsupdate = true
@@ -59,14 +54,11 @@ export class ForceGraph {
         }
       })
       .nodeThreeObject((node) => {
-        if (node.data.animatedThumbnails?.data.length) {
-          let thumb = this.#animatedNode(node)
-          this.#thumbnails.add(thumb)
-          return thumb
-        } else if (node.data.oembedData) {
-          const thumbnail = this.#video2DNode(node)
-          this.#thumbnails.add(thumbnail)
-          return thumbnail
+        // prevent reloading of videos on highlight update
+        if (node.data.oembedData) {
+            const thumbnail = this.#video2DNode(node)
+            
+            return thumbnail
         } else {
           return this.#textNode(node)
         }
@@ -91,8 +83,9 @@ export class ForceGraph {
       this.controls.enableZoom = false
       
       this.camera = this.controls.object 
-      
       this.renderer = this.graph.renderer()
+      this.renderer.toneMapping = THREE.ReinhardToneMapping
+
       this.renderer.setAnimationLoop(() => {
         this.#updateCamera()
         this.#thumbnails.forEach(thumbnail => {
@@ -101,6 +94,26 @@ export class ForceGraph {
       })
       
       this.setSize(w, h)
+      
+      // const bloomPass = new UnrealBloomPass();
+      // // console.log(bloomPass)
+      // bloomPass.strength = 13
+      // bloomPass.radius = 1
+      // bloomPass.threshold = 0
+      // this.graph.postProcessingComposer().addPass(bloomPass);
+    }
+  }
+
+  updateWorks(root) {
+    if (this.graph) {
+      this.graph.graphData({
+        nodes: root.descendants(),
+        links: root.links()
+      })
+      
+      return true
+    } else { 
+      return false
     }
   }
 
@@ -123,19 +136,6 @@ export class ForceGraph {
     if (this.graph) {
       this.renderer.setPixelRatio(window.devicePixelRatio)
       this.renderer.setSize(w , h)
-    }
-  }
-
-  updateWorks(root) {
-    if (this.graph) {
-      this.graph.graphData({
-        nodes: root.descendants(),
-        links: root.links()
-      })
-      
-      return true
-    } else { 
-      return false
     }
   }
 
@@ -185,7 +185,7 @@ export class ForceGraph {
     if (this.#cameraNeedsUpdate) {
       const cameraTarget = new THREE.Vector3().fromArray(this.#cameraTargetCoordinates)
     
-      const distance = -80
+      const distance = -1
       const distRatio = distance/Math.hypot(cameraTarget.x, cameraTarget.y, cameraTarget.z);
 
       const cameraPosition = cameraTarget.multiplyScalar(distRatio)
@@ -206,7 +206,7 @@ export class ForceGraph {
     const selectedPosition = new THREE.Vector3(selected.x, selected.y, selected.z)
     const nodePosition = new THREE.Vector3(node.x, node.y, node.z)
     const direction = new THREE.Vector3().subVectors(selectedPosition, nodePosition)
-    const newTarget = selectedPosition.addScaledVector(direction, -0.1)
+    const newTarget = selectedPosition.addScaledVector(direction, -0.05)
     cameraTarget.set(newTarget.toArray())
   }
 
@@ -276,9 +276,11 @@ export class ForceGraph {
   }
 
   #updateHighlight() {
+    // fix issue reloading node objects
     this.graph
       // .nodeThreeObject(this.graph.nodeThreeObject())
       .linkColor(this.graph.linkColor())
+      .linkWidth(this.graph.linkWidth())
       .linkOpacity(this.graph.linkOpacity())
   }
 
@@ -307,6 +309,8 @@ export class ForceGraph {
 
   #video2DNode(node) {
     const container = document.createElement('div')
+    container.style.border = "2px solid red"
+    container.style.padding = '10px'
     container.setAttribute('class', 'mycontainer')
     node.videoPlayer = new Player(container, {
       id: node.data.videoId,
@@ -335,15 +339,16 @@ export class ForceGraph {
       if (this.#highlightNodes.has(node)) {
         this.console.log('already focused')
       } else {
-        goto(node.data.href)
+        goto('/' + node.data.slug)
       }
     })
 
     // player.on('ended', () => focus and restart next if current focus)
     const videoNode = new CSS3DObject(node.videoPlayer.element)
-
+    // add label to video
     videoNode.scale.set(0.1, 0.1, 0.1);
-
+    
+    this.#thumbnails.add(videoNode)
     return videoNode
   }
   
@@ -372,19 +377,22 @@ export class ForceGraph {
   }
 
   #textNode(node) {
-    const highlight = this.#highlightNodes.has(node)
     let text = ""
     if (node.depth > 0) {
       text = node.data.data
       ? node.data.data.title
       : node.data[0]
     } 
-    
     const sprite = new SpriteText(text)
+  
+    sprite.borderWidth = text ? 0.3 : 0
     sprite.material.depthWrite = false // make sprite background transparent
-    // sprite.color = ''
-    sprite.color = highlight ? '#292E1E' :  '#9C5207'
-    sprite.textHeight = 2
+    sprite.center = {x: -0.1, y: 0.5}
+    sprite.padding = 2
+    sprite.color = '#9C5207'
+    sprite.borderRadius = 2
+    sprite.borderColor = '#9C5207'
+    sprite.textHeight = 1
     
     return sprite
   }

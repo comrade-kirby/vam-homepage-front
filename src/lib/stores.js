@@ -6,14 +6,14 @@ import { backIn, backOut, bounceOut, circIn, elasticInOut } from "svelte/easing"
 const createSelected = () => {
   const { subscribe, set, update } = writable(null)
 
-  return {
-    subscribe,
-    set,
-    setFromPath: (root, path) => {
-      const selected = root.find(d => d.data.slug === path)
-      set(selected)
-    }
+  const setFromPath = (root, path) => {
+    const trimmedPath = path.replace('/details', '')
+    const selected = root.find(d => '/' + d.data.slug === trimmedPath)
+    
+    set(selected)
   }
+
+  return { subscribe, set, setFromPath}
 }
 
 export const selected = createSelected()

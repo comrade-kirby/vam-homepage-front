@@ -1,31 +1,43 @@
 <script>
-  import { selected } from '$lib/stores'
+  import { hierarchy } from 'd3-hierarchy'
 
-  import NavItem from './NavItem/NavItem.svelte'
-  import Details from '$lib/Details/Details.svelte'
-  import SimpleNavItem from './SimpleNavItem/SimpleNavItem.svelte';
+  import { page } from '$app/stores'
+  import { sanitizeString } from '$lib/helpers'
 
-  export let forceGraph, root
+  import SubNav from './SubNav/SubNav.svelte'
+  import SubNavPlaceholder from './SubNavPlaceholder/SubNavPlaceholder.svelte';
 
-  let detailsOpen = false
+  export let forceGraph
 
-  const closeDetails = () => detailsOpen = false
-  const openDetails = () => detailsOpen = true
-  
-  $: if ($selected?.height !== 0) closeDetails()
+  const createSlug = (node) => {
+    switch (node.height) {
+      case 1: return 'works/' + sanitizeString(node.data[0])
+      case 2: return 'works'
+    }
+  }
+
+  const createHierarchy = (worksData) => {
+    const root = hierarchy(worksData)
+    root.data[0] = "Works"
+    root.eachAfter(d => {
+      d.data.slug ||= createSlug(d)
+    })
+    return root
+  }
+
+  $: detailsOpen = $page.url.pathname.includes('details')
+  $: navHierarchy = $page.data.worksData && createHierarchy($page.data.worksData)
 </script>
 
-<div class="flex absolute top-0 left-0 h-full z-20 bg-blue-100/70 backdrop-blur-sm">
-  <nav class="flex flex-col h-full max-w-60 p-4 pl-8 text-black-olive border-r border-black-olive/10 
-    { detailsOpen ? '': 'hover:max-w-96' }">
+<nav class="flex flex-col h-full max-w-60 p-4 pl-8  border-r border-black-olive/10 
+  { detailsOpen ? '': 'hover:max-w-96' }">
 
-      <ul class="flex flex-col grow w-full space-y-2 ">
-        <NavItem node={root} {forceGraph} {detailsOpen} {openDetails} />
-        <SimpleNavItem text="Clients" />
-        <SimpleNavItem text="About" />  
-      </ul>
-  </nav>
-  {#if detailsOpen && $selected}
-    <Details  {closeDetails} />
-  {/if}
-</div>
+  <ul class="flex flex-col grow w-full">
+    {#if navHierarchy}
+      <SubNav node={navHierarchy} {forceGraph} {detailsOpen} />
+    {:else}
+      <SubNavPlaceholder title="Works" />
+    {/if}
+    <!-- <SubNav {forceGraph} title="Clients"  /> -->
+  </ul>
+</nav>

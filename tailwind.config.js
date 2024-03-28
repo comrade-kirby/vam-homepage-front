@@ -4,6 +4,7 @@ export default {
   safelist: ['pl-0', 'pl-1', 'pl-2', 'pl-3'],
   theme: {
     colors: {
+      'transparent': 'transparent',
       'blue': {
         100: '#F7FDFF',
         300: '#D6F5FF'

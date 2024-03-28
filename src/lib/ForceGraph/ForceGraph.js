@@ -195,17 +195,17 @@ export class ForceGraph {
 
       this.#cameraNeedsUpdate = false
     }
-    
   }
 
-  onNavHover(node) {
-    // remove later and add nudge for no selected
-    if (!this.#selectedNode) return 
+  onNavHover(slug) {
+    const target = this.graph.graphData().nodes.find(d => d.data.slug === slug)
+
+    if (!this.#selectedNode || !target) return 
 
     const selected = this.#selectedNode
     const selectedPosition = new THREE.Vector3(selected.x, selected.y, selected.z)
-    const nodePosition = new THREE.Vector3(node.x, node.y, node.z)
-    const direction = new THREE.Vector3().subVectors(selectedPosition, nodePosition)
+    const targetPosition = new THREE.Vector3(target.x, target.y, target.z)
+    const direction = new THREE.Vector3().subVectors(selectedPosition, targetPosition)
     const newTarget = selectedPosition.addScaledVector(direction, -0.05)
     cameraTarget.set(newTarget.toArray())
   }
@@ -378,11 +378,12 @@ export class ForceGraph {
 
   #textNode(node) {
     let text = ""
+
     if (node.depth > 0) {
-      text = node.data.data
-      ? node.data.data.title
-      : node.data[0]
+      text = node.data[0].name || node.data[0]
     } 
+
+
     const sprite = new SpriteText(text)
   
     sprite.borderWidth = text ? 0.3 : 0

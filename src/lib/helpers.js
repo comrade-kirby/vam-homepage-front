@@ -12,3 +12,5 @@ export const buildRelatedWorksList = (node) => {
   const worksSet = node.ancestors().reduce(reducer, new Set())
   return Array.from(worksSet)
 }
+
+export const sanitizeString = string => encodeURIComponent(string.replace(/\s+/g, '_')) 

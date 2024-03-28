@@ -32,5 +32,5 @@
 </script>
 
 <svelte:window bind:innerWidth  bind:innerHeight  />
-<div id='force-graph-container' class="absolute z-10 w-screen h-screen bg-blue-100" 
+<div id='force-graph-container' class="absolute top-0 left-0 z-10 w-screen h-screen bg-blue-100" 
   on:wheel={(event) => forceGraph.onWheel(event)} />

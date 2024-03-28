@@ -7,8 +7,8 @@
 </script>
 
 <!-- TODO: style for visited -->
-<a href="/{node.data.slug}" class="group visited:bg-black-olive relative overflow-show items-center flex w-full mt-2">
-  <div class:hidden={!isSelected} class="h-2 w-2 absolute hidden -left-4 bg-orange-500/90 br-10 rounded group-hover:block group-hover:bg-orange-400/70"></div>
+<a href="/{node.data.slug}/details" class="group relative overflow-show items-center flex w-full mt-2">
+  <div class:hidden={!isSelected} class="h-2 w-2 absolute hidden -left-4 bg-orange-800/80 br-10 rounded group-hover:block group-hover:bg-orange-700/80"></div>
  
   {#if node.data.oembedData}
     <img class="h-20 aspect-video" src={node?.data.oembedData.thumbnail} />

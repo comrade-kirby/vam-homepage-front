@@ -22,7 +22,7 @@
   </span>
   
   {#if linkToDetails}
-    <span class="min-w-fit ml-2 text-2xs group-hover:text-orange-800/90 {
+    <span class="min-w-fit ml-2 text-2xs group-hover:text-orange-700/90 {
       isOpen 
         ? 'text-orange-800/90' 
         : isSelected 

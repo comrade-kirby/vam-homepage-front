@@ -1,5 +1,6 @@
 <script>
   import { selected } from "$lib/stores"
+  import { page } from "$app/stores"
 
   import NavLink from "./NavLink/NavLink.svelte"
 
@@ -7,19 +8,24 @@
   export let forceGraph, detailsOpen
 
   let expanded = false
-  const slug = node.data.slug
+  
+  const navData = node.data[0]
+  const slug = navData.slug
   const leaves = node.leaves()
   const descendants = node.descendants()
   const children = node.children
-  const href = '/' + slug
+  const href = slug
 
   const hoverOn = () => forceGraph.onNavHover(slug)
   const hoverOff = () => forceGraph.cancelNavHover()
   const toggleExpanded = () => expanded = isCurrentRoute ? !expanded : expanded
   
-  $: selectedSlug = $selected && $selected.data.slug
-  $: isCurrentRoute = slug === selectedSlug
-  $: includesSelected = descendants && descendants.map(node => node.data.slug).includes(selectedSlug)
+  $: path = $page.url.pathname
+  $: isCurrentRoute = slug === path
+  $: includesSelected = descendants && descendants.map(node => {
+    return node.data.slug || node.data[0].slug
+  }).includes($page.url.pathname)
+  
   $: expanded = isCurrentRoute || includesSelected
 </script>
 
@@ -38,7 +44,7 @@
   }"
 >
 
-  {node.data[0]}
+  {navData.name}
 
   {#if !expanded && node.depth > 0}
     <span class="text-black-olive/40 group-hover:text-black-olive/60 flex ml-1 text-xs truncate ...">

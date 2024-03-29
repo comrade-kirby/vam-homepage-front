@@ -1,8 +1,8 @@
 <script>
   export let text
-  export let work
+  export let slug
 
-  $: href = '/' + work.slug
+  $: href = slug
 </script>
 
 <a {href} class="self-end mb-4 text-xs text-black-olive/30 hover:text-orange-800/90">

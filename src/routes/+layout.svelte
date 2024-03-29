@@ -4,7 +4,6 @@
   import { hierarchy } from 'd3-hierarchy'
 
   import { selected } from '$lib/stores.js'
-  import { sanitizeString } from "$lib/helpers.js"
   import { buildRelatedWorksList } from '$lib/helpers.js'
 
   import ForceGraph from '$lib/ForceGraph/ForceGraph.svelte'
@@ -14,21 +13,9 @@
   
   let forceGraph
   
-  const createSlug = (node) => {
-    switch (node.height) {
-      case 1: return 'clients/' + node.data[0].slug
-      case 2: return 'works/' + sanitizeString(node.data[0])
-      case 3: return 'works'
-    }
-  }
-
-  // maybe move to Forcegraph and bind root
-  const root = hierarchy(data.graphData).eachAfter(d => {
-    d.data.slug ||= createSlug(d)
-    d.getRelatedWorks = () => buildRelatedWorksList(d)
-  })
-
-  $: selected.setFromPath(root, $page.url.pathname)
+  const root = hierarchy(data.graphData)
+ 
+ $: selected.setFromPath(root, $page.url.pathname)
 </script>
 
 {#if root}

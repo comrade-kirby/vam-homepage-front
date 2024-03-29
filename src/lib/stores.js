@@ -8,7 +8,11 @@ const createSelected = () => {
 
   const setFromPath = (root, path) => {
     const trimmedPath = path.replace('/details', '')
-    const selected = root.find(d => '/' + d.data.slug === trimmedPath)
+    const selected = root.find(d => {
+      const slug = d.data[0] ? d.data[0].slug : d.data.slug
+      
+      return slug === trimmedPath
+    })
     
     set(selected)
   }

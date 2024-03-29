@@ -15,7 +15,7 @@
   {/if}
   
   <div class="flex flex-col h-full p-1 ml-1 text-left">
-    <h3 class="text-xs text-black-olive/90 line-clamp-[2]">{node.data.title}</h3>
-    <h4 class="text-2xs  text-orange-800/90">{node.data.client.data.attributes.name}</h4>
+    <h3 class="text-xs text-black-olive/90 line-clamp-[2]">{node.data.attributes.title}</h3>
+    <h4 class="text-2xs  text-orange-800/90">{node.data.client.name}</h4>
   </div>
 </a>

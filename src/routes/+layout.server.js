@@ -1,5 +1,6 @@
 import { group } from 'd3-array'
 import { STRAPI_API_KEY, VIMEO_CLIENT_ID, VIMEO_SECRET, VIMEO_ACCESS_TOKEN } from '$env/static/private';
+import { sanitizeString } from '$lib/helpers.js';
 
 
 export async function load({}) {
@@ -10,19 +11,41 @@ export async function load({}) {
   })
   
   let works = await response.json();
+  
+  const categories = []
+  const clients = []
 
   works = works.data.map(work => {
-    const { id } = work
-    const clientName = work.attributes.client.data.attributes.name
+    const name = work.attributes.title
+    const slug = '/works/' + work.attributes.slug
+    
+    const newCategory = {
+      name: work.attributes.category,
+      slug: '/works/' + sanitizeString(work.attributes.category) 
+    }
+    
+    const newClient = {
+      name: work.attributes.client.data.attributes.name,
+      slug: '/clients/' + work.attributes.client.data.attributes.slug
+    }
+
+    const categoryIndex = categories.findIndex(category => category.slug === newCategory.slug)
+    const category = categoryIndex > -1 
+      ? categories[categoryIndex]
+      : categories.push(newCategory) && newCategory
+    
+    const clientIndex = clients.findIndex(client => client.slug === newClient.slug)
+    const client = clientIndex > -1 
+      ? clients[clientIndex]
+      : clients.push(newClient) && newClient
+    
     const oembedData = JSON.parse(work.attributes.vimeoUrl)
     const videoId = oembedData?.rawData?.video_id
-    work.attributes.slug = 'works/' + work.attributes.slug
-    // work.attributes.client.data.attributes.slug =
 
-    return {id, ...work.attributes, clientName, oembedData, videoId}
+    return {...work, name, slug, category, client, oembedData, videoId}
   })
 
-  return { works, graphData: graphData(works) }
+  const graphData = group(works, d => d.category, d => d.client)
+  return { works, graphData }
 }  
 
-const graphData = (works) => group(works, d => d.category, d => d.client.data.attributes)

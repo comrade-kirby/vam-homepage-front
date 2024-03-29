@@ -1,18 +1,17 @@
 <script>
-  import { page } from "$app/stores";
-  // import Details from "$lib/Details/Details.svelte";
+  import { selected } from "$lib/stores.js";
   import CollapseLeftButton from "$lib/CollapseLeftButton.svelte"
   import ClampParagraph from "$lib/shared/ClampParagraph.svelte"
   import Playlist from "$lib/Playlist/Playlist.svelte";
+  import { buildRelatedWorksList } from "$lib/helpers.js"
 
-  export let data
-
-  $: work = data.works.find(d => $page.url.pathname.includes(d.slug))
-  $: client = work?.client?.data.attributes
+  $: work = $selected.data.attributes
+  $: client = work.client
+  $: relatedWorks = buildRelatedWorksList($selected)
 </script>
 
 <div class="relative flex flex-col h-full max-w-96 max-h-full overflow-hidden p-4 border-r border-black-olive/10">
-  <CollapseLeftButton text="< close" {work} />
+  <CollapseLeftButton text="< close" slug={$selected.data.slug} />
 
   <h1 class="text-base text-black-olive/90 pl-4">{work.title}</h1>
   
@@ -29,6 +28,6 @@
       <h3 class="mt-4 mb-1 text-sm text-black-olive/90">Credits</h3>
       <ClampParagraph content={work.credits} short />
     {/if}
-    <Playlist />
+    <Playlist {relatedWorks} />
   </div>
 </div>

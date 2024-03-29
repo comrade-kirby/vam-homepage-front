@@ -2,8 +2,7 @@
   import { selected } from "$lib/stores"
   
   export let node, forceGraph, detailsOpen
-  
-  const selectUrl = '/' + node.data.slug
+  const selectUrl = node.data.slug
   const detailsUrl = selectUrl + '/details'
   
   $: isSelected = node?.data.slug === $selected?.data.slug
@@ -18,7 +17,7 @@
   on:pointerleave={() => forceGraph.cancelNavHover()}
 >
   <span class="text-xs truncate ... {isSelected ? 'text-orange-900/80' : 'text-black-olive/50 hover:text-black-olive/70'}">
-    {node.data.title}
+    {node.data.name}
   </span>
   
   {#if linkToDetails}

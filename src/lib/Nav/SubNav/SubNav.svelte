@@ -20,11 +20,11 @@
   const hoverOff = () => forceGraph.cancelNavHover()
   const toggleExpanded = () => expanded = isCurrentRoute ? !expanded : expanded
   
-  $: path = $page.url.pathname
+  $: path = $page.url.pathname.replace('/details', '')
   $: isCurrentRoute = slug === path
   $: includesSelected = descendants && descendants.map(node => {
     return node.data.slug || node.data[0].slug
-  }).includes($page.url.pathname)
+  }).includes(path)
   
   $: expanded = isCurrentRoute || includesSelected
 </script>

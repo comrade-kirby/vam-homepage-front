@@ -14,7 +14,7 @@
   let forceGraph
   
   const root = hierarchy(data.graphData)
- 
+  
   $: selected.setFromPath(root, $page.url.pathname)
 </script>
 

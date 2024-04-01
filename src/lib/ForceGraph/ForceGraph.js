@@ -2,9 +2,10 @@ import * as THREE from 'three'
 import { cameraTarget, cameraFocalLength } from '$lib/stores'
 import { goto } from '$app/navigation'
 import { forceCollide } from 'd3-force';
-// import { mean } from 'd3-array'
 import SpriteText from 'three-spritetext'
 import Player from '@vimeo/player'
+import { backOut, expoInOut } from "svelte/easing"
+
 import { CSS3DRenderer, CSS3DObject, CSS3DSprite } from 'three/examples/jsm/Addons.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
 
@@ -33,7 +34,6 @@ export class ForceGraph {
       .nodeRelSize(34)
       .nodeId('data')
       .linkOpacity('0.2')
-      .linkHoverPrecision(100)
       .linkWidth((link) => this.#highlightNodes.has(link.source) ? 0.3: 0.2)
       .backgroundColor('rgba(0, 0, 0, 0)')
       .enableNodeDrag(false)
@@ -43,7 +43,10 @@ export class ForceGraph {
           ? 'transparent'
           : this.#highlightNodes.has(link.source) ? "#292E1E" : "#F6993C"
       })
-      .onNodeClick((node) => goto('/' + node.data.slug))
+      .onNodeClick((node) => {
+        const nodeData =  node.data[0] || node.data
+        goto(nodeData.slug)
+      })
       // .warmupTicks(800)
       // .cooldownTicks(1000)
       .onEngineStop(() => {
@@ -208,20 +211,16 @@ export class ForceGraph {
     const selectedPosition = new THREE.Vector3(selected.x, selected.y, selected.z)
     const targetPosition = new THREE.Vector3(target.x, target.y, target.z)
     const direction = new THREE.Vector3().subVectors(selectedPosition, targetPosition)
-    const newTarget = selectedPosition.addScaledVector(direction, -0.05)
-    cameraTarget.set(newTarget.toArray())
+    const newTarget = selectedPosition.addScaledVector(direction, 0.05)
+    cameraTarget.set(newTarget.toArray(), { duration: 2000, easing: expoInOut })
   }
 
   cancelNavHover() {
-    // remove later and add nudge for no selected
-    if (!this.#selectedNode) return 
-    
     const selected = this.#selectedNode
 
     if (selected) {
-
       const selectedPosition = new THREE.Vector3(selected.x, selected.y, selected.z)
-      cameraTarget.set(selectedPosition.toArray())
+      cameraTarget.set(selectedPosition.toArray(), { duration: 400, easing: backOut })
     }
   }
 

@@ -13,8 +13,8 @@
   $: clientsHierarchy = $page.data.clientsData && hierarchy($page.data.clientsData)
 </script>
 
-<nav class="flex flex-col h-full max-w-60 p-4 pl-8  border-r border-black-olive/10 
-  { detailsOpen ? '': 'hover:max-w-96' }">
+<nav on:pointerleave={() => forceGraph.cancelNavHover()}
+  class="flex flex-col h-full max-w-60 p-4 pl-8  border-r border-black-olive/10 { !detailsOpen && 'hover:max-w-96' }">
 
   <ul class="flex flex-col grow w-full">
     {#if worksHierarchy}
@@ -27,6 +27,5 @@
     {:else}
       <SubNavPlaceholder title="Clients" />
     {/if}
-    <!-- <SubNav {forceGraph} title="Clients"  /> -->
   </ul>
 </nav>

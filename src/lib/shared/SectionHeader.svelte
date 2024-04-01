@@ -1,3 +1,3 @@
-<h3 class="mt-4 mb-1 text-sm text-black-olive/90">
+<h3 class="mt-4 mt-4 text-sm text-black-olive/95">
   <slot />
 </h3>

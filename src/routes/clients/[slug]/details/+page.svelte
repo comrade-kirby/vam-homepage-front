@@ -12,7 +12,7 @@
 <Details collapseUrl={client.slug} heading={client.name}>
   
   {#if clientWorks}
-    <SectionHeader>Works by {client.name}</SectionHeader>
+    <SectionHeader>Works</SectionHeader>
     <Playlist relatedWorks={clientWorks} />
   {/if}
 </Details>

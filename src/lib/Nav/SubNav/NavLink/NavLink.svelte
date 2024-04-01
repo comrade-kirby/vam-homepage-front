@@ -1,5 +1,7 @@
 <script>
   import { selected } from "$lib/stores"
+
+  import NavLabel from "$lib/shared/NavLabel.svelte"
   
   export let node, forceGraph, detailsOpen
   
@@ -14,14 +16,10 @@
   $: href = linkToDetails ? detailsUrl : selectUrl
 </script>
 
-<a {href} 
-  class="flex items-end group truncate ... max-w-100 "
-  on:pointerenter={() => forceGraph.onNavHover(nodeData.slug)}
-  on:pointerleave={() => forceGraph.cancelNavHover()}
->
-  <span class="text-xs truncate ... {isSelected ? 'text-orange-900/80' : 'text-black-olive/50 hover:text-black-olive/70'}">
+<a {href} on:pointerenter={() => forceGraph.onNavHover(nodeData.slug)} class="flex items-end group truncate ... max-w-100">
+  <NavLabel depth={node.depth} active={isSelected}>
     {nodeData.name}
-  </span>
+  </NavLabel>
   
   {#if linkToDetails}
     <span class="min-w-fit ml-2 text-2xs group-hover:text-orange-700/90 {

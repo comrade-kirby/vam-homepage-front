@@ -15,7 +15,7 @@
   
   const root = hierarchy(data.graphData)
  
- $: selected.setFromPath(root, $page.url.pathname)
+  $: selected.setFromPath(root, $page.url.pathname)
 </script>
 
 {#if root}

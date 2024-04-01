@@ -2,10 +2,13 @@
   import { selected } from "$lib/stores"
   
   export let node, forceGraph, detailsOpen
-  const selectUrl = node.data.slug
+  
+  const nodeData = node.data[0] || node.data
+  const selectUrl = nodeData.slug
   const detailsUrl = selectUrl + '/details'
   
-  $: isSelected = node?.data.slug === $selected?.data.slug
+  $: selectedData = $selected?.data[0] || $selected?.data
+  $: isSelected = nodeData.slug === selectedData?.slug
   $: isOpen = isSelected && detailsOpen
   $: linkToDetails = isSelected || detailsOpen
   $: href = linkToDetails ? detailsUrl : selectUrl
@@ -13,11 +16,11 @@
 
 <a {href} 
   class="flex items-end group truncate ... max-w-100 "
-  on:pointerenter={() => forceGraph.onNavHover(node.data.slug)}
+  on:pointerenter={() => forceGraph.onNavHover(nodeData.slug)}
   on:pointerleave={() => forceGraph.cancelNavHover()}
 >
   <span class="text-xs truncate ... {isSelected ? 'text-orange-900/80' : 'text-black-olive/50 hover:text-black-olive/70'}">
-    {node.data.name}
+    {nodeData.name}
   </span>
   
   {#if linkToDetails}

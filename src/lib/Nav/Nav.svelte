@@ -18,12 +18,12 @@
 
   <ul class="flex flex-col grow w-full">
     {#if worksHierarchy}
-      <SubNav node={worksHierarchy.children[0]} {forceGraph} {detailsOpen} />
+      <SubNav node={worksHierarchy.children[0]} maxDepth=3 {forceGraph} {detailsOpen} />
     {:else}
       <SubNavPlaceholder title="Works" />
     {/if}
     {#if clientsHierarchy}
-      <SubNav node={clientsHierarchy.children[0]} {forceGraph} {detailsOpen} />
+      <SubNav node={clientsHierarchy.children[0]} maxDepth=2 {forceGraph} {detailsOpen} />
     {:else}
       <SubNavPlaceholder title="Clients" />
     {/if}

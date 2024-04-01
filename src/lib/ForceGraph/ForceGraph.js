@@ -380,7 +380,7 @@ export class ForceGraph {
     let text = ""
 
     if (node.depth > 0) {
-      text = node.data[0].name || node.data[0]
+      text = node.data[0].name || node.data.name
     } 
 
 

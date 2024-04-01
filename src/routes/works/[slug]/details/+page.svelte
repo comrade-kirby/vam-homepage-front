@@ -1,10 +1,11 @@
 <script>
-  import { selected, awaitingSelection } from "$lib/stores.js";
-  import { buildRelatedWorksList } from "$lib/helpers.js"
+  import { selected, awaitingSelection } from '$lib/stores.js'
+  import { buildRelatedWorksList } from '$lib/helpers.js'
 
-  import ClampParagraph from "$lib/shared/ClampParagraph.svelte"
-  import Playlist from "$lib/Playlist/Playlist.svelte";
-  import Details from "$lib/Details/Details.svelte";
+  import ClampParagraph from '$lib/shared/ClampParagraph.svelte'
+  import Playlist from '$lib/Playlist/Playlist.svelte'
+  import Details from '$lib/shared/DetailsWrapper.svelte'
+  import SectionHeader from '$lib/shared/SectionHeader.svelte'
 
   $: work = $selected.data
   $: client = work.client
@@ -18,11 +19,12 @@
     {/if}
     
     {#if work.attributes.credits}
-      <h3 class="mt-4 mb-1 text-sm text-black-olive/90">Credits</h3>
+      <SectionHeader>Credits</SectionHeader>
       <ClampParagraph content={work.attributes.credits} short />
     {/if}
     
     {#if relatedWorks}
+      <SectionHeader>Related Works</SectionHeader>
       <Playlist {relatedWorks} />
     {/if}
   </Details>

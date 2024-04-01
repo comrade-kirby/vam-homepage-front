@@ -1,8 +1,9 @@
 <script>
-  import { selected } from "$lib/stores.js";
+  import { selected } from '$lib/stores.js'
 
-  import Details from "$lib/Details/Details.svelte"
-  import Playlist from "$lib/Playlist/Playlist.svelte";
+  import Details from '$lib/shared/DetailsWrapper.svelte'
+  import Playlist from '$lib/Playlist/Playlist.svelte'
+    import SectionHeader from '$lib/shared/SectionHeader.svelte'
 
   $: client = $selected.data[0]
   $: clientWorks = $selected.children
@@ -11,6 +12,7 @@
 <Details collapseUrl={client.slug} heading={client.name}>
   
   {#if clientWorks}
+    <SectionHeader>Works by {client.name}</SectionHeader>
     <Playlist relatedWorks={clientWorks} />
   {/if}
 </Details>

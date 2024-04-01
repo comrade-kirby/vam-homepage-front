@@ -2,6 +2,7 @@
   import NavLabel from '$lib/shared/NavLabel.svelte'
   import { page } from '$app/stores'
 
+  import NavLeafCount from '$lib/shared/NavLeafCount.svelte'
   import NavLink from './NavLink/NavLink.svelte'
 
   export let node
@@ -9,8 +10,8 @@
 
   let expanded = false
   
-  const navData = node.data[0]
-  const slug = navData.slug
+  const nodeData = node.data[0]
+  const slug = nodeData.slug
   const leaves = node.leaves()
   const descendants = node.descendants()
   const children = node.children
@@ -29,19 +30,13 @@
 </script>
 
 
-<a {href} on:click={toggleExpanded} on:pointerenter={hoverOn} class="group truncate ... pb-0.5 flex w-100 text-left">
+<a {href} on:click={toggleExpanded} on:pointerenter={hoverOn} class="group truncate ... pb-0.5 flex items-center w-100 text-left">
   <NavLabel depth={node.depth} active={containsCurrent}>
-    {navData.name}
+    {nodeData.name}
   </NavLabel>
 
   {#if !expanded && node.depth > 1}
-    <span class="text-black-olive/40 group-hover:text-black-olive/60 flex ml-1 text-xs truncate ...">
-      {#if children.length > 1}
-        +{leaves.length}
-      {:else}
-        / {children[0].data.name}
-      {/if}
-    </span>
+    <NavLeafCount {leaves} />
   {/if}
 </a>
 

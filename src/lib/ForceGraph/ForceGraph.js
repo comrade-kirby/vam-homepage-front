@@ -340,7 +340,7 @@ export class ForceGraph {
       if (this.#highlightNodes.has(node)) {
         this.console.log('already focused')
       } else {
-        goto('/' + node.data.slug)
+        goto(node.data.slug)
       }
     })
 

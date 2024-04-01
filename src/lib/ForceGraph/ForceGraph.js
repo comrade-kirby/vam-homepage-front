@@ -198,8 +198,10 @@ export class ForceGraph {
   }
 
   onNavHover(slug) {
-    const target = this.graph.graphData().nodes.find(d => d.data.slug === slug)
-
+    const target = this.graph.graphData().nodes.find(d => {
+      const nodeData = d.data[0] || d.data
+      return nodeData.slug === slug
+    })
     if (!this.#selectedNode || !target) return 
 
     const selected = this.#selectedNode

@@ -16,7 +16,6 @@
   const children = node.children
   const href = slug
 
-  console.log(node.depth)
   const hoverOn = () => forceGraph.onNavHover(slug)
   const hoverOff = () => forceGraph.cancelNavHover()
   const toggleExpanded = () => expanded = isCurrentRoute ? !expanded : expanded

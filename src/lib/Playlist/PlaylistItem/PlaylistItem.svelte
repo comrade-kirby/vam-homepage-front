@@ -3,9 +3,11 @@
 
   export let node
 
-  $: nodeData = node.data
-  $: href = nodeData.slug + '/details'
-  $: oembedData = nodeData.oembedData
+  $: work = node.data || node.attributes
+  $: title = work.attributes?.title || work.title
+  $: client =  work.client
+  $: href = work.slug + '/details'
+  $: oembedData = work.oembedData
   $: isSelected= node == $selected
 </script>
 
@@ -15,7 +17,7 @@
   {/if}
   
   <div class="flex flex-col h-full p-1 ml-1 text-left">
-    <h3 class="text-xs font-medium text-black-olive/80 group-hover:text-orange-900/80 line-clamp-[2] tracking-wide">{node.data.name}</h3>
-    <h4 class="text-2xs  text-orange-800/80 group-hover:text-orange-800/95 tracking-wide">{node.data.client.name}</h4>
+    <h3 class="text-xs font-medium text-black-olive/80 group-hover:text-orange-900/80 line-clamp-[2] tracking-wide">{title}</h3>
+    <h4 class="text-2xs  text-orange-800/80 group-hover:text-orange-800/95 tracking-wide">{client.name}</h4>
   </div>
 </a>

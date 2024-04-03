@@ -1,0 +1,10 @@
+<script>
+  export let press
+
+  const pressImageUrl =  'http://localhost:1337' + press.attributes.thumbnail.data.attributes.url
+</script>
+
+<div class="flex flex-col group">
+  <p class="text-xs font-medium text-black-olive/80 group-hover:text-orange-900/80 tracking-wide">{press.attributes.publication}</p>
+  <img src={pressImageUrl} class="flex grow aspect-square"/>
+</div>

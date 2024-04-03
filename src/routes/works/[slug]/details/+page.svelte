@@ -5,7 +5,7 @@
   import PressLink from '$lib/shared/PressLink.svelte'
   import ClampParagraph from '$lib/shared/ClampParagraph.svelte'
   import Playlist from '$lib/Playlist/Playlist.svelte'
-  import Details from '$lib/shared/DetailsWrapper.svelte'
+  import DetailsWrapper from '$lib/shared/DetailsWrapper.svelte'
   import SectionHeader from '$lib/shared/SectionHeader.svelte'
 
 
@@ -18,7 +18,7 @@
   $: relatedWorks = buildRelatedWorksList($root, slug)
 </script>
 
-<Details collapseUrl={slug} heading={work.attributes.title} subheading={client.attributes.name}>
+<DetailsWrapper collapseUrl={slug} heading={work.attributes.title} subheading={client.attributes.name}>
   {#if work.attributes.description}
     <ClampParagraph content={work.attributes.description} />
   {/if}
@@ -39,4 +39,4 @@
     <SectionHeader>Credits</SectionHeader>
     <ClampParagraph content={work.attributes.credits} short />
   {/if}
-</Details>
+</DetailsWrapper>

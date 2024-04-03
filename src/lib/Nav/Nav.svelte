@@ -16,7 +16,7 @@
 
 <nav on:pointerleave={() => forceGraph.cancelNavHover()}>
   <ContentPane width="max-w-60 { !detailsOpen && 'hover:max-w-96' }">
-    <ul class="flex flex-col grow w-full">
+    <ul role="list" class="flex flex-col grow w-full">
       {#if worksHierarchy}
         <SubNav node={worksHierarchy.children[0]} maxDepth=3 {forceGraph} {detailsOpen} />
       {:else}

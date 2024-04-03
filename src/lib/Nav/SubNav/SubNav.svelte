@@ -41,7 +41,7 @@
 </a>
 
 {#if expanded}
-  <ul class="space-y-1 mb-2 {containsCurrent? 'border-l-2 pl-2 border-double border-black-olive/10' : null} ">
+  <ul role="list" class="space-y-1 mb-2 {containsCurrent? 'border-l-2 pl-2 border-double border-black-olive/10' : null} ">
     {#each children as child}
       {#if child.children && child.depth < maxDepth}
         <svelte:self node={child} {forceGraph} {detailsOpen} />

@@ -1,4 +1,6 @@
 <script>
+    import ClampButton from "./ClampButton.svelte";
+
   export let short
   export let content
 
@@ -9,6 +11,7 @@
   const reset = (content) => {
     isClamped = true
   }
+  const toggleClamp = () => isClamped = !isClamped
 
   $: reset(content)
   $: needsClamp = short ? h > 70 : h > 100
@@ -26,10 +29,6 @@
   </p>
 
   {#if needsClamp}
-    <button class="text-xs mt-2 text-black-olive/30 hover:text-orange-800/90 tracking-wide"
-      on:click={() => isClamped = !isClamped}
-    >
-      {isClamped ? 'more' : 'less'}
-    </button>
+    <ClampButton {isClamped} onClick={toggleClamp}/>
   {/if}
 </div>

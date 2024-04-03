@@ -2,12 +2,10 @@
   import CollapseLeftButton from '$lib/shared/CollapseLeftButton.svelte'
 
   export let collapseUrl, heading, subheading
-
-  const collapseButtonText = '< close'
 </script>
 
 <div class="relative flex flex-col h-full w-96 max-h-full overflow-hidden p-4 border-r border-black-olive/10">
-  <CollapseLeftButton href={collapseUrl}>{collapseButtonText}</CollapseLeftButton>
+  <CollapseLeftButton href={collapseUrl} buttonText="close" />
 
   <h1 class="text-base text-black-olive/90 pl-4 tracking-widest">{heading}</h1>
   
@@ -16,7 +14,6 @@
   {/if}
 
   <div class="overflow-y-scroll -mx-4 px-4">
-
     <div class="overflow-x-visible pl-4">
       <slot />
     </div>

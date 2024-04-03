@@ -3,8 +3,7 @@
   import { page } from "$app/stores"
   import { hierarchy } from 'd3-hierarchy'
 
-  import { selected } from '$lib/stores.js'
-  import { buildRelatedWorksList } from '$lib/helpers.js'
+  import { selected, root } from '$lib/stores.js'
 
   import ForceGraph from '$lib/ForceGraph/ForceGraph.svelte'
   import Nav from '$lib/Nav/Nav.svelte'
@@ -13,9 +12,9 @@
   
   let forceGraph
   
-  const root = hierarchy(data.graphData)
+  root.set(hierarchy(data.graphData))
 
-  $: selected.setFromPath(root, $page.url.pathname)
+  $: selected.setFromPath($root, $page.url.pathname)
 </script>
 
 {#if root}
@@ -23,5 +22,5 @@
     <Nav {forceGraph} />
     <slot />
   </div>
-  <ForceGraph bind:forceGraph {root} />
+  <ForceGraph bind:forceGraph />
 {/if}

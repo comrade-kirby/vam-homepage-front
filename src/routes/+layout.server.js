@@ -1,6 +1,6 @@
 import { group } from 'd3-array'
-import { STRAPI_API_KEY, VIMEO_CLIENT_ID, VIMEO_SECRET, VIMEO_ACCESS_TOKEN } from '$env/static/private';
-import { sanitizeString } from '$lib/helpers.js';
+import { STRAPI_API_KEY } from '$env/static/private'
+import { sanitizeString } from '$lib/helpers.js'
 
 
 export async function load({}) {

@@ -13,7 +13,6 @@ const createSelected = () => {
       return slug === trimmedPath
     })
     
-    awaitingSelection.set(false)
     set(selected)
   }
 
@@ -22,9 +21,8 @@ const createSelected = () => {
 
 
 export const selected = createSelected()
-export const awaitingSelection = writable(true)
 export const cameraFocalLength = spring(18, { damping: 0.5 })
-
+export const root = writable(null)
 export const cameraTarget = tweened([0, 0, 40], {
   duration: 1000,
   easing: backOut,

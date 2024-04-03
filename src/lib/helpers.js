@@ -1,4 +1,6 @@
-export const buildRelatedWorksList = (node) => {
+export const buildRelatedWorksList = (root, slug) => {
+  const node = root.find(d => d.data.slug === slug)
+  
   const reducer = (acc, curr) => {
     if (curr.children) {
       curr.children.reduce(reducer, acc)

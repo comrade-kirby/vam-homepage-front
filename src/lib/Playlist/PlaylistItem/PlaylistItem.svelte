@@ -1,5 +1,5 @@
 <script>
-  import { selected, awaitingSelection } from "$lib/stores"
+  import { selected } from "$lib/stores"
 
   export let node
 
@@ -10,7 +10,6 @@
 <a 
   href="{node.data.slug}/details" 
   class="group relative overflow-show items-center flex w-full mt-2"
-  on:click={() => awaitingSelection.set(true)}
 >
   <div class:hidden={!isSelected} class="h-2 w-2 absolute hidden -left-4 bg-orange-800/80 br-10 rounded group-hover:block group-hover:bg-orange-700/80"></div>
  

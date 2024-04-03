@@ -14,7 +14,7 @@
   $: needsClamp = short ? h > 70 : h > 100
 </script>
 
-<div bind:clientHeight={h} class="flex flex-col text-xs text-black-olive/80 leading-relaxed">
+<div bind:clientHeight={h} class="flex flex-col mt-2 text-xs text-black-olive/70 leading-relaxed">
   <p class={
     needsClamp && isClamped 
       ? short
@@ -26,7 +26,7 @@
   </p>
 
   {#if needsClamp}
-    <button class="text-xs mt-2 text-black-olive/30 hover:text-orange-800/90"
+    <button class="text-xs mt-2 text-black-olive/30 hover:text-orange-800/90 tracking-wide"
       on:click={() => isClamped = !isClamped}
     >
       {isClamped ? 'more' : 'less'}

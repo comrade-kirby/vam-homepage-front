@@ -1,11 +1,10 @@
 <script>
   import { onMount } from 'svelte';
-  import { selected } from '$lib/stores'
+  import { selected, root } from '$lib/stores'
   import { ForceGraph } from './ForceGraph';
 
   import { cameraTarget, cameraFocalLength } from '$lib/stores'
 
-  export let root
   export let forceGraph
 
   let innerWidth
@@ -26,7 +25,7 @@
       forceGraph = new ForceGraph(module)
       forceGraph.initialize(onEngineStopCallback)
       forceGraph.attach(container, innerWidth, innerHeight)
-      forceGraph.updateWorks(root)
+      forceGraph.updateWorks($root)
     })
   })
 </script>

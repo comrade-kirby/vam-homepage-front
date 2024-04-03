@@ -5,6 +5,7 @@
 
   import SubNav from './SubNav/SubNav.svelte'
   import SubNavPlaceholder from './SubNavPlaceholder/SubNavPlaceholder.svelte';
+    import ContentPane from '$lib/shared/ContentPane.svelte';
 
   export let forceGraph
 
@@ -13,19 +14,20 @@
   $: clientsHierarchy = $page.data.clientsData && hierarchy($page.data.clientsData)
 </script>
 
-<nav on:pointerleave={() => forceGraph.cancelNavHover()}
-  class="flex flex-col h-full max-w-60 p-4 pl-8  border-r border-black-olive/10 { !detailsOpen && 'hover:max-w-96' }">
-
-  <ul class="flex flex-col grow w-full">
-    {#if worksHierarchy}
-      <SubNav node={worksHierarchy.children[0]} maxDepth=3 {forceGraph} {detailsOpen} />
-    {:else}
-      <SubNavPlaceholder title="Works" />
-    {/if}
-    {#if clientsHierarchy}
-      <SubNav node={clientsHierarchy.children[0]} maxDepth=2 {forceGraph} {detailsOpen} />
-    {:else}
-      <SubNavPlaceholder title="Clients" />
-    {/if}
-  </ul>
+<nav on:pointerleave={() => forceGraph.cancelNavHover()}>
+  <ContentPane width="max-w-60 { !detailsOpen && 'hover:max-w-96' }">
+    <ul class="flex flex-col grow w-full">
+      {#if worksHierarchy}
+        <SubNav node={worksHierarchy.children[0]} maxDepth=3 {forceGraph} {detailsOpen} />
+      {:else}
+        <SubNavPlaceholder title="Works" />
+      {/if}
+      {#if clientsHierarchy}
+        <SubNav node={clientsHierarchy.children[0]} maxDepth=2 {forceGraph} {detailsOpen} />
+      {:else}
+        <SubNavPlaceholder title="Clients" />
+      {/if}
+      <SubNavPlaceholder title="Press" />
+    </ul>
+  </ContentPane>
 </nav>

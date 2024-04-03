@@ -1,10 +1,11 @@
 <script>
   import CollapseLeftButton from '$lib/shared/CollapseLeftButton.svelte'
+  import ContentPane from '$lib/shared/ContentPane.svelte'
 
   export let collapseUrl, heading, subheading
 </script>
 
-<div class="relative flex flex-col h-full w-96 max-h-full overflow-hidden p-4 border-r border-black-olive/10">
+<ContentPane width="w-96">
   <CollapseLeftButton href={collapseUrl} buttonText="close" />
 
   <h1 class="text-base text-black-olive/90 pl-4 tracking-widest">{heading}</h1>
@@ -18,4 +19,4 @@
       <slot />
     </div>
   </div>
-</div>
+</ContentPane>

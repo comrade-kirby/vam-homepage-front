@@ -15,7 +15,6 @@
   $: slug = '/works/' + work.attributes.slug
   $: client = work.attributes.client.data
   $: presses = work.attributes.presses.data
-
   $: relatedWorks = buildRelatedWorksList($root, slug)
 </script>
 

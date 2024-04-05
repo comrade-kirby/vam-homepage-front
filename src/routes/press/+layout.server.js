@@ -10,5 +10,6 @@ export async function load({}) {
 
   let presses = await response.json();
   presses = presses.data
+  
   return { presses }
 }

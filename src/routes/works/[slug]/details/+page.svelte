@@ -18,7 +18,7 @@
   $: relatedWorks = buildRelatedWorksList($root, slug)
 </script>
 
-<DetailsWrapper collapseUrl={slug} heading={work.attributes.title} subheading={client.attributes.name}>
+<DetailsWrapper collapse collapseUrl={slug} heading={work.attributes.title} subheading={client.attributes.name}>
   {#if work.attributes.description}
     <ClampParagraph content={work.attributes.description} />
   {/if}

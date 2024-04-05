@@ -1,6 +1,4 @@
 <script>
-  import { selected } from '$lib/stores.js'
-
   import Details from '$lib/shared/DetailsWrapper.svelte'
   import Playlist from '$lib/Playlist/Playlist.svelte'
   import SectionHeader from '$lib/shared/SectionHeader.svelte'
@@ -8,12 +6,13 @@
 
   export let data
   
-  $: client = data.client
-  $: works = client.attributes.works.data
-  $: presses = client.attributes.presses.data
+  $: client = data.client.attributes
+  $: collapseUrl = '/clients/' + client.slug
+  $: works = client.works.data
+  $: presses = client.presses.data
 </script>
 
-<Details collapseUrl={client.attributes.slug} heading={client.attributes.name}>
+<Details collapse {collapseUrl} heading={client.name}>
   
   {#if works.length > 0}
     <SectionHeader>Works</SectionHeader>

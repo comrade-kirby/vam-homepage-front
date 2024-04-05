@@ -7,7 +7,7 @@ export async function load ({parent, params}) {
 
   if (!workId) return
 
-  const response = await fetch(`http://localhost:1337/api/works/${workId}?populate[client][fields][0]=name&populate[client][fields][1]=slug&populate[presses][fields][0]=title&populate[presses][fields][1]=slug&populate[presses][populate][0]=logo`, {
+  const response = await fetch(`http://localhost:1337/api/works/${workId}?populate[client][fields][0]=name&populate[client][fields][1]=slug&populate[presses][fields][0]=title&populate[presses][fields][1]=slug&populate[presses][fields][2]=publication`, {
     headers: {
       'Authorization': `bearer ${STRAPI_API_KEY}` 
     }

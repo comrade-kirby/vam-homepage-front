@@ -1,4 +1,6 @@
 <script>
+  import ButtonStyles from "./ButtonStyles.svelte"
+
   export let isClamped
   export let onClick
 
@@ -9,7 +11,9 @@
   $: htmlIcon = isClamped ? downArrowHtml : upArrowHtml
 </script>
 
-<button on:click={onClick} class="text-xs mt-2 text-black-olive/30 hover:text-orange-800/90 tracking-wide">
-  <p>{buttonText}</p>
-  <p>{@html htmlIcon}</p>
+<button on:click={onClick} class="mt-2">
+  <ButtonStyles xs>
+    <p>{buttonText}</p>
+    <p>{@html htmlIcon}</p>
+  </ButtonStyles>
 </button>

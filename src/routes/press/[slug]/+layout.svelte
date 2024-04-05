@@ -1,0 +1,33 @@
+<script>
+  import { page } from '$app/stores'
+
+  import DetailsWrapper from '$lib/shared/DetailsWrapper.svelte'
+  import BlockQuote from '$lib/shared/BlockQuote.svelte'
+  import ButtonStyles from "$lib/shared/ButtonStyles.svelte"
+
+  export let data
+  
+  $: press = data.press.attributes
+  $: heading = press.title
+  $: subheading= press.publication
+  $: snippet = press.snippet
+  $: showFullArticle = $page.url.pathname.includes('full-article')
+
+  $: back2 = showFullArticle
+</script>
+
+<DetailsWrapper collapseUrl="/press" {heading} {subheading} collapse={!showFullArticle} width="max-w-128">
+  <BlockQuote content={snippet} />
+
+  {#if !showFullArticle}
+    <div class="flex justify-center">
+      <a href={'/press/' + press.slug + '/full-article'} class="mt-2">
+        <ButtonStyles xs>
+          full article
+        </ButtonStyles>
+      </a>
+    </div>
+  {/if}
+</DetailsWrapper>
+
+<slot />

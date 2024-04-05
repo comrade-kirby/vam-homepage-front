@@ -18,7 +18,7 @@
 </script>
 
 {#if root}
-  <div class="relative z-20  w-fit h-screen flex bg-blue-100/70 backdrop-blur-sm">
+  <div class="relative z-20 w-fit max-w-full h-screen flex bg-blue-100/70 backdrop-blur-sm">
     <Nav {forceGraph} />
     <slot />
   </div>

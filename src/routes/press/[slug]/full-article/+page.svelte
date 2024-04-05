@@ -16,7 +16,7 @@
   $: articleUrl =  press.url
 </script>
 
-<ContentPane width="min-w-128">
+<ContentPane width="flex-initial w-192">
   <PaneNavigation {collapseUrl} collapse />
 
   <div bind:this={container} class="h-full">

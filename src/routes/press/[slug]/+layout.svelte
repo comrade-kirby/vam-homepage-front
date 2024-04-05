@@ -12,11 +12,9 @@
   $: subheading= press.publication
   $: snippet = press.snippet
   $: showFullArticle = $page.url.pathname.includes('full-article')
-
-  $: back2 = showFullArticle
 </script>
 
-<DetailsWrapper collapseUrl="/press" {heading} {subheading} collapse={!showFullArticle} width="max-w-128">
+<DetailsWrapper collapseUrl="/press" {heading} {subheading} collapse={!showFullArticle} width={showFullArticle ? 'w-96' : 'w-128'}>
   <BlockQuote content={snippet} />
 
   {#if !showFullArticle}

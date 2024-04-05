@@ -15,11 +15,11 @@
   $: presses = data.presses
 </script>
 
-<ContentPane width={contentOpen && 'max-w-64'}>
+<ContentPane width={contentOpen ? 'w-64' : 'w-192'}>
   <PaneHeader>Press</PaneHeader>
 
   <ScrollContainer>
-    <div class={contentOpen ? 'flex flex-col' : "grid grid-cols-3 gap-4 mt-8"}>
+    <div class={contentOpen ? 'flex flex-col' : "grid grid-cols-2 gap-4 mt-8"}>
       {#each presses as press}
         {#if contentOpen}
           <PressLink {press} {fullArticleOpen} />

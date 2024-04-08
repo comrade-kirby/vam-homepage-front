@@ -19,7 +19,7 @@
   <PaneHeader>Press</PaneHeader>
 
   <ScrollContainer>
-    <div class={contentOpen ? 'flex flex-col' : "grid grid-cols-2 gap-4 mt-8"}>
+    <div class={contentOpen ? 'flex flex-col mt-4' : "grid grid-cols-2 gap-4 mt-8"}>
       {#each presses as press}
         {#if contentOpen}
           <PressLink {press} {fullArticleOpen} />

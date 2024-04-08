@@ -34,14 +34,14 @@ export class ForceGraph {
       .nodeRelSize(34)
       .nodeId('data')
       .linkOpacity('0.2')
-      .linkWidth((link) => this.#highlightNodes.has(link.source) ? 0.3: 0.2)
+      .linkWidth((link) => this.#highlightNodes.has(link.source) ?  0.3 : 0.2 )
       .backgroundColor('rgba(0, 0, 0, 0)')
       .enableNodeDrag(false)
       .linkColor(link => {
 
         return link.source.depth === 0 
           ? 'transparent'
-          : this.#highlightNodes.has(link.source) ? "#292E1E" : "#F6993C"
+          : this.#highlightNodes.has(link.source) ? "#F6993C" : "#292E1E"
       })
       .onNodeClick((node) => {
         const nodeData =  node.data[0] || node.data

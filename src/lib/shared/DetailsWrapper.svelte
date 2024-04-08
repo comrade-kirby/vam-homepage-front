@@ -4,7 +4,7 @@
   import ScrollContainer from './ScrollContainer.svelte'
   import PaneHeader from './PaneHeader.svelte'
 
-  export let collapseUrl, heading, subheading, collapse, width = "w-96"
+  export let collapseUrl, heading, subheading, collapse, width = "w-128"
 </script>
 
 <ContentPane {width}>

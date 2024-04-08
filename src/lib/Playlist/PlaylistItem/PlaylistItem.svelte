@@ -6,12 +6,12 @@
   $: work = node.data || node.attributes
   $: title = work.attributes?.title || work.title
   $: client =  work.client
-  $: href = work.slug + '/details'
+  $: href = work.slug
   $: oembedData = work.oembedData
   $: isSelected= node == $selected
 </script>
 
-<a {href} class="group relative overflow-show items-start flex w-full mt-2 mb-3 pl-2 border-l-2 border-orange-800/40 hover:border-orange-800/90 {isSelected && 'border-orange-800/90'}">
+<a {href} class="group relative overflow-show items-start flex w-full mt-2 pl-1 border-l-2 border-orange-800/40 hover:border-orange-800/90 {isSelected && 'border-orange-800/90'}">
   {#if oembedData}
     <img class="h-20 aspect-video" src={oembedData.thumbnail} />
   {/if}

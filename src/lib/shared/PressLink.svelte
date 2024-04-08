@@ -4,7 +4,7 @@
 
   const articlePageHref = '/press/' + press.attributes.slug
   const fullArticleHref = articlePageHref + '/full-article'
-
+  
   $: href = fullArticleOpen ? fullArticleHref : articlePageHref
 </script>
 

@@ -2,12 +2,12 @@
   import NavLabel from '$lib/shared/NavLabel.svelte'
   import { page } from '$app/stores'
 
+  import { forceGraph } from '$lib/stores'
   import NavLeafCount from '$lib/shared/NavLeafCount.svelte'
   import NavLink from './NavLink/NavLink.svelte'
 
-  export let node
-  export let forceGraph, detailsOpen, maxDepth
-
+  export let node, maxDepth
+  
   let expanded = false
   
   const nodeData = node.data[0]
@@ -17,10 +17,10 @@
   const children = node.children
   const href = slug
 
-  const hoverOn = () => forceGraph.onNavHover(slug)
+  const hoverOn = () => $forceGraph.onNavHover(slug)
   const toggleExpanded = () => expanded = isCurrent ? !expanded : expanded
   
-  $: path = $page.url.pathname.replace('/details', '')
+  $: path = $page.url.pathname
   $: isCurrent = slug === path
   $: containsCurrent = descendants && descendants.map(node => {
     return node.data.slug || node.data[0].slug
@@ -35,7 +35,7 @@
     {nodeData.name}
   </NavLabel>
 
-  {#if !expanded && node.depth > 1}
+  {#if !expanded}
     <NavLeafCount {leaves} />
   {/if}
 </a>
@@ -44,9 +44,9 @@
   <ul role="list" class="space-y-1 mb-2 {containsCurrent? 'border-l-2 pl-2 border-double border-black-olive/10' : null} ">
     {#each children as child}
       {#if child.children && child.depth < maxDepth}
-        <svelte:self node={child} {forceGraph} {detailsOpen} />
+        <svelte:self node={child} />
       {:else}
-        <NavLink node={child} {forceGraph} {detailsOpen} />
+        <NavLink node={child}  />
       {/if}
     {/each}
   </ul>

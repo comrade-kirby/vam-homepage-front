@@ -21,6 +21,7 @@ const createSelected = () => {
 
 
 export const selected = createSelected()
+export const forceGraph = writable(null)
 export const cameraFocalLength = spring(18, { damping: 0.5 })
 export const root = writable(null)
 export const cameraTarget = tweened([0, 0, 40], {

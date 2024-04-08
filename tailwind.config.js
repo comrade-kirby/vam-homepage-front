@@ -23,7 +23,12 @@ export default {
       fontSize: {
         'sm': '1rem',
         'xs': '0.85rem',
-        '2xs': '0.75rem'
+        '2xs': '0.75rem',
+        '3xs': '0.65rem'
+      },
+      spacing: {
+        '128': '32rem',
+        '192': '48rem'
       }
     },
   },

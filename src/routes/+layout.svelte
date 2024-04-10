@@ -4,7 +4,7 @@
   import { hierarchy } from 'd3-hierarchy'
 
   import { selected, root } from '$lib/stores.js'
-
+  import GraphHUD from '$lib/GraphHUD/GraphHUD.svelte'
   import ForceGraph from '$lib/ForceGraph/ForceGraph.svelte'
   import Nav from '$lib/Nav/Nav.svelte'
 
@@ -13,14 +13,14 @@
   let forceGraph
   
   root.set(hierarchy(data.graphData))
-
   $: selected.setFromPath($root, $page.url.pathname)
 </script>
 
 {#if root}
-  <div class="relative z-20 w-fit max-w-full h-screen flex bg-blue-100/70 backdrop-blur-sm">
+  <div class="flex ">
     <Nav {forceGraph} />
     <slot />
   </div>
+
   <ForceGraph bind:forceGraph />
 {/if}

@@ -6,7 +6,7 @@
   $: work = node.data || node.attributes
   $: title = work.attributes?.title || work.title
   $: client =  work.client
-  $: href = work.slug
+  $: href = work.slug + '/details'
   $: oembedData = work.oembedData
   $: isSelected= node == $selected
 </script>

@@ -1,14 +1,11 @@
 <script>
-  import NavLabel from '$lib/shared/NavLabel.svelte'
   import { page } from '$app/stores'
-
-  import { forceGraph } from '$lib/stores'
+  
   import NavLeafCount from '$lib/shared/NavLeafCount.svelte'
   import NavLink from './NavLink/NavLink.svelte'
+  import SelectList from '$lib/shared/SelectList.svelte'
 
-  export let node, maxDepth
-  
-  let expanded = false
+  export let node
   
   const nodeData = node.data[0]
   const slug = nodeData.slug
@@ -17,23 +14,22 @@
   const children = node.children
   const href = slug
 
-  const hoverOn = () => $forceGraph.onNavHover(slug)
-  const toggleExpanded = () => expanded = isCurrent ? !expanded : expanded
+  const toggleExpanded = () => expanded = isCurrent ? !expanded : true
   
-  $: path = $page.url.pathname
-  $: isCurrent = slug === path
+  $: path = $page.url.pathname.replace('/details', '')
+  $: isCurrent = path === slug
   $: containsCurrent = descendants && descendants.map(node => {
     return node.data.slug || node.data[0].slug
   }).includes(path)
   
-  $: expanded = isCurrent || containsCurrent
+  $: expanded = true
 </script>
 
 
-<a {href} on:click={toggleExpanded} on:pointerenter={hoverOn} class="group truncate ... pb-0.5 flex items-center w-100 text-left">
-  <NavLabel depth={node.depth} active={containsCurrent}>
-    {nodeData.name}
-  </NavLabel>
+<a {href} on:click={toggleExpanded} class="group truncate ...  pb-0.5 flex items-center w-100 text-left tracking-wider">
+  <span class="text-xs  {containsCurrent ? 'text-orange-900/90' : 'text-orange-900/80 hover:text-orange-900/90'}">
+    {nodeData.name.toLowerCase()}
+  </span>
 
   {#if !expanded}
     <NavLeafCount {leaves} />
@@ -41,13 +37,9 @@
 </a>
 
 {#if expanded}
-  <ul role="list" class="space-y-1 mb-2 {containsCurrent? 'border-l-2 pl-2 border-double border-black-olive/10' : null} ">
+  <SelectList>
     {#each children as child}
-      {#if child.children && child.depth < maxDepth}
-        <svelte:self node={child} />
-      {:else}
-        <NavLink node={child}  />
-      {/if}
+      <NavLink node={child}  />
     {/each}
-  </ul>
+  </SelectList>
 {/if}

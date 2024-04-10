@@ -1,14 +1,19 @@
 <script>
+  import { page } from '$app/stores'
+
+  import Link from './Link.svelte'
+  import NavListItem from './NavListItem.svelte'
+  
   export let press
   export let fullArticleOpen
 
   const articlePageHref = '/press/' + press.attributes.slug
   const fullArticleHref = articlePageHref + '/full-article'
+  const href = fullArticleOpen ? fullArticleHref : articlePageHref
   
-  $: href = fullArticleOpen ? fullArticleHref : articlePageHref
+  $: isSelected = press.attributes.slug === $page.params.slug
 </script>
 
-<a {href} class="flex flex-col mt-2 text-black-olive/80 hover:text-orange-900/80 group  ">
-  <span class="line-clamp-2 text-2xs">{press.attributes.title}</span>
-  <span class="text-3xs text-orange-800/80 group-hover:text-orange-800/95 tracking-wide">{press.attributes.publication}</span>
-</a>
+<NavListItem {isSelected}>
+  <Link {href} text={press.attributes.title} subtext={press.attributes.publication} />
+</NavListItem>

@@ -12,12 +12,12 @@
   afterNavigate(() => container.append(frame))
 
   $: press = data.press.attributes
-  $: collapseUrl = '/press/' + press.slug
+  $: closeUrl = '/press/' + press.slug
   $: articleUrl =  press.url
 </script>
 
 <ContentPane width="flex-initial w-192">
-  <PaneNavigation {collapseUrl} collapse />
+  <PaneNavigation {closeUrl} collapse />
 
   <div bind:this={container} class="h-full">
     <iframe bind:this={frame} src={articleUrl} style="width:100%; height:100%;" frameborder="0"></iframe>

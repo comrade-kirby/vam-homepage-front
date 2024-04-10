@@ -8,13 +8,13 @@
   export let data
   
   $: press = data.press.attributes
-  $: heading = press.title
-  $: subheading= press.publication
+  $: title = press.title
+  $: subtitle= press.publication
   $: snippet = press.snippet
   $: showFullArticle = $page.url.pathname.includes('full-article')
 </script>
 
-<DetailsWrapper collapseUrl="/press" {heading} {subheading} collapse={!showFullArticle} width={showFullArticle ? 'w-96' : 'w-128'}>
+<DetailsWrapper closeUrl="/press" {title} {subtitle} collapse={!showFullArticle} width={showFullArticle ? 'w-96' : 'w-128'}>
   <BlockQuote content={snippet} />
 
   {#if !showFullArticle}

@@ -1,26 +1,25 @@
 <script>
-  import { selected, forceGraph } from "$lib/stores"
+  import { page } from '$app/stores'
+  import { selected, forceGraph } from '$lib/stores'
 
-  import NavLabel from "$lib/shared/NavLabel.svelte"
-  import NavLeafCount from "$lib/shared/NavLeafCount.svelte"
+  import NavListItem from '$lib/shared/NavListItem.svelte'
+  import Link from '$lib/shared/Link.svelte'
 
   export let node
   
   const nodeData = node.data[0] || node.data
-  const leaves = node.leaves()
+  const workUrl = nodeData.slug
+  const workDetailsUrl = workUrl + '/details'
+
+  const onHover = () => $forceGraph.onNavHover(workUrl)
   
   $: selectedData = $selected?.data[0] || $selected?.data
-  $: isSelected = nodeData.slug === selectedData?.slug
-  $: isOpen = isSelected
-  $: href = nodeData.slug
+  $: isSelected = href === selectedData?.slug
+  $: linkToDetails = $page.url.pathname.includes('details')
+  $: href = linkToDetails ? workDetailsUrl : workUrl
+
 </script>
 
-<a {href} on:pointerenter={() => $forceGraph.onNavHover(nodeData.slug)} class="flex items-center group truncate ... max-w-100">
-  <NavLabel depth={node.depth} active={isSelected}>
-    {nodeData.name}
-  </NavLabel>
-
-  {#if leaves.length > 1 && !isOpen}
-    <NavLeafCount {leaves} />
-  {/if}
-</a>
+<NavListItem {isSelected} >
+  <Link {href} {onHover} text={nodeData.name} subtext={nodeData.client.name} clamp1 />
+</NavListItem>

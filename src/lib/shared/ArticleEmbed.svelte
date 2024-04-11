@@ -1,13 +1,13 @@
 
 <script>
   import { afterNavigate, beforeNavigate } from '$app/navigation'
+  
   import Loading from '$lib/shared/Loading.svelte'
   import ButtonStyles from '$lib/shared/ButtonStyles.svelte'
   import BlockQuote from '$lib/shared/BlockQuote.svelte'
 
   export let press
-  const { publication, snippet, url } = press
-
+ 
   let container, frame, loading, validFrame
 
   // NEEDED: removes iframe's history entry before back
@@ -27,6 +27,10 @@
       loading = false
     })
   })
+
+  $: publication = press.publication
+  $: snippet = press.snippet
+  $: url = press.url
 </script>
 
 {#if loading}
@@ -34,7 +38,7 @@
 {:else if !validFrame}
   <BlockQuote content={snippet} />
 
-  <div class="flex mt-2 p-4 border border-orange-800/60 bg-orange-400/10 w-fit ">
+  <div class="flex mt-4 p-4 border border-orange-800/60 bg-orange-400/10 w-fit ">
     <span class="text-xs mr-2 text-black-olive/70">content unavailable: </span>
     <ButtonStyles orange xs>
       <a class="underline"href={url} target="_blank">view on {publication} &#10548</a>

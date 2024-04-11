@@ -1,21 +1,23 @@
 <script>
-  import ButtonStyles from "$lib/shared/ButtonStyles.svelte";
+  import ButtonStyles from '$lib/shared/ButtonStyles.svelte'
+  import BlockQuote from '$lib/shared/BlockQuote.svelte'
+  import PaneNavigation from '$lib/shared/PaneNavigation.svelte';
   
-  export let heading, subheading, detailsHref
+  export let title, subtitle, textBlock, detailsUrl, closeUrl, detailsLinkText = 'details'
 </script>
 
-<div class="fixed z-20 top-0 right-0 p-8 w-fit h-fit">
-  <div class="bg-blue-100/70 backdrop-blur-sm p-8">
-    <h1 class="text-lg font-bold tracking-wide">{heading}</h1>
+<div class="fixed z-20 top-0 right-0 p-8 w-fit h-fit max-w-128">
+  <div class="bg-blue-100/70 backdrop-blur-sm p-4">
+    <PaneNavigation {title} {subtitle} {closeUrl} />
 
-    {#if subheading}
-      <h2 class="mb-2">{subheading}</h2>
+    {#if textBlock}
+      <BlockQuote content={textBlock} />
     {/if}
 
-    {#if detailsHref}
-      <a href={detailsHref} class="pt-4">
+    {#if detailsUrl}
+      <a href={detailsUrl}>
         <ButtonStyles orange xs>
-          <span class="pt-4">details</span>
+          <span class="pt-4">{detailsLinkText}</span>
         </ButtonStyles>
       </a>
     {/if}

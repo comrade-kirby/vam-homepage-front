@@ -4,7 +4,6 @@
   import { hierarchy } from 'd3-hierarchy'
 
   import { selected, root } from '$lib/stores.js'
-  import GraphHUD from '$lib/GraphHUD/GraphHUD.svelte'
   import ForceGraph from '$lib/ForceGraph/ForceGraph.svelte'
   import Nav from '$lib/Nav/Nav.svelte'
 

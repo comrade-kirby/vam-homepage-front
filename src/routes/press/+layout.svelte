@@ -10,7 +10,6 @@
   export let data
   let expanded = true
   
-  $: fullArticleOpen = $page.url.pathname.includes('full-article')
   $: presses = data.presses
 </script>
 
@@ -18,7 +17,7 @@
   <ScrollContainer>
     <SelectList labelText="all" {expanded} childCount={presses.length}>
       {#each presses as press}
-        <PressLink {press} {fullArticleOpen} />
+        <PressLink {press} />
       {/each}
     </SelectList>
   </ScrollContainer>

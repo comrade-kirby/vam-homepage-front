@@ -4,12 +4,13 @@
   export let data
 
   $: work = data.work
-  $: heading = work?.data.attributes.title
-  $: subheading = work?.data.attributes.client.data.attributes.name
+  $: title = work?.data.attributes.title
+  $: subtitle = work?.data.attributes.client.data.attributes.name
   $: slug = work?.data.attributes.slug 
-  $: detailsHref = work ? '/works/' + slug + '/details' : false
+  $: closeUrl = '/works'
+  $: detailsUrl = work ? '/works/' + slug + '/details' : false
 </script>
 
 {#if work}
-  <GraphHud {heading} {subheading} {detailsHref} />
+  <GraphHud {title} {subtitle} {detailsUrl} {closeUrl} />
 {/if}

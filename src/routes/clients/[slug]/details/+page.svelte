@@ -12,7 +12,7 @@
   $: presses = client.presses.data
 </script>
 
-<DetailsWrapper collapse {closeUrl} title={client.name}>
+<DetailsWrapper {closeUrl} title={client.name}>
   
   {#if works.length > 0}
     <SelectList labelText="works" childCount={works.length}>

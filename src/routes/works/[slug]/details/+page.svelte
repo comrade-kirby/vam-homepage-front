@@ -21,7 +21,7 @@
 </script>
 
 {#if work}
-  <DetailsWrapper collapse closeUrl={slug} {title} {subtitle}>
+  <DetailsWrapper closeUrl={slug} {title} {subtitle}>
     {#if work.attributes.description}
       <ClampParagraph content={work.attributes.description} />
     {/if}

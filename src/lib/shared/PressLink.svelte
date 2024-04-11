@@ -5,12 +5,12 @@
   import SelectListItem from './SelectListItem.svelte'
   
   export let press
-  export let fullArticleOpen
 
   const articlePageHref = '/press/' + press.attributes.slug
   const fullArticleHref = articlePageHref + '/full-article'
-  const href = fullArticleOpen ? fullArticleHref : articlePageHref
   
+  $: linkToFullArticle = $page.url.pathname.includes('details') || $page.url.pathname.includes('full-article')
+  $: href = linkToFullArticle ? fullArticleHref : articlePageHref
   $: inPressNav = $page.url.pathname.includes('press')
   $: isSelected = inPressNav && press.attributes.slug === $page.params.slug
 </script>

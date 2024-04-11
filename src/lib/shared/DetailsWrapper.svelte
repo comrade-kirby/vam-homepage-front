@@ -3,13 +3,13 @@
   import ContentPane from '$lib/shared/ContentPane.svelte'
   import ScrollContainer from './ScrollContainer.svelte'
 
-  export let closeUrl, title, subtitle, collapse, width = "w-128"
+  export let closeUrl, title, subtitle, width = "w-128"
 </script>
 
 <div class="absolute right-0">
 
   <ContentPane {width}>
-    <PaneNavigation {title} {subtitle} {closeUrl} {collapse}/>
+    <PaneNavigation {title} {subtitle} {closeUrl} />
     
     <ScrollContainer>
       <slot />

@@ -1,6 +1,6 @@
 <script>
 </script>
 
-<ul role="list" class="border-l-2 border-double border-black-olive/10 pl-2 mb-6">
+<ul role="list" class="border-l border-black-olive/10 pl-1 mb-6 ml-0.5">
   <slot />
 </ul>

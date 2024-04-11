@@ -2,7 +2,7 @@
   import { page } from '$app/stores'
 
   import Link from './Link.svelte'
-  import NavListItem from './NavListItem.svelte'
+  import SelectListItem from './SelectListItem.svelte'
   
   export let press
   export let fullArticleOpen
@@ -14,6 +14,6 @@
   $: isSelected = press.attributes.slug === $page.params.slug
 </script>
 
-<NavListItem {isSelected}>
+<SelectListItem {isSelected}>
   <Link {href} text={press.attributes.title} subtext={press.attributes.publication} />
-</NavListItem>
+</SelectListItem>

@@ -2,7 +2,7 @@
   import { page } from '$app/stores'
   import { forceGraph } from '$lib/stores'
   
-  import NavListItem from './NavListItem.svelte'
+  import SelectListItem from './SelectListItem.svelte'
   import Link from '$lib/shared/Link.svelte'
   
   export let client
@@ -17,6 +17,6 @@
   $: href = linkToDetails ? clientDetailsUrl : clientUrl
 </script>
 
-<NavListItem {isSelected} >
+<SelectListItem {isSelected} >
   <Link {href} {onHover} text={client.attributes.name} />
-</NavListItem>
+</SelectListItem>

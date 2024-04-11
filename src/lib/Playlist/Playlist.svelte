@@ -1,9 +1,12 @@
 <script>
-  import PlaylistItem from "./PlaylistItem/PlaylistItem.svelte"
+  import SelectList from '$lib/shared/SelectList.svelte'
+  import PlaylistItem from './PlaylistItem/PlaylistItem.svelte'
 
   export let relatedWorks
 </script>
 
-{#each relatedWorks as node}
-  <PlaylistItem {node} />
-{/each}
+<SelectList>
+  {#each relatedWorks as work}
+    <PlaylistItem node={work} />
+  {/each}
+</SelectList>

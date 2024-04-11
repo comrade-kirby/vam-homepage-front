@@ -1,9 +1,9 @@
 <script>
   import { page } from '$app/stores'
   
-  import NavLeafCount from '$lib/shared/NavLeafCount.svelte'
   import NavLink from './NavLink/NavLink.svelte'
   import SelectList from '$lib/shared/SelectList.svelte'
+  import SelectListLabel from '$lib/shared/SelectListLabel.svelte'
 
   export let node
   
@@ -27,13 +27,9 @@
 
 
 <a {href} on:click={toggleExpanded} class="group truncate ...  pb-0.5 flex items-center w-100 text-left tracking-wider">
-  <span class="text-xs  {containsCurrent ? 'text-orange-900/90' : 'text-orange-900/80 hover:text-orange-900/90'}">
+  <SelectListLabel {containsCurrent} {expanded} childCount={leaves.length}>
     {nodeData.name.toLowerCase()}
-  </span>
-
-  {#if !expanded}
-    <NavLeafCount {leaves} />
-  {/if}
+  </SelectListLabel>
 </a>
 
 {#if expanded}

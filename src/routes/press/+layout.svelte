@@ -17,18 +17,11 @@
 
 <ContentPane width='w-80'>
   <ScrollContainer>
-    <button on:click={() => expanded = !expanded}>
-      <SelectListLabel containsCurrent=true {expanded} childCount={presses.length}>
-        all
-      </SelectListLabel>
-    </button>
-    {#if expanded}
-      <SelectList>
-        {#each presses as press}
-          <PressLink {press} {fullArticleOpen} />
-        {/each}
-      </SelectList>
-    {/if}
+    <SelectList labelText="all" {expanded} childCount={presses.length}>
+      {#each presses as press}
+        <PressLink {press} {fullArticleOpen} />
+      {/each}
+    </SelectList>
   </ScrollContainer>
 </ContentPane>
 

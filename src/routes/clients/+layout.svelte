@@ -8,7 +8,6 @@
   import SelectList from '$lib/shared/SelectList.svelte'
 
   export let data
-  let expanded = true
   
   $: clients = data.clients
 </script>
@@ -16,20 +15,12 @@
 
 <nav on:pointerleave={() => $forceGraph.cancelNavHover()}>
   <ContentPane  width="w-80">
-
     <ScrollContainer>
-      <button on:click={() => expanded = !expanded}>
-        <SelectListLabel containsCurrent=true {expanded} childCount={clients.length}>
-          all
-        </SelectListLabel>
-      </button>
-      {#if expanded}
-        <SelectList>
-          {#each clients as client}
-            <ClientLink {client} />
-          {/each}
-        </SelectList>
-      {/if}
+      <SelectList labelText="all" childCount={clients.length}>
+        {#each clients as client}
+          <ClientLink {client} />
+        {/each}
+      </SelectList>
     </ScrollContainer>
   </ContentPane>
 </nav>

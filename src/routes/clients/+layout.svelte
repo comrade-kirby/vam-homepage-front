@@ -1,7 +1,6 @@
 <script>
   import { forceGraph } from '$lib/stores'
 
-  import SelectListLabel from '$lib/shared/SelectListLabel.svelte'
   import ContentPane from '$lib/shared/ContentPane.svelte'
   import ScrollContainer from '$lib/shared/ScrollContainer.svelte'
   import ClientLink from '$lib/shared/ClientLink.svelte';

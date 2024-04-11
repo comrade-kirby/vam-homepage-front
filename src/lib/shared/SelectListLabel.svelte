@@ -1,12 +1,13 @@
 <script>
+  import SectionLabel from './SectionLabel.svelte'
   import NavLeafCount from './NavLeafCount.svelte'
   export let containsCurrent, expanded, childCount
 </script>
 
-<h3 class="text-xs flex tracking-wider {containsCurrent ? 'text-orange-900/90' : 'text-orange-900/70 hover:text-orange-900/90'}">
+<SectionLabel {containsCurrent}>
   <span><slot /></span>
   
   {#if !expanded}
-    <NavLeafCount {childCount} />
+  <NavLeafCount {childCount} />
   {/if}
-</h3>
+</SectionLabel>

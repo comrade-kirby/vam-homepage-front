@@ -1,7 +1,6 @@
 <script>
   import { page } from '$app/stores'
 
-  import SelectListLabel from '$lib/shared/SelectListLabel.svelte'
   import PressLink from '$lib/shared/PressLink.svelte'
   import ContentPane from '$lib/shared/ContentPane.svelte'
   import SelectList from '$lib/shared/SelectList.svelte'

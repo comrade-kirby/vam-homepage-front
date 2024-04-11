@@ -11,7 +11,8 @@
   const fullArticleHref = articlePageHref + '/full-article'
   const href = fullArticleOpen ? fullArticleHref : articlePageHref
   
-  $: isSelected = press.attributes.slug === $page.params.slug
+  $: inPressNav = $page.url.pathname.includes('press')
+  $: isSelected = inPressNav && press.attributes.slug === $page.params.slug
 </script>
 
 <SelectListItem {isSelected}>

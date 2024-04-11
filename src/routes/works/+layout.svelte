@@ -16,11 +16,9 @@
 <nav on:pointerleave={() => $forceGraph.cancelNavHover()}>
   <ContentPane  width='w-80'>
     <ScrollContainer>
-      <div class="ml-2 mt-2">
-        {#each worksHierarchy.children as child}
-          <SubNav node={child} />
-        {/each}
-      </div>
+      {#each worksHierarchy.children as child}
+        <SubNav node={child} />
+      {/each}
     </ScrollContainer>
   </ContentPane>
 </nav>

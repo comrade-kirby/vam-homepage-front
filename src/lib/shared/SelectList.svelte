@@ -13,14 +13,14 @@
   }
 </script>
 
-<button on:click={toggleExpanded} class="w-full">
+<button on:click={toggleExpanded} class="w-full ">
   <SelectListLabel {containsCurrent} {expanded} {childCount}>
     {labelText}
   </SelectListLabel>
 </button>
 
 {#if expanded}
-  <ul role="list" class="border-l border-black-olive/10 pl-1 mb-6 ml-0.5">
+  <ul role="list" class="border-l border-black-olive/10 pl-1 ml-0.5 mb-6">
     <slot />
   </ul>
 {/if}

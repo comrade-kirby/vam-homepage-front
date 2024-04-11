@@ -1,6 +1,6 @@
 <script>
-  import Playlist from '$lib/Playlist/Playlist.svelte'
-  import SectionHeader from '$lib/shared/SectionHeader.svelte'
+  import PlaylistItem from '$lib/shared/PlaylistItem.svelte';
+  import SelectList from '$lib/shared/SelectList.svelte';
   import MenuLink from '$lib/shared/PressLink.svelte'
   import DetailsWrapper from '$lib/shared/DetailsWrapper.svelte'
 
@@ -15,14 +15,18 @@
 <DetailsWrapper collapse {closeUrl} title={client.name}>
   
   {#if works.length > 0}
-    <SectionHeader>Works</SectionHeader>
-    <Playlist relatedWorks={works} />
+    <SelectList labelText="works" childCount={works.length}>
+      {#each works as work}
+        <PlaylistItem  node={work} />
+      {/each}
+    </SelectList>
   {/if}
 
   {#if presses.length > 0}
-    <SectionHeader>Press</SectionHeader>
-    {#each presses as press}
-      <MenuLink {press} />
-    {/each}
+    <SelectList labelText="press" childCount={presses.length}>
+      {#each presses as press}
+        <MenuLink {press} />
+      {/each}
+    </SelectList>
   {/if}
 </DetailsWrapper>

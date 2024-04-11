@@ -13,7 +13,7 @@
 </script>
 
 <SelectListItem {isSelected} >
-  <a {href} class="group relative overflow-show items-start flex w-full mt-2">
+  <a {href} class="group relative overflow-show items-start flex w-full">
     {#if oembedData}
       <img class="h-20 aspect-video" src={oembedData.thumbnail} />
     {/if}

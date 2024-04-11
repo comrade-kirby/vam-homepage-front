@@ -4,9 +4,10 @@
 
   import PressLink from '$lib/shared/PressLink.svelte'
   import ClampParagraph from '$lib/shared/ClampParagraph.svelte'
-  import Playlist from '$lib/Playlist/Playlist.svelte'
   import DetailsWrapper from '$lib/shared/DetailsWrapper.svelte'
-  import SectionHeader from '$lib/shared/SectionHeader.svelte'
+  import SectionLabel from '$lib/shared/SectionLabel.svelte'
+  import SelectList from '$lib/shared/SelectList.svelte';
+  import PlaylistItem from '$lib/shared/PlaylistItem.svelte';
 
   export let data
   
@@ -26,19 +27,23 @@
     {/if}
     
     {#if presses.length > 0}
-      <SectionHeader>Press</SectionHeader>
-      {#each presses as press}
-        <PressLink {press} />
-      {/each}
+      <SelectList labelText="press" childCount={presses.length}>
+        {#each presses as press}
+          <PressLink {press} />
+        {/each}
+      </SelectList>
     {/if}
     
     {#if relatedWorks}
-      <SectionHeader>Related Works</SectionHeader>
-      <Playlist {relatedWorks} />
+      <SelectList labelText="related work" childCount={relatedWorks.length}>
+        {#each relatedWorks as work}
+          <PlaylistItem  node={work} />
+        {/each}
+      </SelectList>
     {/if}
     
     {#if work.attributes.credits}
-      <SectionHeader>Credits</SectionHeader>
+      <SectionLabel>credits</SectionLabel>
       <ClampParagraph content={work.attributes.credits} short />
     {/if}
   </DetailsWrapper>

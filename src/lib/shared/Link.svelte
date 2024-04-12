@@ -1,14 +1,14 @@
 <script>
-  export let text, subtext, href, clamp1, onHover
+  export let text, subtext, href, clamp1, onHover, isSelected
   
   const textSize = subtext ? 'text-2xs' : 'text-xs' 
 </script>
 
 <a {href} on:pointerenter={onHover}
-  class="flex flex-col text-black-olive/80 hover:text-orange-900/80 group">
+  class="flex flex-col {isSelected ? 'text-tsecondary/90' : 'text-tprimary/90 hover:text-tsecondary/80'} group">
   <span class="{clamp1 ? 'line-clamp-1' : 'line-clamp-2'} {textSize}">{text}</span>
 
   {#if subtext}
-    <span class="text-3xs text-orange-800/80 group-hover:text-orange-800/95 tracking-wide">{subtext}</span>
+    <span class="text-3xs {isSelected ? 'text-tsecondary/90' : 'text-orange-500/90 group-hover:text-tsecondary'} tracking-wide">{subtext}</span>
   {/if}
 </a>

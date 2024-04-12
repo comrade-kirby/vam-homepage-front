@@ -5,9 +5,9 @@
 </script>
 
 <SectionLabel {containsCurrent}>
-  <span><slot /></span>
+  <slot />
   
   {#if !expanded}
-  <NavLeafCount {childCount} />
+    <NavLeafCount {childCount} />
   {/if}
 </SectionLabel>

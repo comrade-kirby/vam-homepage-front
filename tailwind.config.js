@@ -5,13 +5,20 @@ export default {
   theme: {
     colors: {
       'transparent': 'transparent',
+      'background-primary': '#4E2A04',
+      'tprimary': '#fbd6b1', 
+      'tsecondary': '#F6993C',
+      // 'tsecondary': '#C36609',
+      // 'tsecondary': '#7180AD',
+      // 'tsecondary': '#71A3AD',
       'blue': {
         100: '#F7FDFF',
         300: '#D6F5FF'
       },
       'black-olive': '#292E1E',
-      'light-olive': '#B4BF9C',
+      'sage': '#B4BF9C',
       'orange': {
+        200: "#fbd6b1",
         400: "#F6993C",
         500: '#F58F29',
         700: '#C36609',
@@ -28,6 +35,7 @@ export default {
       },
       spacing: {
         '128': '32rem',
+        '160': '40rem',
         '192': '48rem'
       }
     },

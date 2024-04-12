@@ -21,5 +21,5 @@
 </script>
 
 <SelectListItem {isSelected} >
-  <Link {href} {onHover} text={nodeData.name} subtext={nodeData.client.name} clamp1 />
+  <Link {href} {onHover} text={nodeData.name} subtext={nodeData.client.name} {isSelected} clamp1 />
 </SelectListItem>

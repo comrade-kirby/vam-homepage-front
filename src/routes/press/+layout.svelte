@@ -15,7 +15,7 @@
 
 <ContentPane width='w-80'>
   <ScrollContainer>
-    <SelectList labelText="all" {expanded} childCount={presses.length}>
+    <SelectList labelText="ALL" {expanded} childCount={presses.length}>
       {#each presses as press}
         <PressLink {press} />
       {/each}

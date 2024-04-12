@@ -15,7 +15,7 @@
 <nav on:pointerleave={() => $forceGraph.cancelNavHover()}>
   <ContentPane  width="w-80">
     <ScrollContainer>
-      <SelectList labelText="all" childCount={clients.length}>
+      <SelectList labelText="ALL" childCount={clients.length}>
         {#each clients as client}
           <ClientLink {client} />
         {/each}

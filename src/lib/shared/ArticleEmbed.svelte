@@ -1,7 +1,7 @@
 
 <script>
   import { afterNavigate, beforeNavigate } from '$app/navigation'
-  
+
   import Loading from '$lib/shared/Loading.svelte'
   import ButtonStyles from '$lib/shared/ButtonStyles.svelte'
   import BlockQuote from '$lib/shared/BlockQuote.svelte'
@@ -38,8 +38,8 @@
 {:else if !validFrame}
   <BlockQuote content={snippet} />
 
-  <div class="flex mt-4 p-4 border border-orange-800/60 bg-orange-400/10 w-fit ">
-    <span class="text-xs mr-2 text-black-olive/70">content unavailable: </span>
+  <div class="flex mt-4 p-4 border-2 border-tsecondary/60 bg-orange-400/20 w-fit ">
+    <span class="text-xs mr-2 text-tprimary/70">content unavailable: </span>
     <ButtonStyles orange xs>
       <a class="underline"href={url} target="_blank">view on {publication} &#10548</a>
     </ButtonStyles>

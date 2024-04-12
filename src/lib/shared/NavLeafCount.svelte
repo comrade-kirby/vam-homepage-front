@@ -3,6 +3,6 @@
 
 </script>
 
-<span class="text-black-olive/40 group-hover:text-black-olive/60 flex ml-1 text-xs truncate ...">
+<span class="text-tprimary/50 group-hover:text-tprimary/80 flex ml-1 text-xs truncate ...">
   +{childCount}
 </span>

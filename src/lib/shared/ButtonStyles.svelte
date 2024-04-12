@@ -8,6 +8,6 @@
   const xlStyles = xl ? 'text-xl' : null
 </script>
 
-<div class="{xlStyles} {xsStyles} {orangeStyles} text-black-olive/30 hover:text-orange-800/90 tracking-wide">
+<div class="{xlStyles} {xsStyles} {orangeStyles} text-tprimary/90 hover:text-orange-400/90 tracking-wide">
   <slot />
 </div>

@@ -16,7 +16,7 @@
 </script>
 
 {#if root}
-  <div class="flex ">
+  <div class="flex text-tprimary/80">
     <Nav {forceGraph} />
     <slot />
   </div>

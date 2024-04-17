@@ -18,12 +18,12 @@
   $: pathname = $page.url.pathname
 </script>
 
-<nav class="relative h-full z-20 {$retreatLeft && '-left-52 z-30'}"
-  on:pointerenter={hoverOn}
-  on:pointerleave={hoverOff}>
-
-  <ContentPane width="w-96 pl-24" background={$retreatLeft ? 'bg-bg-dark/60' : 'bg-bg-dark/80'} itemsEnd={$retreatLeft}>
-    <ScrollContainer>
+<nav class="relative h-full z-20 {$retreatLeft && '-left-52'}"
+  on:mouseenter={hoverOn}
+  on:mouseleave={hoverOff}
+>
+  <ContentPane width="max-w-96 pl-20" background={$retreatLeft ? 'bg-bg-darkest/60' : 'bg-bg-dark/60'} itemsEnd={$retreatLeft}>
+    <ScrollContainer onTouch={hoverOn}>
       <slot center={$retreatLeft}/>
     </ScrollContainer>
   </ContentPane>

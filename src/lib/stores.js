@@ -20,6 +20,7 @@ const createSelected = () => {
 }
 
 export const retreatLeft = writable(false)
+export const retreatRight = writable(false)
 export const selected = createSelected()
 export const forceGraph = writable(null)
 export const cameraFocalLength = spring(18, { damping: 0.5 })

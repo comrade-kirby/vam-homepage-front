@@ -10,9 +10,10 @@
   const hoverOff = () => retreatLeft.set(shouldRetreat($page.url.pathname))
 </script>
 
-<nav class="absolute l-0 t-0 h-full z-40 max-w-16 border-r-2 border-orange-600"
-  on:pointerenter={hoverOn}
-  on:pointerleave={hoverOff}>
+<nav class="absolute l-0 t-0 h-full z-40 max-w-10 border-r-2 border-orange-600"
+  on:mouseenter={hoverOn}
+  on:mouseleave={hoverOff}
+>
     <ContentPane width="max-w-full" background='bg-bg-darkest'>
     <ul role="list" class="relative flex top-12 flex-col grow max-w-full">
       <SiteNavItem title="Works" />

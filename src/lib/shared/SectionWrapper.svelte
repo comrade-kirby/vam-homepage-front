@@ -3,7 +3,7 @@
 </script>
 
 {#if dependent}
-  <div class="pl-4">
+  <div class="pl-3">
     <slot />
   </div>
 {/if}

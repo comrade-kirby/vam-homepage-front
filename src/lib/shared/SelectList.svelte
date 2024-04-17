@@ -13,7 +13,7 @@
   }
 </script>
 
-<button on:click={toggleExpanded} class="w-full ">
+<button on:click={toggleExpanded} class="w-full">
   <SelectListLabel {containsCurrent} {expanded} {childCount}>
     {labelText}
   </SelectListLabel>

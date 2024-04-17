@@ -5,7 +5,7 @@
 
   import { selected, root } from '$lib/stores.js'
   import ForceGraph from '$lib/ForceGraph/ForceGraph.svelte'
-  import Nav from '$lib/Nav/Nav.svelte'
+  import Nav from '$lib/SiteNav/SiteNav.svelte'
 
   export let data
   

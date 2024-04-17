@@ -1,8 +1,5 @@
 <script>
-  import { forceGraph } from '$lib/stores'
-
-  import ContentPane from '$lib/shared/ContentPane.svelte'
-  import ScrollContainer from '$lib/shared/ScrollContainer.svelte'
+  import PageNav from '$lib/shared/PageNav.svelte'
   import ClientLink from '$lib/shared/ClientLink.svelte';
   import SelectList from '$lib/shared/SelectList.svelte'
 
@@ -11,17 +8,12 @@
   $: clients = data.clients
 </script>
 
-
-<nav on:pointerleave={() => $forceGraph.cancelNavHover()}>
-  <ContentPane  width="w-80">
-    <ScrollContainer>
-      <SelectList labelText="ALL" childCount={clients.length}>
-        {#each clients as client}
-          <ClientLink {client} />
-        {/each}
-      </SelectList>
-    </ScrollContainer>
-  </ContentPane>
-</nav>
+<PageNav>
+  <SelectList labelText="ALL CLIENTS" childCount={clients.length}>
+    {#each clients as client}
+      <ClientLink {client} />
+    {/each}
+  </SelectList>
+</PageNav>
 
 <slot />

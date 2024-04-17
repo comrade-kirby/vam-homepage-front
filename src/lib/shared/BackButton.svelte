@@ -6,7 +6,7 @@
 </script>
 
 <button on:click={onClick} class="self-end">
-  <ButtonStyles orange xs>
+  <ButtonStyles xs>
     <span>{@html leftArrowHtml} back</span>
   </ButtonStyles>
 </button>

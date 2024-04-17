@@ -1,7 +1,8 @@
 <script>
+  import SectionWrapper from './SectionWrapper.svelte';
   import SelectListLabel from './SelectListLabel.svelte'
 
-  export let labelText, childCount, wideMargin
+  export let labelText, childCount
   export let containsCurrent = true
   export let collapsable = true
   export let onClick
@@ -13,7 +14,7 @@
   }
 </script>
 
-<div class={wideMargin && 'ml-6'}>
+<SectionWrapper dependent={childCount}>
   <button on:click={toggleExpanded} class="w-full">
     <SelectListLabel {containsCurrent} {expanded} {childCount}>
       {labelText}
@@ -25,4 +26,4 @@
       <slot />
     </ul>
   {/if}
-</div>
+</SectionWrapper>

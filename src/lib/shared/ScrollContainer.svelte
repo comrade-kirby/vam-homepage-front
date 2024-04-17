@@ -2,6 +2,6 @@
   export let opacity
 </script>
 
-<div class="w-fit overflow-y-scroll ml-2 -mr-4 pr-4 h-full {opacity}">
+<div class="overflow-y-scroll h-full max-h-full -mr-4 pr-4">
   <slot />
 </div>

@@ -6,7 +6,7 @@
   export let closeUrl, title, subtitle, width = "w-128"
 </script>
 
-<div class="absolute right-0">
+<div class="absolute right-0 h-full max-h-full">
 
   <ContentPane {width}>
     <PaneNavigation {title} {subtitle} {closeUrl} />

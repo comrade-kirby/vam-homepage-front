@@ -1,3 +1,7 @@
-<div class="w-fit overflow-y-scroll ml-2 -mr-4 pr-4 h-full">
+<script>
+  export let opacity
+</script>
+
+<div class="w-fit overflow-y-scroll ml-2 -mr-4 pr-4 h-full {opacity}">
   <slot />
 </div>

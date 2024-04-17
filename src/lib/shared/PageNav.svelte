@@ -22,8 +22,8 @@
   on:pointerenter={hoverOn}
   on:pointerleave={hoverOff}>
 
-  <ContentPane width="w-80" itemsEnd={$retreatLeft}>
-    <ScrollContainer>
+  <ContentPane width="w-96 pl-6" background={$retreatLeft ? 'bg-bg-dark/60' : 'bg-bg-dark/80'} itemsEnd={$retreatLeft}>
+    <ScrollContainer opacity={$retreatLeft && 'opacity-70'}>
       <slot center={$retreatLeft}/>
     </ScrollContainer>
   </ContentPane>

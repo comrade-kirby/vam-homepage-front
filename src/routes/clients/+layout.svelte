@@ -9,7 +9,7 @@
 </script>
 
 <PageNav>
-  <SelectList labelText="ALL CLIENTS" childCount={clients.length}>
+  <SelectList labelText="ALL CLIENTS" childCount={clients.length} wideMargin>
     {#each clients as client}
       <ClientLink {client} />
     {/each}

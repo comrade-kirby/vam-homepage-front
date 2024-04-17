@@ -10,10 +10,10 @@
   const hoverOff = () => retreatLeft.set(shouldRetreat($page.url.pathname))
 </script>
 
-<nav class="relative z-40 {$retreatLeft && '-left-14 border-r-2 border-bg-dark'}"
+<nav class="relative z-40 -ml-10 border-r-2 border-bg-dark"
   on:pointerenter={hoverOn}
   on:pointerleave={hoverOff}>
-  <ContentPane width="w-fit" background={$retreatLeft ? 'bg-bg-darkest/70' : 'bg-bg-dark/80'}>
+  <ContentPane width="w-fit" background={$retreatLeft ? 'bg-bg-darkest/90' : 'bg-bg-darkest/100'}>
     <ul role="list" class="relative flex top-12 flex-col grow w-fit">
       <SiteNavItem title="Works" />
       <SiteNavItem title="Clients" />

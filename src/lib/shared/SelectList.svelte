@@ -1,7 +1,7 @@
 <script>
   import SelectListLabel from './SelectListLabel.svelte'
 
-  export let labelText, childCount
+  export let labelText, childCount, wideMargin
   export let containsCurrent = true
   export let collapsable = true
   export let onClick
@@ -13,14 +13,16 @@
   }
 </script>
 
-<button on:click={toggleExpanded} class="w-full">
-  <SelectListLabel {containsCurrent} {expanded} {childCount}>
-    {labelText}
-  </SelectListLabel>
-</button>
-
-{#if expanded}
-  <ul role="list" class="border-l border-black-olive/10 pl-1 ml-0.5 mb-6">
-    <slot />
-  </ul>
-{/if}
+<div class={wideMargin && 'ml-6'}>
+  <button on:click={toggleExpanded} class="w-full">
+    <SelectListLabel {containsCurrent} {expanded} {childCount}>
+      {labelText}
+    </SelectListLabel>
+  </button>
+  
+  {#if expanded}
+    <ul role="list" class="border-l border-orange-500/20 pl-1 ml-0.5 mb-6">
+      <slot />
+    </ul>
+  {/if}
+</div>

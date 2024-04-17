@@ -11,7 +11,7 @@
 </script>
 
 <PageNav>
-  <SelectList labelText="ALL PRESS" {expanded} childCount={presses.length}>
+  <SelectList wideMargin labelText="ALL PRESS" {expanded} childCount={presses.length}>
     {#each presses as press}
       <PressLink {press} />
     {/each}

@@ -1,7 +1,6 @@
 <script>
   import { hierarchy } from 'd3-hierarchy'
 
-
   import PageNav from '$lib/shared/PageNav.svelte'
   import SubNav from '$lib/SubNav/SubNav.svelte'
 

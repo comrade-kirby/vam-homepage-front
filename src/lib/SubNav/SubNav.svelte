@@ -22,7 +22,7 @@
   }).includes(path)
 </script>
 
-<SelectList onClick={() => goto(href)} labelText={nodeData.name.toUpperCase()} childCount={leaves.length} collapsable={isCurrent} {containsCurrent} >
+<SelectList wideMargin onClick={() => goto(href)} labelText={nodeData.name.toUpperCase()} childCount={leaves.length} collapsable={isCurrent} {containsCurrent} >
   {#each children as child}
     <NavLink node={child}  />
   {/each}

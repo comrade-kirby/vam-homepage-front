@@ -1,7 +1,9 @@
 <script>
+  import { retreatLeft } from '$lib/stores'
+
   import ButtonStyles from '$lib/shared/ButtonStyles.svelte'
   import BlockQuote from '$lib/shared/BlockQuote.svelte'
-  import PaneNavigation from '$lib/shared/PaneNavigation.svelte';
+  import PaneNavigation from '$lib/shared/PaneNavigation.svelte'
   
   export let title, subtitle, textBlock, detailsUrl, closeUrl, detailsLinkText = 'details'
 </script>
@@ -15,7 +17,7 @@
     {/if}
 
     {#if detailsUrl}
-      <a href={detailsUrl} class="block mt-6">
+      <a href={detailsUrl} on:click={() => retreatLeft.set(true)} class="block mt-6">
         <ButtonStyles xs outline>
           <span>{detailsLinkText}</span>
         </ButtonStyles>

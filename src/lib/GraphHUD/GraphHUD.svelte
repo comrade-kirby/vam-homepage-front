@@ -17,7 +17,7 @@
     {/if}
 
     {#if detailsUrl}
-      <a href={detailsUrl} on:click={() => retreatLeft.set(true)} class="block mt-6">
+      <a href={detailsUrl} on:click={() => retreatLeft.set(false)} class="block mt-6">
         <ButtonStyles xs outline>
           <span>{detailsLinkText}</span>
         </ButtonStyles>

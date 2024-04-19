@@ -26,7 +26,7 @@
   items={children}
   collapsable={isCurrent}
 >
-  <a slot="label-link" {href} class="w-full" >
+  <a slot="label-link" {href} class="w-full max-w-full truncate ..." >
     {labelText}
   </a>
 

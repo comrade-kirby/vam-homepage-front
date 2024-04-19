@@ -1,14 +1,30 @@
 <script>
+  import HideButton from '$lib/shared/HideButton.svelte'
   import CollapseLeftButton from '$lib/shared/CollapseLeftButton.svelte'
 
-  export let closeUrl, title, subtitle, onTouch
+  export let title, subtitle, hide, show, closeUrl
 </script>
 
-<div class="flex flex-col h-fit items-start pb-4">
+<div class="flex self-end flex-col h-fit items-start pb-4">
   <div class="flex justify-between w-full">
-    <h1 on:touchend={onTouch} class="text-base grow text-tprimary tracking-wider z-30">{title}</h1>  
-    <CollapseLeftButton href={closeUrl} buttonText="close" />
-    <div on:touchend={onTouch} class="absolute -left-6 top-2 size-16 rounded-full backdrop-blur-sm bg-gradient-to-br to-black  from-tprimary/80 via-tsecondary/70"></div>
+    {#if title}
+      <h1 on:click={show} class="text-base grow text-tprimary tracking-wider z-30">
+        {title}
+      </h1>  
+    {/if}
+
+    <div class="flex ml-6 max-h-6 space-x-4 items-center">
+      {#if hide}
+        <HideButton {hide}/>
+      {/if}
+      {#if closeUrl}
+        <CollapseLeftButton href={closeUrl} />
+      {/if}
+    </div>
+
+    {#if title}
+      <div on:click={show} class="absolute -left-6 top-2 size-16 rounded-full backdrop-blur-sm bg-gradient-to-br to-black  from-tprimary/80 via-tsecondary/70"></div>
+      {/if}
   </div>
     
   {#if subtitle}

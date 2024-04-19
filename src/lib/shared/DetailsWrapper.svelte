@@ -6,20 +6,19 @@
   export let closeUrl, title, subtitle, width = "w-128"
   import { retreatRight } from '$lib/stores'
 
-  const hoverOn = () => retreatRight.set(false)
-  const hoverOff = () => retreatRight.set(true)
-  const toggleRetreatRight = () => retreatRight.update(prev => !prev)
+  const show = () => retreatRight.set(false)
+  const hide = () => retreatRight.set(true)
 </script>
 
-<main class="absolute right-0 h-full max-h-full {$retreatRight && '-right-80'}"
-  on:mouseenter={hoverOn}
-  on:mouseleave={hoverOff}
->
-  <ContentPane {width} background={$retreatRight ? 'bg-bg-darkest/60' : 'bg-bg-dark/60'}>
-    <PaneNavigation onTouch={toggleRetreatRight} {title} {subtitle} {closeUrl} />
-    
-    <ScrollContainer onTouch={hoverOn}>
-      <slot />
-    </ScrollContainer>
-  </ContentPane>
-</main>
+<div class="absolute h-full right-0">
+
+  <main class="relative h-full max-h-full {$retreatRight && '-right-3/4'}">
+    <ContentPane {width} background={$retreatRight ? 'bg-bg-darkest/60' : 'bg-bg-dark/60'}>
+      <PaneNavigation {hide} {show} {closeUrl} {title} {subtitle} />
+      
+      <ScrollContainer {show}>
+        <slot />
+      </ScrollContainer>
+    </ContentPane>
+  </main>
+</div>

@@ -2,7 +2,7 @@
   import { page } from '$app/stores'
   
   import NavLink from './NavLink/NavLink.svelte'
-  import CollapsableSelectList from '$lib/shared/CollapsableSelectList.svelte'
+  import SelectList from '$lib/shared/SelectList.svelte'
 
   export let node
   
@@ -20,7 +20,7 @@
   }).includes(path)
 </script>
 
-<CollapsableSelectList {href} {labelText} {containsCurrent}
+<SelectList {href} {labelText} {containsCurrent}
   let:item={node} 
   let:isSelected
   items={children}
@@ -31,4 +31,4 @@
   </a>
 
   <NavLink {node} {isSelected} />
-</CollapsableSelectList>
+</SelectList>

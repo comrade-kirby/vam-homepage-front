@@ -10,7 +10,7 @@ export async function load({}) {
 
   let clients = await response.json();
   clients = clients.data.map(client => {
-    client.data = {slug: client.attributes.slug}
+    client.data = {slug: '/clients/' + client.attributes.slug}
     return client
   })
   

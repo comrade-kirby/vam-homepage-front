@@ -1,5 +1,5 @@
 <script>
-  import CollapsableSelectList from '$lib/shared/CollapsableSelectList.svelte';
+  import SelectList from '$lib/shared/SelectList.svelte';
 
   import PlaylistItem from '$lib/shared/PlaylistItem.svelte';
   import MenuLink from '$lib/shared/PressLink.svelte'
@@ -15,23 +15,23 @@
 </script>
 
 <DetailsWrapper {closeUrl} title={client.name}>
-  <CollapsableSelectList let:item={node} 
+  <SelectList let:item={node} 
     collapsable
     containsCurrent
     labelText="works"
     items={works}
   >
     <PlaylistItem  {node} />
-  </CollapsableSelectList>
+  </SelectList>
   
-  <CollapsableSelectList let:item={press} 
+  <SelectList let:item={press} 
     collapsable
     containsCurrent
     labelText="press"
     items={presses}
   >
     <MenuLink {press} />
-</CollapsableSelectList>
+</SelectList>
   
 
 

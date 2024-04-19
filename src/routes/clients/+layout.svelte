@@ -1,7 +1,7 @@
 <script>
   import PageNav from '$lib/shared/PageNav.svelte'
   import ClientLink from '$lib/shared/ClientLink.svelte';
-  import CollapsableSelectList from '$lib/shared/CollapsableSelectList.svelte';
+  import SelectList from '$lib/shared/SelectList.svelte';
 
   export let data
   
@@ -12,7 +12,7 @@
 </script>
 
 <PageNav>
-  <CollapsableSelectList {labelText} collapsable containsCurrent
+  <SelectList {labelText} collapsable containsCurrent
     let:item={client} 
     let:isSelected
     items={clients}
@@ -22,7 +22,7 @@
     </a>
 
     <ClientLink {client} {isSelected} />
-  </CollapsableSelectList>
+  </SelectList>
 </PageNav>
 
 <slot />

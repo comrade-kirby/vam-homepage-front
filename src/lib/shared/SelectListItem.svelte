@@ -3,7 +3,7 @@
 
   export let item
 
-  $: pageSlug = $page.params.slug
+  $: pageSlug = $page.url.pathname
   $: isSelected = pageSlug === item.data.slug
 </script>
 

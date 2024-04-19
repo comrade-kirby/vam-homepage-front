@@ -7,8 +7,8 @@
   import ClampParagraph from '$lib/shared/ClampParagraph.svelte'
   import DetailsWrapper from '$lib/shared/DetailsWrapper.svelte'
   import SectionLabel from '$lib/shared/SectionLabel.svelte'
-  import SelectList from '$lib/shared/SelectList.svelte';
   import PlaylistItem from '$lib/shared/PlaylistItem.svelte';
+  import SelectList from '$lib/shared/SelectList.svelte';
 
   export let data
   

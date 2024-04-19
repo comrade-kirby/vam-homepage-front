@@ -14,6 +14,10 @@ export async function load ({parent, params}) {
   })
       
   let work = await response.json();
-  
+  work.data.attributes.presses = work.data.attributes.presses.data.map(press => {
+    press.data = {slug: '/press/' + press.attributes.slug}
+    return press
+  })
+
   return {work}
 }

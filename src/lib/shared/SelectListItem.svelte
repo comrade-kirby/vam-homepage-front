@@ -1,10 +1,10 @@
 <script>
   import { page } from '$app/stores'
 
-  export let item
+  export let item, selectable = false
 
   $: pageSlug = $page.url.pathname
-  $: isSelected = pageSlug === item.data.slug
+  $: isSelected = selectable && pageSlug.includes(item.data.slug)
 </script>
 
 <li class="relative group -ml-1 pl-2 mb-2">

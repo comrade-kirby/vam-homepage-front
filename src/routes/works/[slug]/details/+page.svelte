@@ -17,7 +17,7 @@
   $: title = work.attributes.title
   $: client = work?.attributes.client.data
   $: subtitle = client.attributes.name
-  $: presses = work?.attributes.presses.data
+  $: presses = work?.attributes.presses
   $: relatedWorks = work && buildRelatedWorksList($root, slug)
 </script>
 
@@ -27,16 +27,23 @@
       <ClampParagraph content={work.attributes.description} />
     </SectionWrapper>
     
-    <SelectList labelText="press" childCount={presses.length}>
-      {#each presses as press}
-        <PressLink {press} />
-      {/each}
+    <SelectList collapsable containsCurrent
+      let:isSelected
+      let:item={press}
+      labelText="press" 
+      items={presses}
+    >
+      
+      <PressLink {press} {isSelected} />
     </SelectList>
 
-    <SelectList labelText="related work" childCount={relatedWorks.length}>
-      {#each relatedWorks as work}
-        <PlaylistItem  node={work} />
-      {/each}
+    <SelectList collapsable selectable containsCurrent
+      let:isSelected
+      let:item={node}
+      labelText="related work"
+      items={relatedWorks}
+    >
+      <PlaylistItem {node} {isSelected} />
     </SelectList>
   
     <SectionWrapper dependent={work.attributes.credits}>

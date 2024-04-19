@@ -6,6 +6,7 @@
   import SelectListItem from './SelectListItem.svelte';
 
   export let collapsable = false
+  export let selectable = false
   export let items, containsCurrent, labelText
   
   let expanded = true
@@ -25,7 +26,7 @@
   
   <SelectListItemContainer {expanded}>
     {#each items as item}
-      <SelectListItem let:isSelected {item}>
+      <SelectListItem let:isSelected {item} {selectable}>
         <slot {item} {isSelected}/>
       </SelectListItem>
     {/each}

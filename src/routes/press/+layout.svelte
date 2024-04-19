@@ -11,7 +11,7 @@
 </script>
 
 <PageNav>
-  <SelectList {labelText} collapsable containsCurrent
+  <SelectList {labelText} collapsable selectable containsCurrent
     let:isSelected
     let:item={press} 
     items={presses}

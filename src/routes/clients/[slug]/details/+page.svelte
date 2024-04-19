@@ -15,13 +15,13 @@
 </script>
 
 <DetailsWrapper {closeUrl} title={client.name}>
-  <SelectList let:item={node} 
+  <SelectList let:item={node}
     collapsable
     containsCurrent
     labelText="works"
     items={works}
   >
-    <PlaylistItem  {node} />
+    <PlaylistItem {node} />
   </SelectList>
   
   <SelectList let:item={press} 
@@ -31,8 +31,5 @@
     items={presses}
   >
     <MenuLink {press} />
-</SelectList>
-  
-
-
+  </SelectList>
 </DetailsWrapper>

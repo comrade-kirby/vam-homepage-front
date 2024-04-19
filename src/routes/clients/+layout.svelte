@@ -12,9 +12,9 @@
 </script>
 
 <PageNav>
-  <SelectList {labelText} collapsable containsCurrent
-    let:item={client} 
+  <SelectList {labelText} collapsable selectable containsCurrent
     let:isSelected
+    let:item={client} 
     items={clients}
   >
     <a slot="label-link" {href} class="w-full" >

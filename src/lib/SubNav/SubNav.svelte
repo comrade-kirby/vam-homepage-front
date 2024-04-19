@@ -20,7 +20,7 @@
   }).includes(path)
 </script>
 
-<SelectList {href} {labelText} {containsCurrent}
+<SelectList {href} {labelText} {containsCurrent} selectable
   let:item={node} 
   let:isSelected
   items={children}

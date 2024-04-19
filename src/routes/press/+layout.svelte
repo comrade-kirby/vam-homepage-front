@@ -1,21 +1,27 @@
 <script>
   import PressLink from '$lib/shared/PressLink.svelte'
   import PageNav from '$lib/shared/PageNav.svelte'
-  import SelectList from '$lib/shared/SelectList.svelte'
+  import CollapsableSelectList from '$lib/shared/CollapsableSelectList.svelte';
 
   export let data
   
-  let expanded = true
-  
+  const href="/press"
+  const labelText="ALL CLIENTS"
   $: presses = data.presses
 </script>
 
 <PageNav>
-  <SelectList wideMargin labelText="ALL PRESS" {expanded} childCount={presses.length}>
-    {#each presses as press}
-      <PressLink {press} />
-    {/each}
-  </SelectList>
+  <CollapsableSelectList {labelText} collapsable containsCurrent
+    let:isSelected
+    let:item={press} 
+    items={presses}
+  >
+    <a slot="label-link" {href} class="w-full" >
+      {labelText}
+    </a>
+    
+    <PressLink {press} {isSelected} />
+  </CollapsableSelectList>
 </PageNav>
 
 <slot />

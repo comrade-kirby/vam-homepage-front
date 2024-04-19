@@ -4,6 +4,7 @@
   import { forceGraph, retreatLeft } from '$lib/stores'
   import ContentPane from './ContentPane.svelte';
   import ScrollContainer from './ScrollContainer.svelte';
+  import VerticalScrollContainer from '$lib/shared/VerticalScrollContainer.svelte';
 
   const retreatSubRoutes = ['details', 'full-article']
   const shouldRetreat = () => retreatSubRoutes.reduce(isRetreatRoute, false)
@@ -18,13 +19,24 @@
   $: pathname = $page.url.pathname
 </script>
 
-<nav class="relative h-full z-20 {$retreatLeft && '-left-52'}"
+<!-- DESKTOP NAV -->
+<nav class="hidden md:flex relative h-full z-20 {$retreatLeft && '-left-52'}"
   on:mouseenter={hoverOn}
   on:mouseleave={hoverOff}
 >
-  <ContentPane width="max-w-96 pl-20" background={$retreatLeft ? 'bg-bg-darkest/60' : 'bg-bg-dark/60'} itemsEnd={$retreatLeft}>
+<!-- <ContentPane width="max-h-full w-full pl-8"> -->
+  <ContentPane width="max-w-96 pl-20" itemsEnd={$retreatLeft}>
     <ScrollContainer onTouch={hoverOn}>
       <slot center={$retreatLeft}/>
     </ScrollContainer>
+  </ContentPane>
+</nav>
+
+<!-- MOVILE NAV -->
+<nav class="flex md:hidden absolute bottom-0 h-fit w-full pl-10 z-20 bg-orange-500">
+  <ContentPane>
+    <VerticalScrollContainer>
+      <slot test={true} center={$retreatLeft}/>
+    </VerticalScrollContainer>
   </ContentPane>
 </nav>

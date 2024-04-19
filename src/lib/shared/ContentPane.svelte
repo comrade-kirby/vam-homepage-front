@@ -1,7 +1,7 @@
 <script>
-  export let width, itemsEnd, background = 'bg-bg-dark/60'
+  export let width, itemsEnd
 </script>
 
-<div class="{width} {background} {itemsEnd && 'items-end'} h-full max-h-full relative z-20 backdrop-blur-sm flex flex-col p-4 pb-8">
+<div class="{width} {itemsEnd && 'items-end'} bg-bg-darkest/60 h-full max-h-full relative z-20 backdrop-blur-sm flex flex-col p-4 pb-8">
   <slot />
 </div>

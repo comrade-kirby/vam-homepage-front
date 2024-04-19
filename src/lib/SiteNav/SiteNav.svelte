@@ -19,6 +19,7 @@
       <SiteNavItem title="Works" />
       <SiteNavItem title="Clients" />
       <SiteNavItem title="Press" />
+      <SiteNavItem title="About" />
     </ul>
   </ContentPane>
 </nav>

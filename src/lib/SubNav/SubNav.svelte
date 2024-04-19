@@ -1,20 +1,18 @@
 <script>
   import { page } from '$app/stores'
-  import { goto } from '$app/navigation'
   
   import NavLink from './NavLink/NavLink.svelte'
-  import SelectList from '$lib/shared/SelectList.svelte'
+  import CollapsableSelectList from '$lib/shared/CollapsableSelectList.svelte'
 
   export let node
   
   const nodeData = node.data[0]
   const slug = nodeData.slug
-  const leaves = node.leaves()
   const descendants = node.descendants()
   const children = node.children
   const href = slug
+  const labelText = nodeData.name.toUpperCase()
 
-  
   $: path = $page.url.pathname.replace('/details', '')
   $: isCurrent = path === slug
   $: containsCurrent = descendants && descendants.map(node => {
@@ -22,8 +20,15 @@
   }).includes(path)
 </script>
 
-<SelectList wideMargin onClick={() => goto(href)} labelText={nodeData.name.toUpperCase()} childCount={leaves.length} collapsable={isCurrent} {containsCurrent} >
-  {#each children as child}
-    <NavLink node={child}  />
-  {/each}
-</SelectList>
+<CollapsableSelectList {href} {labelText} {containsCurrent}
+  let:item={node} 
+  let:isSelected
+  items={children}
+  collapsable={isCurrent}
+>
+  <a slot="label-link" {href} class="w-full" >
+    {labelText}
+  </a>
+
+  <NavLink {node} {isSelected} />
+</CollapsableSelectList>

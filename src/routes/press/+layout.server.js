@@ -9,7 +9,10 @@ export async function load({}) {
   })
 
   let presses = await response.json();
-  presses = presses.data
+  presses = presses.data.map(press => {
+    press.data = {slug: press.attributes.slug}
+    return press
+  })
   
   return { presses }
 }

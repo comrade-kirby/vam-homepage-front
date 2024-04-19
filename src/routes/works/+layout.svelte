@@ -5,7 +5,7 @@
   import SubNav from '$lib/SubNav/SubNav.svelte'
 
   export let data
-
+  
   const worksHierarchy = data.worksData && hierarchy(data.worksData)
 </script>
 

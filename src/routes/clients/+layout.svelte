@@ -1,5 +1,5 @@
 <script>
-  import PageNav from '$lib/shared/PageNav.svelte'
+  import PageNav from '$lib/shared/PageNav/PageNav.svelte'
   import ClientLink from '$lib/shared/ClientLink.svelte';
   import SelectList from '$lib/shared/SelectList.svelte';
 
@@ -11,7 +11,7 @@
   $: clients = data.clients
 </script>
 
-<PageNav>
+<PageNav let:minimize>
   <SelectList {labelText} collapsable selectable containsCurrent
     let:isSelected
     let:item={client} 
@@ -21,7 +21,7 @@
       {labelText}
     </a>
 
-    <ClientLink {client} {isSelected} />
+    <ClientLink {client} {isSelected} onClick={minimize} />
   </SelectList>
 </PageNav>
 

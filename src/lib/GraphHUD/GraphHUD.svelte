@@ -1,14 +1,12 @@
 <script>
-  import { retreatLeft } from '$lib/stores'
-
   import ButtonStyles from '$lib/shared/ButtonStyles.svelte'
   import BlockQuote from '$lib/shared/BlockQuote.svelte'
-  import PaneNavigation from '$lib/shared/PaneNavigation.svelte'
+  import PaneNavigation from '$lib/shared/PaneNavigation/PaneNavigation.svelte'
   
   export let title, subtitle, textBlock, detailsUrl, closeUrl, detailsLinkText = 'details'
 </script>
 
-<div class="fixed z-20 top-0 right-0 p-8 w-fit h-fit min-w-80 max-w-128">
+<div class="fixed z-20 top-0 right-0 p-4 pl-20 md:p-8 w-full md:w-fit h-fit min-w-80 max-w-128">
   <div class="bg-bg-darkest/70 backdrop-blur-sm p-4">
     <PaneNavigation {title} {subtitle} {closeUrl} />
 
@@ -17,7 +15,7 @@
     {/if}
 
     {#if detailsUrl}
-      <a href={detailsUrl} on:click={() => retreatLeft.set(false)} class="block mt-6">
+      <a href={detailsUrl} class="block mt-6">
         <ButtonStyles xs outline>
           <span>{detailsLinkText}</span>
         </ButtonStyles>

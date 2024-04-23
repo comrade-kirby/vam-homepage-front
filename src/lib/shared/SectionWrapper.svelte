@@ -1,9 +1,11 @@
 <script>
   export let dependent = true
+  export let hFull
+  console.log(hFull)
 </script>
 
 {#if dependent}
-  <div class="ml-6">
+  <div class="{hFull && 'h-full'} ml-4">
     <slot />
   </div>
 {/if}

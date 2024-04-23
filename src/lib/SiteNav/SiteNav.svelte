@@ -1,25 +1,12 @@
 <script>
-  import { page } from '$app/stores'
-  import { retreatLeft } from '$lib/stores'
-
   import SiteNavItem from './SiteNavItem/SiteNavItem.svelte';
-  import ContentPane from '$lib/shared/ContentPane.svelte';
-
-  const shouldRetreat = (pathname) => pathname.includes('details')
-  const hoverOn = () => retreatLeft.set(false)
-  const hoverOff = () => retreatLeft.set(shouldRetreat($page.url.pathname))
 </script>
 
-<nav class="absolute l-0 t-0 h-full z-40 max-w-10 border-r-2 border-orange-600"
-  on:mouseenter={hoverOn}
-  on:mouseleave={hoverOff}
->
-    <ContentPane width="max-w-full" background='bg-bg-darkest'>
-    <ul role="list" class="relative flex top-12 flex-col grow max-w-full">
-      <SiteNavItem title="Works" />
-      <SiteNavItem title="Clients" />
-      <SiteNavItem title="Press" />
-      <SiteNavItem title="About" />
-    </ul>
-  </ContentPane>
+<nav class="h-full max-w-10 pl-2 z-40 bg-bg-darkest/90 border-r-2 border-orange-600">
+  <ul role="list" class="relative flex top-16 flex-col max-w-full">
+    <SiteNavItem title="Works" />
+    <SiteNavItem title="Clients" />
+    <SiteNavItem title="Press" />
+    <SiteNavItem title="About" />
+  </ul>
 </nav>

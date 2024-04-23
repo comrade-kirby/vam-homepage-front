@@ -3,7 +3,7 @@
 
   import Link from './Link.svelte'
   
-  export let press, isSelected
+  export let press, isSelected, onClick
 
   const articlePageHref = '/press/' + press.attributes.slug
   const fullArticleHref = articlePageHref + '/full-article'
@@ -14,4 +14,4 @@
   $: isSelected = isSelected && inPressNav
 </script>
 
-<Link {href} text={press.attributes.title} subtext={press.attributes.publication} />
+<Link {href} {onClick} text={press.attributes.title} subtext={press.attributes.publication} />

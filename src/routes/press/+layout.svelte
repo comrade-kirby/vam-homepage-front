@@ -1,6 +1,6 @@
 <script>
   import PressLink from '$lib/shared/PressLink.svelte'
-  import PageNav from '$lib/shared/PageNav.svelte'
+  import PageNav from '$lib/shared/PageNav/PageNav.svelte'
   import SelectList from '$lib/shared/SelectList.svelte';
 
   export let data
@@ -10,7 +10,7 @@
   $: presses = data.presses
 </script>
 
-<PageNav>
+<PageNav let:minimize>
   <SelectList {labelText} collapsable selectable containsCurrent
     let:isSelected
     let:item={press} 
@@ -20,7 +20,7 @@
       {labelText}
     </a>
     
-    <PressLink {press} {isSelected} />
+    <PressLink {press} {isSelected} onClick={minimize} />
   </SelectList>
 </PageNav>
 

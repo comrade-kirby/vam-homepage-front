@@ -5,7 +5,7 @@
 
   import { selected, root } from '$lib/stores.js'
   import ForceGraph from '$lib/ForceGraph/ForceGraph.svelte'
-  import Nav from '$lib/SiteNav/SiteNav.svelte'
+  import SiteNav from '$lib/SiteNav/SiteNav.svelte'
 
   export let data
   
@@ -17,7 +17,7 @@
 
 {#if root}
   <div class="h-screen w-screen flex text-tprimary/80">
-    <Nav {forceGraph} />
+    <SiteNav {forceGraph} />
     <slot />
   </div>
 

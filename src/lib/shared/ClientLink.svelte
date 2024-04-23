@@ -4,7 +4,7 @@
   
   import Link from '$lib/shared/Link.svelte'
 
-  export let client, isSelected
+  export let client, isSelected, onClick
 
   const slug = client.attributes.slug
   const clientUrl = '/clients/' + slug
@@ -16,4 +16,4 @@
   $: href = linkToDetails ? clientDetailsUrl : clientUrl
 </script>
 
-<Link {href} {onHover} {isSelected} text={client.attributes.name} />
+<Link {href} {onHover} {isSelected} {onClick} text={client.attributes.name} />

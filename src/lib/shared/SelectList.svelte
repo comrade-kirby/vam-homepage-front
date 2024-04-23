@@ -1,9 +1,9 @@
 <script>
   
-  import SectionWrapper from './SectionWrapper.svelte';
-  import SelectListItemContainer from './SelectListItemContainer.svelte';
+  import SectionWrapper from './SectionWrapper.svelte'
+  import SelectListItemContainer from './SelectListItemContainer.svelte'
   import SelectListLabel from '$lib/shared/SelectListLabel.svelte'
-  import SelectListItem from './SelectListItem.svelte';
+  import SelectListItem from './SelectListItem.svelte'
 
   export let collapsable = false
   export let selectable = false

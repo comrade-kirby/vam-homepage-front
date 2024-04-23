@@ -3,21 +3,23 @@
   import ContentPane from '$lib/shared/ContentPane.svelte'
   import ScrollContainer from './ScrollContainer.svelte'
 
-  export let closeUrl, title, subtitle, width = "w-full md:w-128"
-  import { retreatRight } from '$lib/stores'
+  export let closeUrl, title, subtitle, width = "md:w-128"
 
-  const show = () => retreatRight.set(false)
-  const minimize = () => retreatRight.set(true)
+  let minimized = false
+  const show = () => minimized = false
+  const minimize = () => minimized = true
 </script>
 
-<div class="absolute h-full right-0 w-full md:w-fit  ">
-  <main class="relative h-full max-h-full ml-10 md:ml-0 {$retreatRight && '-right-3/4'}">
-    <ContentPane {width}>
-      <PaneNavigation {minimize} {show} {closeUrl} {title} {subtitle} />
-      
-      <ScrollContainer {show}>
-        <slot />
-      </ScrollContainer>
-    </ContentPane>
-  </main>
-</div>
+<main class="relative z-20 w-full md:flex-initial border-t md:border-t-0 md:border-l border-orange-600/80 {
+  minimized 
+    ? 'order-first md:order-last h-fit md:w-1/2 md:border-b' 
+    : 'order-last flex-initial h-1/2 md:h-full md:w-fit'
+}">
+  <ContentPane {width} {minimized}>
+    <PaneNavigation {minimize} {show} {closeUrl} {title} {subtitle} {minimized} minimizedTitle="/details" />
+    
+    <ScrollContainer {show} {minimized}>
+      <slot />
+    </ScrollContainer>
+  </ContentPane>
+</main>

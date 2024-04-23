@@ -18,7 +18,9 @@
 {#if root}
   <div class="h-screen w-screen flex text-tprimary/80">
     <SiteNav {forceGraph} />
-    <slot />
+    <div class="flex flex-initial w-full h-full self-end z-20 justify-start md:justify-between flex-col-reverse md:flex-row">
+      <slot />
+    </div>
   </div>
 
   <ForceGraph bind:forceGraph />

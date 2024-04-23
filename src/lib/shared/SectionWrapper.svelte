@@ -1,7 +1,6 @@
 <script>
   export let dependent = true
   export let hFull
-  console.log(hFull)
 </script>
 
 {#if dependent}

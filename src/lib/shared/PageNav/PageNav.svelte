@@ -7,28 +7,21 @@
   import ContentPane from '../ContentPane.svelte';
   import ScrollContainer from '../ScrollContainer.svelte';
 
+  export let route
+
   const show = () => minimizeNav.set(false)
   const minimize = () => minimizeNav.set(true)
   
-  $: contentOpen = pathname.includes('details')
-  $: contentOpen && minimize()
   $: slug = $page.params.slug
-  $: pathname = $page.url.pathname
+  $: minimizedTitle = slug ? route + '/' + slug : route
 </script>
 
 
 <PageNavContainer minimized={$minimizeNav}>
-  <ContentPane width="w-full md:w-96" minimized={$minimizeNav}>
-    <PaneNavigation {minimize} {show} minimized={$minimizeNav} closeUrl={!slug && '/'} />
+  <ContentPane width="md:w-96" minimized={$minimizeNav}>
+    <PaneNavigation {minimize} {show} minimized={$minimizeNav} closeUrl={!slug && '/'} {minimizedTitle} />
     <ScrollContainer {show} minimized={$minimizeNav}>
-      <div class="hidden md:block">
-        <slot />
-      </div>
-
-      <!-- mobile only: minimize on click -->
-      <div class="block md:hidden">
-        <slot {minimize} />
-      </div>
+      <slot />
     </ScrollContainer>
   </ContentPane>
 </PageNavContainer>

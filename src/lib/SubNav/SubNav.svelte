@@ -4,7 +4,7 @@
   import NavLink from './NavLink/NavLink.svelte'
   import SelectList from '$lib/shared/SelectList.svelte'
 
-  export let node, onClick
+  export let node
   
   const nodeData = node.data[0]
   const slug = nodeData.slug
@@ -30,5 +30,5 @@
     {labelText}
   </a>
 
-  <NavLink {node} {onClick} {isSelected} />
+  <NavLink {node} {isSelected} />
 </SelectList>

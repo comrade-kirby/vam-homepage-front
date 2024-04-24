@@ -1,12 +1,17 @@
 <script>
-  import SiteNavItem from './SiteNavItem/SiteNavItem.svelte';
+  import { page } from '$app/stores'
+  import SiteNavItem from './SiteNavItem/SiteNavItem.svelte'
+
+  const routes = ['works', 'clients', 'press', 'about']
+
+  $: currentRouteIndex = currentRoute && routes.findIndex(route => currentRoute.includes(route))
+  $: currentRoute = $page.route.id
 </script>
 
-<nav class="h-full max-w-10 pl-2 z-40 bg-bg-darkest/90 border-r-2 border-orange-600">
-  <ul role="list" class="relative flex top-16 flex-col max-w-full">
-    <SiteNavItem title="Works" />
-    <SiteNavItem title="Clients" />
-    <SiteNavItem title="Press" />
-    <SiteNavItem title="About" />
+<nav class="flex flex-col justify-end h-full max-w-6 pl-2 z-40 bg-bg-darkest/90 border-r-2 border-bprimary/80">
+  <ul role="list" class="relative flex flex-col mb-6 max-w-full">
+    {#each routes as route, index}
+      <SiteNavItem title={route} selected={index === currentRouteIndex} />
+    {/each}
   </ul>
 </nav>

@@ -4,7 +4,7 @@
 
   import Link from '$lib/shared/Link.svelte'
 
-  export let node, isSelected
+  export let node, isSelected, onClick
   const nodeData = node.data[0] || node.data
   const workUrl = nodeData.slug
   const workDetailsUrl = workUrl + '/details'
@@ -15,7 +15,7 @@
   $: href = linkToDetails ? workDetailsUrl : workUrl
 </script>
 
-<Link {href} {onHover} {isSelected} clamp1
+<Link {onClick} {href} {onHover} {isSelected} clamp1
   text={nodeData.name} 
   subtext={nodeData.client.name}
 />

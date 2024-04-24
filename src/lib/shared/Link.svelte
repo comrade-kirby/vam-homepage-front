@@ -1,6 +1,6 @@
 <script>
   export let text, subtext, href, clamp1, onHover, isSelected, onClick
-  
+
   const textSize = subtext ? 'text-2xs' : 'text-xs' 
 </script>
 

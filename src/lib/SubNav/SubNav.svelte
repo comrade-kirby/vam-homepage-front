@@ -4,7 +4,7 @@
   import NavLink from './NavLink/NavLink.svelte'
   import SelectList from '$lib/shared/SelectList.svelte'
 
-  export let node
+  export let node, onClick
   
   const nodeData = node.data[0]
   const slug = nodeData.slug
@@ -12,7 +12,7 @@
   const children = node.children
   const href = slug
   const labelText = nodeData.name.toUpperCase()
-
+  
   $: path = $page.url.pathname.replace('/details', '')
   $: isCurrent = path === slug
   $: containsCurrent = descendants && descendants.map(node => {
@@ -26,9 +26,10 @@
   items={children}
   collapsable={isCurrent}
 >
+
   <a slot="label-link" {href} class="w-full max-w-full truncate ..." >
     {labelText}
   </a>
 
-  <NavLink {node} {isSelected} />
+  <NavLink {node} {isSelected} {onClick} />
 </SelectList>

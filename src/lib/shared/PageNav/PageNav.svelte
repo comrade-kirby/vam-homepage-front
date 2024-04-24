@@ -13,15 +13,20 @@
   const minimize = () => minimizeNav.set(true)
   
   $: slug = $page.params.slug
-  $: minimizedTitle = slug ? route + '/' + slug : route
+  $: minimizedLabelText = route
 </script>
 
 
 <PageNavContainer minimized={$minimizeNav}>
   <ContentPane width="md:w-96" minimized={$minimizeNav}>
-    <PaneNavigation {minimize} {show} minimized={$minimizeNav} closeUrl={!slug && '/'} {minimizedTitle} />
+    <PaneNavigation {minimize} {show} minimized={$minimizeNav} closeUrl={!slug && '/'} {minimizedLabelText} minimizedIconText="nav" />
     <ScrollContainer {show} minimized={$minimizeNav}>
-      <slot />
+      <div class="md:hidden">
+        <slot  onClick={minimize} />
+      </div>
+      <div class="hidden md:block">
+        <slot />
+      </div>
     </ScrollContainer>
   </ContentPane>
 </PageNavContainer>

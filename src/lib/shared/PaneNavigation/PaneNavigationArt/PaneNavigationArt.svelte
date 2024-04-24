@@ -1,7 +1,7 @@
 <script>
   export let onClick, display = false
 
-  const gradientStyles = 'bg-gradient-to-br to-black from-tprimary/80 via-tsecondary/70'
+  const gradientStyles = 'bg-gradient-to-br to-black from-ttertiary/80 via-tsecondary/70'
 </script>
 
 {#if display}

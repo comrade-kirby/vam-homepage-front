@@ -5,7 +5,7 @@
   import PaneNavigationTitles from './PaneNavigationTitles/PaneNavigationTitles.svelte'
   import PaneNavigationButtons from './PaneNavigationButtons/PaneNavigationButtons.svelte'
 
-  export let minimized, title, subtitle, minimize, minimizedTitle, show, closeUrl
+  export let minimized, title, subtitle, minimize, minimizedLabelText, show, closeUrl, minimizedIconText
 </script>
 
 <div class="flex flex-col z-40 h-fit items-start {
@@ -21,7 +21,7 @@
     {/if}
     
     {#if minimized}
-      <PaneNavigationSlug onClick={show} {minimizedTitle} />
+      <PaneNavigationSlug onClick={show} {minimizedLabelText} {minimizedIconText} />
     {:else}
       <PaneNavigationTitles {title} {subtitle} {minimized} />
     {/if}

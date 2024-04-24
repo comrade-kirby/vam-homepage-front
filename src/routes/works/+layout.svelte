@@ -8,9 +8,9 @@
   const worksHierarchy = data.worksData && hierarchy(data.worksData)
 </script> 
 
-<PageNav route="/works">
+<PageNav let:onClick route="/works">
   {#each worksHierarchy.children as child}
-    <SubNav node={child} />
+    <SubNav node={child} {onClick} />
   {/each}
 </PageNav>
 

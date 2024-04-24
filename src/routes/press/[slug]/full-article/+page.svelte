@@ -6,9 +6,10 @@
 
   $: press = data.press.attributes
   $: title = press.title
-  $: closeUrl = '/press/' + press.slug
+  $: slug = '/' + press.slug
+  $: closeUrl = '/press' + slug
 </script>
 
-<DetailsWrapper {closeUrl} {title} width='w-full md:w-160'>
+<DetailsWrapper {closeUrl} {title} width='w-full md:w-160' minimizedLabelText={slug} minimizedIconText='article'>
   <ArticleEmbed {press} />
 </DetailsWrapper>

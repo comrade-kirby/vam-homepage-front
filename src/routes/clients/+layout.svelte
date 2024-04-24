@@ -11,7 +11,7 @@
   $: clients = data.clients
 </script>
 
-<PageNav let:minimize>
+<PageNav let:onClick route="/clients">
   <SelectList {labelText} collapsable selectable containsCurrent
     let:isSelected
     let:item={client} 
@@ -21,7 +21,7 @@
       {labelText}
     </a>
 
-    <ClientLink {client} {isSelected} onClick={minimize} />
+    <ClientLink {client} {isSelected} onClick={onClick} />
   </SelectList>
 </PageNav>
 

@@ -13,16 +13,17 @@
   export let data
   
   $: work = data?.work?.data
-  $: slug = '/works/' + work?.attributes.slug
+  $: slug = '/' + work?.attributes.slug
+  $: closeUrl ='/works' + slug 
   $: title = work.attributes.title
   $: client = work?.attributes.client.data
   $: subtitle = client.attributes.name
   $: presses = work?.attributes.presses
-  $: relatedWorks = work && buildRelatedWorksList($root, slug)
+  $: relatedWorks = work && buildRelatedWorksList($root, closeUrl)
 </script>
 
 {#if work}
-  <DetailsWrapper closeUrl={slug} {title} {subtitle}>
+  <DetailsWrapper {closeUrl} {title} {subtitle} minimizedLabelText={slug}>
     <SectionWrapper dependent={work.attributes.description}>
       <ClampParagraph content={work.attributes.description} />
     </SectionWrapper>

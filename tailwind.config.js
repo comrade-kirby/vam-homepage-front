@@ -4,15 +4,14 @@ export default {
   safelist: ['pl-0', 'pl-1', 'pl-2', 'pl-3'],
   theme: {
     colors: {
-      'transparent': 'transparent',
       'bg-darkest': '#1D1001',
       'bg-dark': '#3B2002',
       'black': '#140B01',
       'tprimary': '#fbd6b1', 
       'tsecondary': '#F6993C',
-      // 'tsecondary': '#C36609',
-      // 'tsecondary': '#7180AD',
-      // 'tsecondary': '#71A3AD',
+      'ttertiary': '#F7FDFF',
+      'bprimary': '#894C06',
+      'bsecondary': '#F6993C',
       'blue': {
         100: '#F7FDFF',
         300: '#D6F5FF'

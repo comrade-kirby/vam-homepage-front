@@ -10,7 +10,7 @@
   $: presses = data.presses
 </script>
 
-<PageNav let:minimize>
+<PageNav let:onClick route="/press">
   <SelectList {labelText} collapsable selectable containsCurrent
     let:isSelected
     let:item={press} 
@@ -20,7 +20,7 @@
       {labelText}
     </a>
     
-    <PressLink {press} {isSelected} onClick={minimize} />
+    <PressLink {press} {isSelected} onClick={onClick} />
   </SelectList>
 </PageNav>
 

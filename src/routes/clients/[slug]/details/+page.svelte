@@ -9,12 +9,13 @@
   
   
   $: client = data.client.attributes
-  $: closeUrl = '/clients/' + client.slug
+  $: slug = '/' + client.slug
+  $: closeUrl = '/clients' + slug
   $: works = client.works.data
   $: presses = client.presses.data
 </script>
 
-<DetailsWrapper {closeUrl} title={client.name}>
+<DetailsWrapper {closeUrl} title={client.name} minimizedLabelText={slug}>
   <SelectList let:item={node}
     collapsable
     containsCurrent

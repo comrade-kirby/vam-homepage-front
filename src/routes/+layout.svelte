@@ -16,9 +16,9 @@
 </script>
 
 {#if root}
-  <div class="h-screen w-screen flex text-tprimary/80">
+  <div class="z-20 h-screen w-screen flex text-tprimary/80">
     <SiteNav {forceGraph} />
-    <div class="flex flex-initial w-full h-full self-end z-20 justify-start md:justify-between flex-col-reverse md:flex-row">
+    <div class="pointer-events-none flex flex-initial z-20 w-full h-full max-h-full self-end z-20 justify-start md:justify-between flex-col-reverse md:flex-row">
       <slot />
     </div>
   </div>

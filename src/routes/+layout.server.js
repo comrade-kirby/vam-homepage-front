@@ -1,10 +1,10 @@
 import { group } from 'd3-array'
-import { STRAPI_API_KEY } from '$env/static/private'
+import { STRAPI_API_KEY, PUBLIC_CMS_URL } from '$env/static/private'
 import { sanitizeString } from '$lib/helpers.js'
 
 
 export async function load({}) {
-  const response = await fetch("http://localhost:1337/api/works?populate=*", {
+  const response = await fetch(`${PUBLIC_CMS_URL}/api/works?populate=*`, {
     headers: {
       'Authorization': `bearer ${STRAPI_API_KEY}` 
     }

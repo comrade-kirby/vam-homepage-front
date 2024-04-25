@@ -1,8 +1,8 @@
-import { STRAPI_API_KEY } from '$env/static/private'
+import { PUBLIC_CMS_URL } from '$env/static/private'
 
 export async function load({}) {
   const url = `/api/clients?populate[0]=works&populate[1]=logo`
-  const response = await fetch(`http://localhost:1337${url}`, {
+  const response = await fetch(`${PUBLIC_CMS_URL}${url}`, {
     headers: {
       'Authorization': `bearer ${STRAPI_API_KEY}` 
     }

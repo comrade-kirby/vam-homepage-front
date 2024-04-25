@@ -1,7 +1,9 @@
 <script>
+  import { PUBLIC_CMS_URL } from '$env/static/private'
+
   export let press
 
-  const pressImageUrl =  'http://localhost:1337' + press.attributes.thumbnail.data.attributes.url
+  const pressImageUrl =  PUBLIC_CMS_URL + press.attributes.thumbnail.data.attributes.url
   const href = '/press/' + press.attributes.slug
 </script>
 

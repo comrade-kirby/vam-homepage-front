@@ -5,7 +5,7 @@
   export let containsCurrent, expanded, childCount
 </script>
 
-<SectionLabel {containsCurrent}>
+<SectionLabel {containsCurrent} collapsable>
   <slot />
   <NavLeafCount show={!expanded} {childCount} />
 </SectionLabel>

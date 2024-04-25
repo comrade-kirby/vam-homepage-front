@@ -16,11 +16,11 @@
 </script>
 
 {#if root}
-  <div class="z-20 h-screen w-screen flex text-tprimary/80">
-    <SiteNav {forceGraph} />
-    <div class="pointer-events-none flex flex-initial z-20 w-full h-full max-h-full self-end z-20 justify-start md:justify-between flex-col-reverse md:flex-row">
+  <div class="z-20 h-screen w-screen flex md:flex-row-reverse text-tprimary/80">
+    <div class="pointer-events-none flex flex-initial z-20 w-full h-full max-h-full z-20 justify-start flex-col-reverse md:justify-between md:flex-row">
       <slot />
     </div>
+    <SiteNav {forceGraph} />
   </div>
 
   <ForceGraph bind:forceGraph />

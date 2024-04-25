@@ -42,9 +42,11 @@
   
     <div class="flex mt-4 p-4 border-2 border-tsecondary/60 bg-orange-400/20 w-fit ">
       <span class="text-xs mr-2 text-tprimary/70">content unavailable: </span>
-      <ButtonStyles xs>
-        <a class="underline"href={url} target="_blank">view on {publication} &#10548</a>
-      </ButtonStyles>
+      <a class="underline" href={url} target="_blank">
+        <ButtonStyles xs>
+          <span>view on {publication} &#10548</span>
+        </ButtonStyles>
+      </a>
     </div>
   {/if}
   

@@ -18,7 +18,7 @@
 
 
 <PageNavContainer minimized={$minimizeNav}>
-  <ContentPane width="md:w-96" minimized={$minimizeNav}>
+  <ContentPane styles="md:w-96 md:pl-14" minimized={$minimizeNav}>
     <PaneNavigation {minimize} {show} minimized={$minimizeNav} closeUrl={!slug && '/'} {minimizedLabelText} minimizedIconText="nav" />
     <ScrollContainer {show} minimized={$minimizeNav}>
       <div class="md:hidden">

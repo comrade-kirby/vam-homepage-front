@@ -3,7 +3,6 @@
   import ContentPane from '$lib/shared/ContentPane.svelte'
   import ScrollContainer from './ScrollContainer.svelte'
 
-  export let width = "md:w-128"
   export let minimizedIconText = 'details'
   export let closeUrl, title, subtitle, minimizedLabelText
 
@@ -17,7 +16,7 @@
     ? 'order-first md:order-last h-fit md:w-1/2 md:border-b' 
     : 'order-last flex-1 h-1/2 md:h-full md:w-fit'
 }">
-  <ContentPane {width} {minimized}>
+  <ContentPane styles="md:w-128" {minimized}>
     <PaneNavigation {minimize} {show} {closeUrl} {title} {subtitle} {minimized} {minimizedIconText} {minimizedLabelText} />
     
     <ScrollContainer {show} {minimized}>

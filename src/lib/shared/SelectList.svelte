@@ -15,7 +15,7 @@
 </script>
 
 <SectionWrapper dependent={items.length}>
-  <button on:click={toggleExpanded} class="max-w-full relative -left-2">
+  <button on:click={toggleExpanded} class="max-w-full relative">
     <SelectListLabel {containsCurrent} {expanded} childCount={items.length}>
       <slot name="label-link">
         {labelText}

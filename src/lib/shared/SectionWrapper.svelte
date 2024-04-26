@@ -4,7 +4,7 @@
 </script>
 
 {#if dependent}
-  <div class="{hFull && 'h-full'} ml-4">
+  <div class="{hFull && 'h-full'}">
     <slot />
   </div>
 {/if}

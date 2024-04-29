@@ -25,8 +25,10 @@
   $: relatedWorks = work && buildRelatedWorksList($root, closeUrl)
 </script>
 
-<div class="max-w-1/2 h-full z-20 flex flex-initial flex-col md:flex-row justify-end {
-  minimized && 'flex-col md:flex-col-reverse md:justify-between'
+<div class="md:w-1/2 h-1/2 z-20 flex flex-col md:flex-row justify-end {
+  minimized 
+    ? 'h-fit flex-col md:h-full md:flex-col-reverse md:justify-between'
+    : 'flex-auto md:flex-initial h-1/2 md:max-w-full md:h-full'
 }">
   <GraphControls offset="-mt-48 md:mt-0 -ml-24" />
 

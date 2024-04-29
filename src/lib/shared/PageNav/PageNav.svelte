@@ -1,5 +1,4 @@
 <script>
-  import { onMount } from 'svelte';
   import { page } from '$app/stores'
   import { minimizeNav } from '$lib/stores'
 
@@ -13,15 +12,13 @@
   const show = () => minimizeNav.set(false)
   const minimize = () => minimizeNav.set(true)
   
-  onMount(() => slug ? minimize() : show())
-
   $: slug = $page.params.slug
   $: minimizedLabelText = route
 </script>
 
 
 <PageNavContainer minimized={$minimizeNav}>
-  <ContentPane styles="md:w-96 md:pl-14" minimized={$minimizeNav}>
+  <ContentPane styles="md:w-96 md:pl-16" minimized={$minimizeNav}>
     <PaneNavigation {minimize} {show} minimized={$minimizeNav} closeUrl={!slug && '/'} {minimizedLabelText} minimizedIconText="nav" />
     <ScrollContainer {show} minimized={$minimizeNav}>
       <div class="md:hidden">

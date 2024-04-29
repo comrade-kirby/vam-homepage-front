@@ -7,7 +7,7 @@
     ? 'z-10 from-bprimary/80 to-bsecondary/80 right-3.5 bg-gradient-to-l md:left-3.5 md:bg-gradient-to-r'
     : 'bg-bprimary right-2.5 mr-1 md:left-2.5 md:mr-0 md:ml-1 '
 }">
-  <div class="bg-bg-darkest rounded-l-full md:rounded-l-none md:rounded-r-full">
+  <div class="bg-black rounded-l-full md:rounded-l-none md:rounded-r-full">
     <slot/>
   </div>
 </div>

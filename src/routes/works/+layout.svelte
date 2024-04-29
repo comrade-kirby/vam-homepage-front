@@ -14,6 +14,4 @@
   {/each}
 </PageNav>
 
-<div class="h-1/2 flex flex-1 justify-end flex-col md:flex-none md:h-full md:w-1/2">
-  <slot />
-</div>
+<slot />

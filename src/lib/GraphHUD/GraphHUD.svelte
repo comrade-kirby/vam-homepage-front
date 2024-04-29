@@ -6,8 +6,8 @@
   export let title, subtitle, textBlock, detailsUrl, closeUrl, detailsLinkText = 'details'
 </script>
 
-<div class="pointer-events-auto z-20 top-0 right-0 px-8 p-2 md:p-4 md:px-4 w-full h-fit min-w-80 max-w-128">
-  <div class="bg-bg-darkest/70 backdrop-blur-sm p-4 border border-bprimary/80">
+<div class="pointer-events-auto z-20 top-0 right-0 p-4 md:p-8 w-full h-fit min-w-80 max-w-128">
+  <div class="bg-bg-darkest/70 backdrop-blur-sm p-4 pl-8 border border-bprimary/80">
     <PaneNavigation {title} {subtitle} {closeUrl} />
 
     {#if textBlock}

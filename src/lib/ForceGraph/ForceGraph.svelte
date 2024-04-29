@@ -32,5 +32,13 @@
 <svelte:window bind:innerWidth  bind:innerHeight  />
 <div on:wheel={(event) => $forceGraph.onWheel(event)} 
   id='force-graph-container' 
-  class="absolute top-0 left-0 z-10 w-screen h-screen bg-bg-darkest"
+  class="absolute top-0 left-0 z-10 w-screen h-screen bg-gradient"
 />
+
+<style>
+  .bg-gradient {
+    background-size: 100% 100%;
+    background-position: 0px 0px;
+    background-image: radial-gradient(100% 100% at 50% 50%, #3B2002 0%, #140B01 26%, #3B2002 100%);
+  }
+</style>

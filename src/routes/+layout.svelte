@@ -19,7 +19,7 @@
   <div class="z-20 h-screen w-screen flex text-tprimary/80">
     <SiteNav {forceGraph} />
     
-    <div class="w-full h-full flex flex-initial justify-between flex-col-reverse md:flex-row">
+    <div class="w-full h-full flex flex-initial md:justify-between flex-col-reverse md:flex-row">
       <slot />
     </div>
   </div>

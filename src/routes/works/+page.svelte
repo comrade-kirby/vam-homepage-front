@@ -4,5 +4,5 @@
 
 <div class="w-full self-end flex items-end justify-end">
 
-  <GraphControls />
+  <GraphControls offset='-mb-48 md:mb-0' />
 </div>

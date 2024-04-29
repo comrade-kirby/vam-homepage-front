@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte';
   import { page } from '$app/stores'
   import { minimizeNav } from '$lib/stores'
 
@@ -12,6 +13,8 @@
   const show = () => minimizeNav.set(false)
   const minimize = () => minimizeNav.set(true)
   
+  onMount(() => slug ? minimize() : show())
+
   $: slug = $page.params.slug
   $: minimizedLabelText = route
 </script>

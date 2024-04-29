@@ -10,8 +10,8 @@
 
 <nav on:mouseleave={cancelHover} class="pointer-events-auto relative border-t md:border-t-0 md:border-r border-bprimary/80 { 
   minimized
-    ? 'order-first self-end h-fit md:border-b md:self-start w-full md:w-1/2'
-    : 'order-1 flex-1 h-1/2 md:h-screen w-full md:max-w-fit'
+    ? 'w-full h-fit self-end md:w-1/2 md:self-start md:border-b'
+    : 'h-1/2 w-full flex-auto md:h-screen md:max-w-fit'
 }">
   <slot />
 </nav>

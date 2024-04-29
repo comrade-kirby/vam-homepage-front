@@ -1,5 +1,6 @@
 <script>
   import GraphHud from '$lib/GraphHUD/GraphHUD.svelte'
+  import GraphControls from '$lib/shared/GraphControls/GraphControls.svelte'
 
   export let data
 
@@ -11,6 +12,11 @@
   $: detailsUrl = work ? '/works/' + slug + '/details' : false
 </script>
 
-{#if work}
+<div class="flex h-full flex-col items-end justify-between">
+
+  {#if work}
   <GraphHud {title} {subtitle} {detailsUrl} {closeUrl} />
-{/if}
+  {/if}
+  
+  <GraphControls />
+</div>

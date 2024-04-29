@@ -1,5 +1,5 @@
 <script>
-  import ButtonStyles from "./ButtonStyles.svelte";
+  import ButtonStyles from '$lib/shared/ButtonStyles.svelte'
   
   export let minimize
 

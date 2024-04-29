@@ -26,6 +26,6 @@
       <PaneNavigationTitles {title} {subtitle} {minimized} />
     {/if}
 
-    <PaneNavigationButtons {minimize} {closeUrl} />
+    <PaneNavigationButtons {minimized} {minimize} {show} {closeUrl} />
   </div>
 </div>

@@ -1,5 +1,5 @@
 <script>
-  import GraphHud from "$lib/GraphHUD/GraphHUD.svelte"
+  import { GraphHud } from '$lib'
 
   export let data
 

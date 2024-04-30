@@ -1,8 +1,8 @@
 <script>
   import { page } from '$app/stores'
+  import { SelectList } from '$lib'
   
   import NavLink from './NavLink/NavLink.svelte'
-  import SelectList from '$lib/shared/SelectList.svelte'
 
   export let node, onClick
   

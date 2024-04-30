@@ -4,8 +4,7 @@
   import { hierarchy } from 'd3-hierarchy'
 
   import { selected, root } from '$lib/stores.js'
-  import ForceGraph from '$lib/ForceGraph/ForceGraph.svelte'
-  import SiteNav from '$lib/SiteNav/SiteNav.svelte'
+  import { ForceGraph, SiteNav } from '$lib'
 
   export let data
   

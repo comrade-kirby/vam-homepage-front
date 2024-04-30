@@ -1,7 +1,9 @@
 <script>
-  import ButtonStyles from '$lib/shared/ButtonStyles.svelte'
-  import BlockQuote from '$lib/shared/BlockQuote.svelte'
-  import PaneNavigation from '$lib/shared/PaneNavigation/PaneNavigation.svelte'
+  import {
+    ButtonStyles,
+    BlockQuote,
+    PaneNavigation
+  } from '$lib'
   
   export let title, subtitle, textBlock, detailsUrl, closeUrl, detailsLinkText = 'details'
 </script>

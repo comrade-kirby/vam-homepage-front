@@ -1,7 +1,9 @@
 <script>
-
-  import ArticleEmbed from '$lib/shared/ArticleEmbed.svelte'
-  import DetailsWrapper from '$lib/shared/DetailsWrapper.svelte'
+  import {
+    ArticleEmbed,
+    DetailsWrapper
+  } from '$lib'
+  
   export let data
 
   $: press = data.press.attributes

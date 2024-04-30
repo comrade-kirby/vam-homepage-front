@@ -1,12 +1,14 @@
 <script>
-  import PaneNavigation from '$lib/shared/PaneNavigation/PaneNavigation.svelte'
-  import ContentPane from '$lib/shared/ContentPane.svelte'
-  import ScrollContainer from './ScrollContainer.svelte'
-
+  import { 
+    ContentPane,
+    PaneNavigation,
+    ScrollContainer
+  } from '$lib'
+  
+  export let minimized = false
   export let minimizedIconText = 'details'
   export let closeUrl, title, subtitle, minimizedLabelText
 
-  export let minimized = false
   const show = () => minimized = false
   const minimize = () => minimized = true
 </script>

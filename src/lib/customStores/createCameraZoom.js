@@ -12,7 +12,6 @@ export const createCameraZoom = () => {
   }
 
   const setZoomByIndex = (index) => {
-    console.log(index)
     set(zoomStops[index])
   }
 

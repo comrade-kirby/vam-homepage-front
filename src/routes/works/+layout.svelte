@@ -1,8 +1,7 @@
 <script>
   import { hierarchy } from 'd3-hierarchy'
 
-  import PageNav from '$lib/shared/PageNav/PageNav.svelte'
-  import SubNav from '$lib/SubNav/SubNav.svelte'
+  import { PageNav, SubNav } from '$lib'
 
   export let data
   const worksHierarchy = data.worksData && hierarchy(data.worksData)

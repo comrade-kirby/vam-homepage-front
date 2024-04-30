@@ -1,9 +1,10 @@
 <script>
-  import SelectList from '$lib/shared/SelectList.svelte';
-
-  import PlaylistItem from '$lib/shared/PlaylistItem.svelte';
-  import MenuLink from '$lib/shared/PressLink.svelte'
-  import DetailsWrapper from '$lib/shared/DetailsWrapper.svelte'
+  import {
+    SelectList,
+    PlaylistItem,
+    PressLink,
+    DetailsWrapper
+  } from '$lib'
 
   export let data
   
@@ -31,6 +32,6 @@
     labelText="press"
     items={presses}
   >
-    <MenuLink {press} />
+    <PressLink {press} />
   </SelectList>
 </DetailsWrapper>

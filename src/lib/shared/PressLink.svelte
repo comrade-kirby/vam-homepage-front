@@ -1,7 +1,6 @@
 <script>
   import { page } from '$app/stores'
-
-  import Link from './Link.svelte'
+  import { Link } from '$lib'
   
   export let press, isSelected, onClick
 

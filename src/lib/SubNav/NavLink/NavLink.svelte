@@ -1,8 +1,7 @@
 <script>
   import { page } from '$app/stores'
   import { forceGraph } from '$lib/stores'
-
-  import Link from '$lib/shared/Link.svelte'
+  import { Link } from '$lib'
 
   export let node, isSelected, onClick
   const nodeData = node.data[0] || node.data

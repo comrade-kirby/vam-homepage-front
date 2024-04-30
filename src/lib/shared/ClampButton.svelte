@@ -1,5 +1,5 @@
 <script>
-  import ButtonStyles from "./ButtonStyles.svelte"
+  import { ButtonStyles } from '$lib'
 
   export let isClamped
   export let onClick

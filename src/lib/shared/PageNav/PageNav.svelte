@@ -2,10 +2,12 @@
   import { page } from '$app/stores'
   import { minimizeNav } from '$lib/stores'
 
+  import { 
+    ContentPane,
+    PaneNavigation,
+    ScrollContainer 
+  } from '$lib'
   import PageNavContainer from './PageNavContainer/PageNavContainer.svelte'
-  import PaneNavigation from '$lib/shared/PaneNavigation/PaneNavigation.svelte'
-  import ContentPane from '../ContentPane.svelte';
-  import ScrollContainer from '../ScrollContainer.svelte';
 
   export let route
 

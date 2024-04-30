@@ -1,5 +1,5 @@
 <script>
-  import GraphControls from '$lib/shared/GraphControls/GraphControls.svelte'
+  import { GraphControls } from '$lib'
 </script>
 
 <div class="size-full flex items-end justify-end">

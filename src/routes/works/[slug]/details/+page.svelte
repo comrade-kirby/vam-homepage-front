@@ -2,14 +2,16 @@
   import { root } from '$lib/stores.js'
   import { buildRelatedWorksList } from '$lib/helpers.js'
 
-  import SectionWrapper from '$lib/shared/SectionWrapper.svelte'
-  import PressLink from '$lib/shared/PressLink.svelte'
-  import ClampParagraph from '$lib/shared/ClampParagraph.svelte'
-  import DetailsWrapper from '$lib/shared/DetailsWrapper.svelte'
-  import SectionLabel from '$lib/shared/SectionLabel.svelte'
-  import PlaylistItem from '$lib/shared/PlaylistItem.svelte';
-  import SelectList from '$lib/shared/SelectList.svelte';
-  import GraphControls from '$lib/shared/GraphControls/GraphControls.svelte'
+  import {
+    SectionWrapper,
+    PressLink,
+    ClampParagraph,
+    DetailsWrapper,
+    SectionLabel,
+    PlaylistItem,
+    SelectList,
+    GraphControls
+  } from '$lib'
 
   export let data
 

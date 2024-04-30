@@ -1,7 +1,9 @@
 <script>
-  import PressLink from '$lib/shared/PressLink.svelte'
-  import PageNav from '$lib/shared/PageNav/PageNav.svelte'
-  import SelectList from '$lib/shared/SelectList.svelte';
+  import {
+    PressLink,
+    PageNav,
+    SelectList
+  } from '$lib'
 
   export let data
   

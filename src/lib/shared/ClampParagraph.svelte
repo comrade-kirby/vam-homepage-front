@@ -1,5 +1,5 @@
 <script>
-    import ClampButton from "./ClampButton.svelte";
+  import { ClampButton } from '$lib'
 
   export let short
   export let content

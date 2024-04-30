@@ -2,10 +2,12 @@
 <script>
   import { afterNavigate, beforeNavigate } from '$app/navigation'
 
-  import SectionWrapper from './SectionWrapper.svelte'
-  import Loading from '$lib/shared/Loading.svelte'
-  import ButtonStyles from '$lib/shared/ButtonStyles.svelte'
-  import BlockQuote from '$lib/shared/BlockQuote.svelte'
+  import {
+    SectionWrapper,
+    Loading,
+    ButtonStyles,
+    BlockQuote
+  } from '$lib'
 
   export let press
  

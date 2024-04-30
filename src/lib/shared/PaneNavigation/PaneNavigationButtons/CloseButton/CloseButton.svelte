@@ -1,5 +1,5 @@
 <script>
-  import ButtonStyles from '$lib/shared/ButtonStyles.svelte'
+  import { ButtonStyles } from '$lib'
   
   export let href
 

@@ -1,6 +1,6 @@
 <script>
-  import GraphHud from '$lib/GraphHUD/GraphHUD.svelte'
-  import GraphControls from '$lib/shared/GraphControls/GraphControls.svelte'
+  import { GraphHud } from '$lib'
+  import { GraphControls } from '$lib'
 
   export let data
 

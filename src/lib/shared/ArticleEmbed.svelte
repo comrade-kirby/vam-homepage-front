@@ -42,8 +42,8 @@
   {:else if !validFrame}
     <BlockQuote content={snippet} />
   
-    <div class="flex mt-4 p-4 border-2 border-tsecondary/60 bg-orange-400/20 w-fit ">
-      <span class="text-xs mr-2 text-tprimary/70">content unavailable: </span>
+    <div class="flex mt-4 p-4 border-2 border-primary/60 bg-orange-400/20 w-fit ">
+      <span class="text-xs mr-2 text-white/70">content unavailable: </span>
       <a class="underline" href={url} target="_blank">
         <ButtonStyles xs>
           <span>view on {publication} &#10548</span>
@@ -52,7 +52,7 @@
     </div>
   {/if}
   
-  <div bind:this={container} class="h-full bg-tprimary/90  {(!loading && validFrame) ? 'visible' : 'invisible'}">
+  <div bind:this={container} class="h-full bg-white/90  {(!loading && validFrame) ? 'visible' : 'invisible'}">
     <iframe bind:this={frame} src={url} style="width:100%; height:100%;" frameborder="0"></iframe>
   </div>
 </SectionWrapper>

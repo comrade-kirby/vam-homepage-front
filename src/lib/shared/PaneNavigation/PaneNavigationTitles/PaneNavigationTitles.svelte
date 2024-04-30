@@ -4,7 +4,7 @@
 
 {#if title}
   <div class="flex min-h-10 flex-col w-full items-start z-30">
-    <h1 class="text-base text-tprimary tracking-wider line-clamp-2">
+    <h1 class="text-base text-white tracking-wider line-clamp-2">
       {title}
     </h1>  
     

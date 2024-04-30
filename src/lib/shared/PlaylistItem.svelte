@@ -14,7 +14,7 @@
   {/if}
   
   <div class="flex flex-col h-full p-1 ml-1 text-left">
-    <h3 class="text-xs font-medium text-tprimary/80 group-hover:text-orange-500/80 line-clamp-[2] tracking-wide">{title}</h3>
+    <h3 class="text-xs font-medium text-white/80 group-hover:text-orange-500/80 line-clamp-[2] tracking-wide">{title}</h3>
     <h4 class="text-2xs  text-orange-500/80 group-hover:text-orange-500/60 tracking-wide">{client.name}</h4>
   </div>
 </a>

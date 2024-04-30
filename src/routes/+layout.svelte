@@ -15,7 +15,7 @@
 </script>
 
 {#if root}
-  <div class="z-20 h-screen w-screen flex text-tprimary/80">
+  <div class="z-20 h-screen w-screen flex text-white/80">
     <SiteNav {forceGraph} />
     
     <div class="w-full h-full flex flex-initial md:justify-between flex-col-reverse md:flex-row">

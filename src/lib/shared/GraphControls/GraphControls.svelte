@@ -7,13 +7,13 @@
 
 <div class="{offset} pointer-events-auto flex self-end p-4 z-20 flex">
   <div class="flex flex-col space-y-1">
-    <button on:click={() => cameraZoom.zoomIn()} class="bg-bg-dark/40 rounded-lg">
-      <ButtonStyles outline xl>
+    <button on:click={() => cameraZoom.zoomIn()} class="bg-dark/40 rounded-lg">
+      <ButtonStyles outline layout xl>
         <span>{@html '&plus;'}</span>
       </ButtonStyles>
     </button>
-    <button on:click={() => cameraZoom.zoomOut()} class="bg-bg-dark/40 rounded-lg">
-      <ButtonStyles outline xl>
+    <button on:click={() => cameraZoom.zoomOut()} class="bg-dark/40 rounded-lg">
+      <ButtonStyles outline layout xl>
         <span>{@html '&minus;'}</span>
       </ButtonStyles>
     </button>

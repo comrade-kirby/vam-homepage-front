@@ -5,7 +5,7 @@
 </script>
 
 {#if !delay}
-  <div class="w-full flex justify-center items-center text-tprimary/80">
+  <div class="w-full flex justify-center items-center text-white/80">
     loading 
     <div class='animate-spin ml-2'>
       <span class="relative bottom-0.5">

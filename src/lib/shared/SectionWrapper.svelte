@@ -4,7 +4,7 @@
 </script>
 
 {#if dependent}
-  <div class="{hFull && 'h-full'}">
+  <div class="snap-start {hFull && 'h-full'}">
     <slot />
   </div>
 {/if}

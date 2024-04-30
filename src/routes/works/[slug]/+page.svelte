@@ -12,7 +12,7 @@
   $: detailsUrl = work ? '/works/' + slug + '/details' : false
 </script>
 
-<div class="flex flex-1 md:h-full flex-col items-end justify-between">
+<div class="flex flex-1 md:h-full flex-col items-end justify-end">
 
   {#if work}
     <GraphHud {title} {subtitle} {detailsUrl} {closeUrl} />

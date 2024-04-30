@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { cameraTarget, cameraFocalLength } from '$lib/stores'
+import { cameraTarget, cameraZoom } from '$lib/stores'
 import { goto } from '$app/navigation'
 import { forceCollide } from 'd3-force';
 import SpriteText from 'three-spritetext'
@@ -16,9 +16,7 @@ export class ForceGraph {
   #selectNeedsupdate = false
   #cameraNeedsUpdate = false
   #cameraTargetCoordinates = null
-  #focalLength = 18
-  #maxFocalLength = 100
-  #minFocalLength = 10
+  #zoom
   #initialCooldown = true
   
   constructor(ForceGraphConstructor) {
@@ -120,11 +118,11 @@ export class ForceGraph {
     }
   }
 
-  setFocalLength(focalLength) {
-    if (this.#focalLength !== focalLength) {
-      this.#focalLength = focalLength
-      this.#cameraNeedsUpdate = true
-    }
+  setZoom(zoom) {
+    if (this.#zoom === zoom) return 
+
+    this.#zoom = zoom
+    this.#cameraNeedsUpdate = true
   }
 
   setCameraTargetCoordinates(cameraTargetCoords) {
@@ -161,7 +159,8 @@ export class ForceGraph {
       if (x && y && z) {
         cameraTarget.set([this.#selectedNode.x, this.#selectedNode.y, this.#selectedNode.z])
       }
-      cameraFocalLength.set(this.#selectedNode.depth * 24 || 18)
+
+      cameraZoom.setZoomByIndex(this.#selectedNode.depth + 1)
     }
   }
 
@@ -190,11 +189,11 @@ export class ForceGraph {
     
       const distance = -1
       const distRatio = distance/Math.hypot(cameraTarget.x, cameraTarget.y, cameraTarget.z);
-
       const cameraPosition = cameraTarget.multiplyScalar(distRatio)
-
+      
       this.graph.cameraPosition(cameraPosition, this.scene.position)
-      this.camera.setFocalLength(this.#focalLength)
+      this.camera.zoom = this.#zoom
+      this.camera.updateProjectionMatrix()
 
       this.#cameraNeedsUpdate = false
     }
@@ -225,12 +224,14 @@ export class ForceGraph {
   }
 
   onWheel(event) {
-    const dy = event.deltaY
-    if (dy === 0) return 
+    // TODO: fix
+    // const dy = event.deltaY
+    // if (dy === 0) return 
     
-    dy > 0 
-      ? this.#focalLengthDown()
-      : this.#focalLengthUp() 
+    // dy > 0 
+    //   ? this.#zoomOut()
+    //   : this.#zoomIn() 
+    console.log('wheel')
   }
 
   #pauseHighlighted() {
@@ -260,21 +261,7 @@ export class ForceGraph {
     }
   }
 
-  #focalLengthUp() {
-    if (this.#focalLength >= this.#maxFocalLength) return 
-    this.#focalLength++
-    this.#updateFocalLength()
-  }
 
-  #focalLengthDown() {
-    if (this.#focalLength <= this.#minFocalLength) return 
-    this.#focalLength-- 
-    this.#updateFocalLength()
-  }
-
-  #updateFocalLength() {
-    this.camera.setFocalLength(this.#focalLength)
-  }
 
   #updateHighlight() {
     // fix issue reloading node objects

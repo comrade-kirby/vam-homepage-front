@@ -1,9 +1,8 @@
 <script>
   import { onMount } from 'svelte';
-  import { selected, root, forceGraph } from '$lib/stores'
+  import { selected, root, cameraZoom, forceGraph, cameraTarget } from '$lib/stores'
   import { ForceGraph } from './ForceGraph';
 
-  import { cameraTarget, cameraFocalLength } from '$lib/stores'
 
   let innerWidth
   let innerHeight
@@ -11,7 +10,7 @@
   const onEngineStopCallback = () => $forceGraph?.select($selected)
 
   $: $forceGraph?.setSize(innerWidth, innerHeight)
-  $: $forceGraph?.setFocalLength($cameraFocalLength)
+  $: $forceGraph?.setZoom($cameraZoom)
   $: $forceGraph?.setCameraTargetCoordinates($cameraTarget)
   // TODO: fix for initial load after graph has cooled
   $: $forceGraph?.select($selected)

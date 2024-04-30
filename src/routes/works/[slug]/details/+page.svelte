@@ -25,7 +25,7 @@
   $: relatedWorks = work && buildRelatedWorksList($root, closeUrl)
 </script>
 
-<div class="md:w-1/2 h-1/2 z-20 flex flex-col md:flex-row justify-end {
+<div class="pointer-events-none md:w-1/2 h-1/2 z-20 flex flex-col md:flex-row justify-end {
   minimized 
     ? 'h-fit flex-col md:h-full md:flex-col-reverse md:justify-between'
     : 'flex-auto md:flex-initial h-1/2 md:max-w-full md:h-full'

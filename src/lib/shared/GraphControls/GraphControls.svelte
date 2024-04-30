@@ -1,9 +1,21 @@
 <script>
+  import { cameraZoom } from '$lib/stores'
+  import ButtonStyles from '../ButtonStyles.svelte'
+
   export let offset
 </script>
 
-<div class="{offset} flex self-end w-24 h-48 z-20 flex border-2 border-orange-500">
-  <div class="h-48 m-2 z-30 bg-orange-500">
-    controls
+<div class="{offset} pointer-events-auto flex self-end p-4 z-20 flex">
+  <div class="flex flex-col space-y-1">
+    <button on:click={() => cameraZoom.zoomIn()} class="bg-bg-dark/40 rounded-lg">
+      <ButtonStyles outline xl>
+        <span>{@html '&plus;'}</span>
+      </ButtonStyles>
+    </button>
+    <button on:click={() => cameraZoom.zoomOut()} class="bg-bg-dark/40 rounded-lg">
+      <ButtonStyles outline xl>
+        <span>{@html '&minus;'}</span>
+      </ButtonStyles>
+    </button>
   </div>
 </div>

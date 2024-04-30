@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .graph-background {
+    background-size: 100% 100%;
+    background-position: 0px 0px;
+    background-image: radial-gradient(100% 100% at 50% 50%, theme('colors.dark') 0%, theme('colors.black') 26%, theme('colors.dark') 100%);
+  }
+}

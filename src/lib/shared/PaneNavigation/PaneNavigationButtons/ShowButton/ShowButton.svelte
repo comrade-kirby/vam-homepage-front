@@ -7,7 +7,7 @@
 </script>
 
 <button on:click={show} class="h-full">
-  <ButtonStyles xl>
+  <ButtonStyles layout xl>
     <span>{@html Html}</span>
   </ButtonStyles>
 </button>

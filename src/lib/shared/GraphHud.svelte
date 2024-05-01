@@ -18,7 +18,7 @@
 
     {#if detailsUrl}
       <a href={detailsUrl} class="block mt-6">
-        <ButtonStyles xs outline>
+        <ButtonStyles layout xs outline>
           <span>{detailsLinkText}</span>
         </ButtonStyles>
       </a>

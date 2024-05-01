@@ -45,7 +45,7 @@
     <div class="flex mt-4 p-4 border-2 border-primary/60 bg-orange-400/20 w-fit ">
       <span class="text-xs mr-2 text-white/70">content unavailable: </span>
       <a class="underline" href={url} target="_blank">
-        <ButtonStyles xs>
+        <ButtonStyles nav xs>
           <span>view on {publication} &#10548</span>
         </ButtonStyles>
       </a>

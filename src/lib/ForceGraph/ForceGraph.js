@@ -64,7 +64,7 @@ export class ForceGraph {
           return this.#textNode(node)
         }
       })
-      .nodeThreeObjectExtend(d => d.height === 0 ? true : false)
+      // .nodeThreeObjectExtend(d => d.height === 0 ? true : false)
   }
 
   attach(container, w, h) {
@@ -297,7 +297,7 @@ export class ForceGraph {
 
   #video2DNode(node) {
     const container = document.createElement('div')
-    container.style.border = "2px solid red"
+    // container.style.border = "2px solid red"
     container.style.padding = '10px'
     container.setAttribute('class', 'mycontainer')
     node.videoPlayer = new Player(container, {

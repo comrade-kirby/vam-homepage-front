@@ -8,7 +8,7 @@
   const workUrl = nodeData.slug
   const workDetailsUrl = workUrl + '/details'
 
-  const onHover = () => $forceGraph.onNavHover(workUrl)
+  const onHover = () => $forceGraph?.onNavHover(workUrl)
   
   $: linkToDetails = $page.url.pathname.includes('details')
   $: href = linkToDetails ? workDetailsUrl : workUrl

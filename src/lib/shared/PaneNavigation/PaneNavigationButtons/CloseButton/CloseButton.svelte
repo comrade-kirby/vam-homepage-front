@@ -7,7 +7,7 @@
 </script>
 
 <a {href}  class="h-full">
-  <ButtonStyles xl>
+  <ButtonStyles layout xl>
     <span>{@html xHtml}</span>
   </ButtonStyles>
 </a>

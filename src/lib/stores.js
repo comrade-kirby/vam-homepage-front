@@ -4,6 +4,7 @@ import { backOut } from 'svelte/easing'
 
 import { createCameraZoom, createSelected } from './customStores'
 
+export const flatNodeList = writable([])
 export const selected = createSelected()
 export const selectedVideoPlayer = writable(null)
 export const cameraZoom = createCameraZoom()

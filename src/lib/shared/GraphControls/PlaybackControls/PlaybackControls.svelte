@@ -1,10 +1,34 @@
 <script>
-  import { selectedVideoPlayer, cameraZoom, forceGraph, selectedPaused, selectedVolume} from '$lib/stores'
+  import { goto } from '$app/navigation'
+
+  import { selected, selectedVideoPlayer, flatNodeList, forceGraph, selectedPaused, selectedVolume} from '$lib/stores'
   import { ButtonStyles, Icon } from '$lib'
+
+  const next = () => {
+    const maxIndex = $flatNodeList.length - 1
+    const selectedIndex = $flatNodeList.findIndex(node => node === $selected)
+
+    const nextIndex = selectedIndex < maxIndex 
+      ? selectedIndex + 1 
+      : 0
+
+    const slug = $flatNodeList[nextIndex].data.slug
+    goto(slug)
+  }
+
+  const previous = () => {
+    const maxIndex = $flatNodeList.length - 1
+    const selectedIndex = $flatNodeList.findIndex(node => node === $selected)
+    const nextIndex = selectedIndex > 0 
+      ? selectedIndex - 1
+      : maxIndex
+
+    const slug = $flatNodeList[nextIndex].data.slug
+    goto(slug)
+  }
 
   $: isMuted = $selectedVolume === 0
   $: isPaused = $selectedPaused
-  $: console.log('is paused: ', isPaused)
 </script>
 
 {#if $selectedVideoPlayer}
@@ -18,7 +42,7 @@
     </button>
     
     <div class="pointer-events-auto flex space-x-4 px-6 bg-dark/40 border border-white/90 hover:border-secondary/90 rounded-lg">
-      <button on:click={() => cameraZoom.zoomIn()}>
+      <button on:click={previous}>
         <ButtonStyles layout xl>
           <Icon name="prev" />
         </ButtonStyles>
@@ -30,7 +54,7 @@
         </ButtonStyles>
       </button>
 
-      <button on:click={() => cameraZoom.zoomOut()}>
+      <button on:click={next}>
         <ButtonStyles layout xl>
           <Icon name="next" />
         </ButtonStyles>

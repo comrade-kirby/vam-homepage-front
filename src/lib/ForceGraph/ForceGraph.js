@@ -49,7 +49,6 @@ export class ForceGraph {
       .warmupTicks(1000)
       .cooldownTicks(0)
       .onEngineStop(() => {
-        console.log('engine stopped')
         if (this.#initialCooldown) {
           this.#selectNeedsUpdate = true
           onEngineStopCallback()
@@ -134,14 +133,12 @@ export class ForceGraph {
     player.requestFullscreen()
   }
 
+
   #getSelectedVideoPlayer = () => this.#selectedNode.videoPlayer
 
   #updatePauseState = () => {
     this.#getSelectedVideoPlayer()?.getPaused()
-      .then(state => {
-        console.log('pause state: ', state)
-        selectedPaused.set(state)
-    })
+      .then(state => selectedPaused.set(state))
   }
   
   #updateVolumeLevel = () => {

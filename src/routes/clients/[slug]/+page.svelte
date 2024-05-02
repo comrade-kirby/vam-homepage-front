@@ -1,5 +1,5 @@
 <script>
-  import { GraphHud } from '$lib'
+  import { GraphControls, GraphHud } from '$lib'
 
   export let data
 
@@ -13,3 +13,5 @@
 {#if client}
   <GraphHud {title} {detailsUrl} {closeUrl} />
 {/if}
+
+<GraphControls position="col-start-5 row-start-2"/>

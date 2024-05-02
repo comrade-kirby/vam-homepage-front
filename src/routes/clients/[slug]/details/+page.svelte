@@ -1,5 +1,6 @@
 <script>
   import {
+    GraphControls,
     SelectList,
     PlaylistItem,
     PressLink,
@@ -7,7 +8,7 @@
   } from '$lib'
 
   export let data
-  
+  let minimized = false
   
   $: client = data.client.attributes
   $: slug = '/' + client.slug
@@ -16,7 +17,7 @@
   $: presses = client.presses.data
 </script>
 
-<DetailsWrapper {closeUrl} title={client.name} minimizedLabelText={slug}>
+<DetailsWrapper bind:minimized {closeUrl} title={client.name} minimizedLabelText={slug}>
   <SelectList let:item={node}
     collapsable
     containsCurrent
@@ -35,3 +36,9 @@
     <PressLink {press} />
   </SelectList>
 </DetailsWrapper>
+
+<GraphControls position={
+  minimized 
+    ? 'col-start-5 row-end-2 col-span-1 lg:row-start-3'
+    : 'col-start-5 row-start-1 lg:col-start-4 lg:row-start-3'
+} />

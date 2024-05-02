@@ -1,6 +1,5 @@
 <script>
-  import { GraphHud } from '$lib'
-  import { GraphControls } from '$lib'
+  import { GraphControls, GraphHud } from '$lib'
 
   export let data
 

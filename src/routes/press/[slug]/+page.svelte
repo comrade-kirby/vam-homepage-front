@@ -1,5 +1,5 @@
 <script>
-  import { GraphHud } from '$lib'
+  import { GraphControls, GraphHud } from '$lib'
 
   export let data
 
@@ -14,3 +14,5 @@
 {#if press}
   <GraphHud {title} {textBlock} {detailsUrl} {closeUrl} detailsLinkText="full article" />
 {/if}
+
+<GraphControls position="col-start-5 row-start-2"/>

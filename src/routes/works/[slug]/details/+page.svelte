@@ -7,10 +7,10 @@
     PressLink,
     ClampParagraph,
     DetailsWrapper,
+    GraphControls,
     SectionLabel,
     PlaylistItem,
-    SelectList,
-    GraphControls
+    SelectList
   } from '$lib'
 
   export let data

@@ -15,7 +15,7 @@
 </script>
 
 <div class="pointer-events-none min-h-screen max-w-screen max-h-screen min-w-screen h-screen
-  grid grid-cols-[1rem_min-content_1fr_1fr_max-content] grid-rows-[minmax(0,_1fr)_repeat(2,_fit-content(100%))]
+  grid grid-cols-[1rem_min-content_1fr_1fr_max-content] grid-rows-[_1fr_repeat(2,_fit-content(100%))]
 ">
   {#if root}
     <SiteNav {forceGraph} />

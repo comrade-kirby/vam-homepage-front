@@ -46,7 +46,7 @@ export class ForceGraph {
         const nodeData =  node.data[0] || node.data
         goto(nodeData.slug)
       })
-      .warmupTicks(1000)
+      .warmupTicks(2000)
       .cooldownTicks(0)
       .onEngineStop(() => {
         if (this.#initialCooldown) {

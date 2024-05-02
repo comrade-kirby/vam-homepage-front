@@ -15,9 +15,9 @@
 </script>
 
 {#if minimized}
-  <div class="p-2
-    col-start-2 row-start-2 col-span-4 pb-1
-    lg:col-start-4 lg:row-start-1 lg:col-span-2 lg:row-span-1 lg:pl-1
+  <div class="
+    col-start-2 row-start-2 col-span-4 
+    lg:p-2 lg:col-start-4 lg:row-start-1 lg:col-span-2 lg:row-span-1 lg:pl-1
   ">
     <Minimized {show} {closeUrl} {minimizedIconText} {minimizedLabelText} />
   </div>

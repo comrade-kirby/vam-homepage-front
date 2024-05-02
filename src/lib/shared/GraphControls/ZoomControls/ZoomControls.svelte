@@ -1,17 +1,17 @@
 <script>
   import { cameraZoom } from '$lib/stores'
-  import { ButtonStyles } from '$lib'
+  import { ButtonStyles, Icon } from '$lib'
 </script>
 
 <div class="pointer-events-auto flex flex-col ml-3 space-y-1">
   <button on:click={() => cameraZoom.zoomIn()} class="bg-dark/40 rounded-lg">
     <ButtonStyles outline layout xl>
-      <span>{@html '&plus;'}</span>
+      <Icon name='plus' />
     </ButtonStyles>
   </button>
   <button on:click={() => cameraZoom.zoomOut()} class="bg-dark/40 rounded-lg">
     <ButtonStyles outline layout xl>
-      <span>{@html '&minus;'}</span>
+      <Icon name='minus' />
     </ButtonStyles>
   </button>
 </div>

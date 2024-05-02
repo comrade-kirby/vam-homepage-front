@@ -1,13 +1,13 @@
 <script>
-  import { ButtonStyles } from '$lib'
+  import { ButtonStyles, Icon } from '$lib'
   
   export let minimize
 
   const Html = '&#95;'
 </script>
 
-<button on:click={minimize} class="h-full">
+<button on:click={minimize} class="">
   <ButtonStyles layout xl>
-    <span>{@html Html}</span>
+    <Icon name="minimize" />
   </ButtonStyles>
 </button>

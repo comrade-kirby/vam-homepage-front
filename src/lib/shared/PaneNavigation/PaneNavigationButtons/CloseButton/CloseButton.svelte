@@ -1,13 +1,11 @@
 <script>
-  import { ButtonStyles } from '$lib'
+  import { ButtonStyles, Icon } from '$lib'
   
   export let href
-
-  const xHtml = '&#10005;'
 </script>
 
-<a {href}  class="h-full">
+<a {href} >
   <ButtonStyles layout xl>
-    <span>{@html xHtml}</span>
+    <Icon name="close" />
   </ButtonStyles>
 </a>

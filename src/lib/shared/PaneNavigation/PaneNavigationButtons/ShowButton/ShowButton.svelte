@@ -1,13 +1,13 @@
 <script>
-  import { ButtonStyles } from '$lib'
+  import { ButtonStyles, Icon } from '$lib'
   
   export let show
 
   const Html = '&#x25A1;'
 </script>
 
-<button on:click={show} class="h-full">
+<button on:click={show}>
   <ButtonStyles layout xl>
-    <span>{@html Html}</span>
+    <Icon name="expand" />
   </ButtonStyles>
 </button>

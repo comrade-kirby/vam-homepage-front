@@ -6,7 +6,7 @@
   export let minimize, show, closeUrl
 </script>
 
-<div class="flex ml-6 max-h-6 space-x-4 items-center">
+<div class="flex ml-6 space-x-4 items-start">
     {#if show}
       <ShowButton {show} />
     {/if}

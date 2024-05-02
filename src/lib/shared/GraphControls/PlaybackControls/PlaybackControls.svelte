@@ -32,7 +32,7 @@
 </script>
 
 {#if $selectedVideoPlayer}
-  <div class="pointer-events-auto flex m-4 space-x-1">
+  <div class="pointer-events-auto flex space-x-1 mt-3">
     <button class="bg-dark/40 rounded-lg" 
       on:click={() => isMuted ? $forceGraph.unMute() : $forceGraph.mute()}
     >

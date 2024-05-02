@@ -133,7 +133,6 @@ export class ForceGraph {
     player.requestFullscreen()
   }
 
-
   #getSelectedVideoPlayer = () => this.#selectedNode.videoPlayer
 
   #updatePauseState = () => {

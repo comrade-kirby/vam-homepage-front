@@ -3,4 +3,4 @@
 </script>
 
 
-<GraphControls position="col-start-5 row-start-2" />
+<GraphControls position="col-start-4 row-start-2 col-span-2" />

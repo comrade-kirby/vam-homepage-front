@@ -64,5 +64,5 @@
 <GraphControls position={
   minimized 
     ? 'col-start-5 row-end-2 col-span-1 lg:row-start-3'
-    : 'col-start-5 row-start-1 lg:col-start-4 lg:row-start-3'
+    : 'col-start-4 col-span-2 row-start-1 lg:col-start-3 lg:row-start-3'
 } />

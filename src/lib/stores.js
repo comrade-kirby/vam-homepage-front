@@ -5,7 +5,10 @@ import { backOut } from 'svelte/easing'
 import { createCameraZoom, createSelected } from './customStores'
 
 export const selected = createSelected()
+export const selectedVideoPlayer = writable(null)
 export const cameraZoom = createCameraZoom()
+export const selectedPaused = writable(false)
+export const selectedVolume = writable(0)
 export const forceGraph = writable(null)
 export const minimizeNav = writable(false)
 export const root = writable(null)

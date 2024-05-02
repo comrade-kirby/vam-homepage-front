@@ -9,3 +9,7 @@
     background-image: radial-gradient(100% 100% at 50% 50%, theme('colors.dark') 0%, theme('colors.black') 26%, theme('colors.dark') 100%);
   }
 }
+
+.mycontainer {
+  pointer-events: none !important;
+}

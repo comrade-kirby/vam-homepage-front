@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { cameraTarget, cameraZoom } from '$lib/stores'
+import { cameraTarget, cameraZoom, selectedPaused, selectedVideoPlayer, selectedVolume } from '$lib/stores'
 import { goto } from '$app/navigation'
 import { forceCollide } from 'd3-force';
 import SpriteText from 'three-spritetext'
@@ -10,10 +10,11 @@ import { CSS3DRenderer, CSS3DObject, CSS3DSprite } from 'three/examples/jsm/Addo
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
 
 export class ForceGraph {
+  #volume = 0
   #thumbnails = new Set()
   #highlightNodes = new Set()
   #selectedNode = null
-  #selectNeedsupdate = false
+  #selectNeedsUpdate = false
   #cameraNeedsUpdate = false
   #cameraTargetCoordinates = null
   #zoom
@@ -45,11 +46,12 @@ export class ForceGraph {
         const nodeData =  node.data[0] || node.data
         goto(nodeData.slug)
       })
-      // .warmupTicks(800)
-      // .cooldownTicks(1000)
+      .warmupTicks(1000)
+      .cooldownTicks(0)
       .onEngineStop(() => {
+        console.log('engine stopped')
         if (this.#initialCooldown) {
-          this.#selectNeedsupdate = true
+          this.#selectNeedsUpdate = true
           onEngineStopCallback()
           this.#initialCooldown = false
         }
@@ -105,6 +107,43 @@ export class ForceGraph {
     }
   }
 
+  playSelected = () => {
+    this.#getSelectedVideoPlayer().play()
+    this.#updatePauseState()
+  }
+
+  pauseSelected = () => {
+    this.#getSelectedVideoPlayer().pause()
+    this.#updatePauseState()
+  }
+
+  mute = () => {
+    this.#volume = 0
+    this.#getSelectedVideoPlayer().setVolume(this.#volume)
+    this.#updateVolumeLevel()
+  }
+
+  unMute = () => {
+    this.#volume = 1
+    this.#getSelectedVideoPlayer().setVolume(this.#volume)
+    this.#updateVolumeLevel()
+  }
+
+  #getSelectedVideoPlayer = () => this.#selectedNode.videoPlayer
+
+  #updatePauseState = () => {
+    this.#getSelectedVideoPlayer()?.getPaused()
+      .then(state => {
+        console.log('pause state: ', state)
+        selectedPaused.set(state)
+    })
+  }
+  
+  #updateVolumeLevel = () => {
+    this.#getSelectedVideoPlayer()?.getVolume()
+      .then(state => selectedVolume.set(state))
+  }
+
   updateWorks(root) {
     if (this.graph) {
       this.graph.graphData({
@@ -142,16 +181,18 @@ export class ForceGraph {
 
   select(node) {
     const isNewNode = this.#selectedNode !== node
-
-    if (node && this.graph && (isNewNode || this.#selectNeedsupdate)) {
-      this.#selectNeedsupdate = false
+    
+    if (node && this.graph && (isNewNode || this.#selectNeedsUpdate)) {
+      this.#selectNeedsUpdate = false
       this.#pauseHighlighted()
       this.#clearFocus()
       
       this.#selectedNode = node
       this.#highlightNodes.add(this.#selectedNode)
       this.#selectedNode.descendants().forEach(node => this.#highlightNodes.add(node))
-
+      const selectedPlayer = this.#selectedNode.videoPlayer
+      selectedPlayer?.play()
+      selectedPlayer?.setVolume(this.#volume)
       const {x, y, z} = this.#selectedNode
 
       this.#playHighlighted()
@@ -161,6 +202,10 @@ export class ForceGraph {
       }
 
       cameraZoom.setZoomByIndex(this.#selectedNode.depth + 1)
+
+      selectedVideoPlayer.set(this.#getSelectedVideoPlayer())
+      this.#updatePauseState()
+      this.#updateVolumeLevel()
     }
   }
 
@@ -224,14 +269,9 @@ export class ForceGraph {
   }
 
   onWheel(event) {
-    // TODO: fix
-    // const dy = event.deltaY
-    // if (dy === 0) return 
-    
-    // dy > 0 
-    //   ? this.#zoomOut()
-    //   : this.#zoomIn() 
-    console.log('wheel')
+    const dy = event.deltaY
+    if (dy === 0) return 
+    dy > 0 ? cameraZoom.zoomOut() : cameraZoom.zoomIn()
   }
 
   #pauseHighlighted() {
@@ -247,7 +287,12 @@ export class ForceGraph {
   #playHighlighted() {
     this.#highlightNodes.forEach(node => {
       if (node.videoPlayer) {
-        node.videoPlayer.play()
+        node.videoPlayer.play().then(() => {
+          if (node === this.#selectedNode) {
+            this.#updatePauseState()
+            this.#updateVolumeLevel()
+          }
+        })
       }
     })
   }
@@ -297,7 +342,6 @@ export class ForceGraph {
 
   #video2DNode(node) {
     const container = document.createElement('div')
-    // container.style.border = "2px solid red"
     container.style.padding = '10px'
     container.setAttribute('class', 'mycontainer')
     node.videoPlayer = new Player(container, {
@@ -310,6 +354,7 @@ export class ForceGraph {
       title: false,
       transcript: false,
       vimeo_logo: false,
+      controls: false,
       chromecast: false,
       width: 720,
       byline: false,
@@ -323,7 +368,7 @@ export class ForceGraph {
     })
     
     node.videoPlayer.on('play', () => {
-      // seems a bit slow maybe an onclick callback
+      // TODO: fix no clickable nodes
       if (this.#highlightNodes.has(node)) {
         this.console.log('already focused')
       } else {

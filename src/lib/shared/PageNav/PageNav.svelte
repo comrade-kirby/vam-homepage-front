@@ -4,12 +4,15 @@
 
   import { 
     ContentPane,
+    Minimized,
     PaneNavigation,
     ScrollContainer 
   } from '$lib'
   import PageNavContainer from './PageNavContainer/PageNavContainer.svelte'
 
   export let route
+
+  const minimizedIconText = 'nav'
 
   const show = () => minimizeNav.set(false)
   const minimize = () => minimizeNav.set(true)
@@ -19,16 +22,25 @@
 </script>
 
 
-<PageNavContainer minimized={$minimizeNav}>
-  <ContentPane styles="md:w-96 md:pl-16" minimized={$minimizeNav}>
-    <PaneNavigation {minimize} {show} minimized={$minimizeNav} closeUrl={!slug && '/'} {minimizedLabelText} minimizedIconText="nav" />
-    <ScrollContainer {show} minimized={$minimizeNav}>
-      <div class="md:hidden">
-        <slot  onClick={minimize} />
-      </div>
-      <div class="hidden md:block">
-        <slot />
-      </div>
-    </ScrollContainer>
-  </ContentPane>
-</PageNavContainer>
+{#if $minimizeNav}
+  <div class="relative p-2 pointer-events-auto
+    col-start-2 row-start-3 col-span-11 row-span-1 pb-1
+    lg:col-start-2 lg:row-start-1 lg:col-span-2 lg:row-span-full lg:pr-1
+  ">
+    <Minimized {show} {minimizedIconText} {minimizedLabelText} closeUrl={!slug && '/'} />
+  </div>
+{:else}
+  <PageNavContainer minimized={$minimizeNav}>
+    <ContentPane pageNav >
+      <PaneNavigation {minimize} closeUrl={!slug && '/'} {minimizedLabelText} />
+      <ScrollContainer {show} minimized={$minimizeNav}>
+        <div class="md:hidden">
+          <slot  onClick={minimize} />
+        </div>
+        <div class="hidden md:block">
+          <slot />
+        </div>
+      </ScrollContainer>
+    </ContentPane>
+  </PageNavContainer>
+{/if}

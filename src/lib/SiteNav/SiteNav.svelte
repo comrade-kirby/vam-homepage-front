@@ -8,8 +8,8 @@
   $: currentRoute = $page.route.id
 </script>
 
-<nav class="flex flex-col order-last md:order-first justify-end z-40 h-full max-w-6 bg-black border-primary-md/80 pr-2 border-l-2 md:pr-0 md:pl-2 md:justify-start md:border-l-0 md:border-r-2">
-  <ul role="list" class="relative flex flex-col items-end md:items-start mt-12 mb-20 max-w-full">
+<nav class="pointer-events-auto max-w-4 z-10 col-start-1 row-start-1 col-span-1 row-span-full flex items-end lg:items-start bg-black border-primary-md/80 border-r-2">
+  <ul role="list" class="relative flex flex-col mt-20 mb-36 max-w-full">
     {#each routes as route, index}
       <SiteNavItem title={route} selected={index === currentRouteIndex} />
     {/each}

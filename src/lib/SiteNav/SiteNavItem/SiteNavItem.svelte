@@ -10,11 +10,11 @@
 
 
 <SiteNavItemBorder {selected} >
-  <button on:click={() => minimizeNav.set(false)} class="{
+  <button on:click={() => minimizeNav.set(false)} class="relative right-3 {
     selected
-      ? 'text-secondary/90 pr-2 md:pr-0 md:pl-2'
+      ? 'text-secondary/90 pl-2'
       : 'text-white/70 hover:text-secondary/80'
-  } relative left-4 md:left-[unset] md:right-4 ">
+  }">
     <a {href} class="group pb-0.5 z-50 h-10 truncate ... capitalize flex items-center w-fit  text-base">
       {title}
     </a>

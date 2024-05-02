@@ -2,6 +2,4 @@
   import { GraphControls } from '$lib'
 </script>
 
-<div class="size-full flex items-end justify-end">
-  <GraphControls />
-</div>
+<GraphControls position="col-start-3 row-start-3"/>

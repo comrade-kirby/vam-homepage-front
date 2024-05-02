@@ -1,6 +1,7 @@
 <script>
   import { 
     ContentPane,
+    Minimized,
     PaneNavigation,
     ScrollContainer
   } from '$lib'
@@ -13,16 +14,24 @@
   const minimize = () => minimized = true
 </script>
 
-<main class="flex pointer-events-auto relative z-20 border-t md:border-t-0 md:border-l border-primary-md/80 {
-  minimized 
-    ? 'w-full h-fit md:border-b' 
-    : 'flex-auto md:flex-initial h-1/2 md:max-w-full md:h-full'
-}">
-  <ContentPane styles="md:w-128" {minimized}>
-    <PaneNavigation {minimize} {show} {closeUrl} {title} {subtitle} {minimized} {minimizedIconText} {minimizedLabelText} />
-    
-    <ScrollContainer {show} {minimized}>
-      <slot />
-    </ScrollContainer>
-  </ContentPane>
-</main>
+{#if minimized}
+  <div class="p-2
+    col-start-2 row-start-2 col-span-4 pb-1
+    lg:col-start-4 lg:row-start-1 lg:col-span-2 lg:row-span-1 lg:pl-1
+  ">
+    <Minimized {show} {closeUrl} {minimizedIconText} {minimizedLabelText} />
+  </div>
+{:else}
+  <main class="pointer-events-auto border-primary-md/80 overflow-hidden lg:overflow-visible
+    col-start-2 row-start-2 col-span-4 row-span-1 border-t
+    lg:max-w-96 lg:col-start-5 lg:row-start-1 lg:col-span-1 lg:row-span-full lg:border-r 
+  ">
+    <ContentPane styles="md:w-128">
+      <PaneNavigation {minimize} {closeUrl} {title} {subtitle}  />
+      
+      <ScrollContainer {show}>
+        <slot />
+      </ScrollContainer>
+    </ContentPane>
+  </main>
+{/if}

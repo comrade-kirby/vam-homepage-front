@@ -14,14 +14,12 @@
   $: selected.setFromPath($root, $page.url.pathname)
 </script>
 
-{#if root}
-  <div class="z-20 h-screen w-screen flex text-white/80">
+<div class="pointer-events-none min-h-screen max-w-screen max-h-screen min-w-screen h-screen
+  grid grid-cols-[1rem_min-content_1fr_1fr_max-content] grid-rows-[minmax(0,_1fr)_repeat(2,_fit-content(100%))]
+">
+  {#if root}
     <SiteNav {forceGraph} />
-    
-    <div class="w-full h-full flex flex-initial md:justify-between flex-col-reverse md:flex-row">
-      <slot />
-    </div>
-  </div>
-
-  <ForceGraph bind:forceGraph />
-{/if}
+  <slot />
+    <ForceGraph bind:forceGraph />
+  {/if}
+</div>

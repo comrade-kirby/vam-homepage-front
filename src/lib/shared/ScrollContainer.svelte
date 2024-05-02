@@ -1,9 +1,7 @@
 <script>
-  export let show, minimized
+  export let show
 </script>
 
-{#if !minimized}
-  <div on:click={show} class="overflow-y-scroll snap-y -mr-4 pr-4">
-    <slot />
-  </div>
-{/if}
+<div on:click={show} class="overflow-y-scroll snap-y mt-6 -mr-4 pr-4">
+  <slot />
+</div>

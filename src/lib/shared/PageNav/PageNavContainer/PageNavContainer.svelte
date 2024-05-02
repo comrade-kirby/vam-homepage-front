@@ -1,17 +1,12 @@
 <script>
-  import { page } from '$app/stores'
-
   import { forceGraph } from '$lib/stores'
-
-  export let minimized
 
   const cancelHover = () => $forceGraph.cancelNavHover()
 </script>
 
-<nav on:mouseleave={cancelHover} class="pointer-events-auto z-30 relative border-t md:border-t-0 md:border-r border-primary-md/80 { 
-  minimized
-    ? 'w-full h-fit self-end md:w-1/2 md:self-start md:border-b'
-    : 'h-1/2 w-full flex-auto md:h-screen md:max-w-fit'
-}">
+<nav on:mouseleave={cancelHover} class="pointer-events-auto border-primary-md/80 overflow-hidden
+  col-start-2 row-start-3 col-span-4 row-span-1 border-t
+  lg:col-start-2 lg:row-start-1 lg:col-span-1 lg:row-span-full lg:border-r
+">
   <slot />
 </nav>

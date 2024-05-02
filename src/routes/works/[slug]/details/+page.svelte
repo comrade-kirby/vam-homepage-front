@@ -27,42 +27,42 @@
   $: relatedWorks = work && buildRelatedWorksList($root, closeUrl)
 </script>
 
-<div class="pointer-events-none md:w-1/2 h-1/2 z-20 flex flex-col md:flex-row justify-end {
-  minimized 
-    ? 'h-fit flex-col md:h-full md:flex-col-reverse md:justify-between'
-    : 'flex-auto md:flex-initial h-1/2 md:max-w-full md:h-full'
-}">
-  <GraphControls offset="-mt-48 md:mt-0 -ml-24" />
 
-  {#if work}
-    <DetailsWrapper bind:minimized {closeUrl} {title} {subtitle} minimizedLabelText={slug}>
-      <SectionWrapper dependent={work.attributes.description}>
-        <ClampParagraph content={work.attributes.description} />
-      </SectionWrapper>
-      
-      <SelectList collapsable containsCurrent
-        let:isSelected
-        let:item={press}
-        labelText="press" 
-        items={presses}
-      >
-        
-        <PressLink {press} {isSelected} />
-      </SelectList>
 
-      <SelectList collapsable selectable containsCurrent
-        let:isSelected
-        let:item={node}
-        labelText="related work"
-        items={relatedWorks}
-      >
-        <PlaylistItem {node} {isSelected} />
-      </SelectList>
+{#if work}
+  <DetailsWrapper bind:minimized {closeUrl} {title} {subtitle} minimizedLabelText={slug}>
+    <SectionWrapper dependent={work.attributes.description}>
+      <ClampParagraph content={work.attributes.description} />
+    </SectionWrapper>
     
-      <SectionWrapper dependent={work.attributes.credits}>
-        <SectionLabel>credits</SectionLabel>
-        <ClampParagraph content={work.attributes.credits} short />
-      </SectionWrapper>
-    </DetailsWrapper>
-  {/if}
-</div>
+    <SelectList collapsable containsCurrent
+      let:isSelected
+      let:item={press}
+      labelText="press" 
+      items={presses}
+    >
+      
+      <PressLink {press} {isSelected} />
+    </SelectList>
+
+    <SelectList collapsable selectable containsCurrent
+      let:isSelected
+      let:item={node}
+      labelText="related work"
+      items={relatedWorks}
+    >
+      <PlaylistItem {node} {isSelected} />
+    </SelectList>
+  
+    <SectionWrapper dependent={work.attributes.credits}>
+      <SectionLabel>credits</SectionLabel>
+      <ClampParagraph content={work.attributes.credits} short />
+    </SectionWrapper>
+  </DetailsWrapper>
+{/if}
+
+<GraphControls position={
+  minimized 
+    ? 'col-start-5 row-end-2 col-span-1 lg:row-start-3'
+    : 'col-start-5 row-start-1 lg:col-start-4 lg:row-start-3'
+} />

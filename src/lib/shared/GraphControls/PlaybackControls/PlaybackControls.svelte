@@ -38,7 +38,7 @@
     </div>
 
     
-    <button on:click={() => cameraZoom.zoomOut()} class="bg-dark/40 rounded-lg">
+    <button on:click={() => $forceGraph.openFullscreen()} class="bg-dark/40 rounded-lg">
       <ButtonStyles outline layout xl>
         <Icon name="fullscreen" />
       </ButtonStyles>

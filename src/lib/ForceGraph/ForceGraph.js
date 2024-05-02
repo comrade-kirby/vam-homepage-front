@@ -129,6 +129,11 @@ export class ForceGraph {
     this.#updateVolumeLevel()
   }
 
+  openFullscreen = () => {
+    const player = this.#getSelectedVideoPlayer()
+    player.requestFullscreen()
+  }
+
   #getSelectedVideoPlayer = () => this.#selectedNode.videoPlayer
 
   #updatePauseState = () => {

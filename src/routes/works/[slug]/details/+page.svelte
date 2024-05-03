@@ -1,5 +1,6 @@
 <script>
   import { root } from '$lib/stores.js'
+  import { minimizeDetails } from '$lib/stores.js'
   import { buildRelatedWorksList } from '$lib/helpers.js'
 
   import {
@@ -15,8 +16,6 @@
 
   export let data
 
-  let minimized = false
-
   $: work = data?.work?.data
   $: slug = '/' + work?.attributes.slug
   $: closeUrl ='/works' + slug 
@@ -30,7 +29,7 @@
 
 
 {#if work}
-  <DetailsWrapper bind:minimized {closeUrl} {title} {subtitle} minimizedLabelText={slug}>
+  <DetailsWrapper {closeUrl} {title} {subtitle} minimizedLabelText={slug}>
     <SectionWrapper dependent={work.attributes.description}>
       <ClampParagraph content={work.attributes.description} />
     </SectionWrapper>
@@ -62,7 +61,7 @@
 {/if}
 
 <GraphControls position={
-  minimized 
+  $minimizeDetails 
     ? 'col-start-5 row-end-2 col-span-1 lg:row-start-3'
     : 'col-start-4 col-span-2 row-start-1 lg:col-start-3 lg:row-start-3'
 } />

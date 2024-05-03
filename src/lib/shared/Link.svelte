@@ -1,7 +1,7 @@
 <script>
   export let text, subtext, href, clamp1, onHover, isSelected, onClick
 
-  const textSize = subtext ? 'text-2xs' : 'text-xs' 
+  const textSize = subtext ? 'text-3xs md:text-2xs' : 'text-2xs md:text-xs' 
 </script>
 
 <a {href} on:click={onClick} on:pointerenter={onHover}

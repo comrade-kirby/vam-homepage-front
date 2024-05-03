@@ -7,7 +7,7 @@
   export let minimized, title, subtitle, minimize, minimizedLabelText, show, closeUrl, minimizedIconText
 </script>
 
-<div class="z-10 w-full h-fit flex flex-col {(!minimized && !title) && 'h-4'}">
+<div class="z-10 w-full h-fit flex flex-col {(!minimized && !title) && 'h-0 lg:h-4'}">
   <div class="flex {title ? 'justify-between' : 'justify-end'} w-full">
     {#if !minimized}
       <PaneNavigationArt onClick={show} display={title} />

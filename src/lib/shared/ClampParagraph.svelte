@@ -17,7 +17,7 @@
   $: needsClamp = short ? h > 70 : h > 100
 </script>
 
-<div bind:clientHeight={h} class="flex flex-col mb-6 text-xs text-white/70 leading-relaxed">
+<div bind:clientHeight={h} class="flex flex-col mb-4 md:mb-6 text-2xs md:text-xs text-white/70 leading-relaxed">
   <p class={
     needsClamp && isClamped 
       ? short

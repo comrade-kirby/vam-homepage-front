@@ -15,7 +15,7 @@
       ? 'text-secondary/90 pl-2'
       : 'text-white/70 hover:text-secondary/80'
   }">
-    <a {href} class="group pb-0.5 z-50 h-10 truncate ... capitalize flex items-center w-fit  text-base">
+    <a {href} class="group pb-0.5 z-50 h-10 truncate ... capitalize flex items-center w-fit text-xs md:text-base">
       {title}
     </a>
   </button>

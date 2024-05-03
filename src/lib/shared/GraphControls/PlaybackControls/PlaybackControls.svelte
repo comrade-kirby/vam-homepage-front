@@ -41,7 +41,7 @@
       </ButtonStyles>
     </button>
     
-    <div class="pointer-events-auto flex space-x-4 px-6 bg-dark/40 border border-white/60 hover:border-secondary/90 rounded-lg">
+    <div class="pointer-events-auto flex space-x-6 px-6 bg-dark/40 border border-white/60 hover:border-secondary/90 rounded-lg">
       <button on:click={previous}>
         <ButtonStyles layout xl>
           <Icon name="prev" />

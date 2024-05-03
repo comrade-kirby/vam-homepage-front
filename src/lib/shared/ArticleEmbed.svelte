@@ -52,7 +52,7 @@
     </div>
   {/if}
   
-  <div bind:this={container} class="h-full bg-white/90  {(!loading && validFrame) ? 'visible' : 'invisible'}">
+  <div bind:this={container} class="h-full min-h-128 bg-white/90  {(!loading && validFrame) ? 'visible' : 'invisible'}">
     <iframe bind:this={frame} src={url} style="width:100%; height:100%;" frameborder="0"></iframe>
   </div>
 </SectionWrapper>

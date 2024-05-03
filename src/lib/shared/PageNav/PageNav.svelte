@@ -24,7 +24,7 @@
 
 {#if $minimizeNav}
   <div class="relative pointer-events-auto
-    col-start-2 row-start-3 col-span-11 row-span-1
+    col-start-2 row-start-3 col-span-5 row-span-1
     lg:p-2 lg:col-start-2 lg:row-start-1 lg:col-span-2 lg:row-span-full lg:pr-1
   ">
     <Minimized {show} {minimizedIconText} {minimizedLabelText} closeUrl={!slug && '/'} />

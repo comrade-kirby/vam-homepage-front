@@ -1,13 +1,18 @@
 import * as THREE from 'three'
 import { cameraTarget, cameraZoom, selectedPaused, selectedVideoPlayer, selectedVolume } from '$lib/stores'
 import { goto } from '$app/navigation'
-import { forceCollide } from 'd3-force';
+import { forceCollide } from 'd3-force'
 import SpriteText from 'three-spritetext'
 import Player from '@vimeo/player'
 import { backOut, expoInOut } from "svelte/easing"
 
-import { CSS3DRenderer, CSS3DObject, CSS3DSprite } from 'three/examples/jsm/Addons.js';
+import { CSS3DRenderer, CSS3DObject, CSS3DSprite } from 'three/examples/jsm/Addons.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
+
+
 
 export class ForceGraph {
   #volume = 0
@@ -19,7 +24,22 @@ export class ForceGraph {
   #cameraTargetCoordinates = null
   #zoom
   #initialCooldown = true
+  #bloomMaterial = new THREE.MeshStandardMaterial({
+    toneMapped: false,
+    emissive: "red",
+    emissiveIntensity: 10
+  })
+  #defaultMaterial = new THREE.MeshStandardMaterial({
+    toneMapped: false,
+    emissive: "blue",
+    emissiveIntensity: 10
+  })
+  #transparentMaterial = new THREE.MeshLambertMaterial({
+    transparent: true,
+    opacity: 0
+  })
   
+
   constructor(ForceGraphConstructor) {
     this.ForceGraphConstructor = ForceGraphConstructor
   }
@@ -32,22 +52,19 @@ export class ForceGraph {
       .dagMode('radialout')
       .nodeRelSize(34)
       .nodeId('data')
-      .linkOpacity('0.2')
-      .linkWidth((link) => this.#highlightNodes.has(link.source) ?  0.3 : 0.2 )
       .backgroundColor('rgba(0, 0, 0, 0)')
       .enableNodeDrag(false)
-      .linkColor(link => {
-
-        return link.source.depth === 0 
-          ? 'transparent'
-          : this.#highlightNodes.has(link.source) ? "#F6993C" : "#292E1E"
+      .linkMaterial(link => {
+        if (link.source.depth === 0) return this.#transparentMaterial
+        return this.#highlightNodes.has(link.source) 
+          ? this.#bloomMaterial
+          : this.#defaultMaterial
       })
       .onNodeClick((node) => {
         const nodeData =  node.data[0] || node.data
         goto(nodeData.slug)
       })
-      .warmupTicks(2000)
-      .cooldownTicks(0)
+      .warmupTicks(20000)
       .onEngineStop(() => {
         if (this.#initialCooldown) {
           this.#selectNeedsUpdate = true
@@ -65,7 +82,7 @@ export class ForceGraph {
           return this.#textNode(node)
         }
       })
-      // .nodeThreeObjectExtend(d => d.height === 0 ? true : false)
+      .nodeThreeObjectExtend(d => d.height === 0 ? true : false)
   }
 
   attach(container, w, h) {
@@ -77,18 +94,36 @@ export class ForceGraph {
       this.graph.cameraPosition({x: 0, y: 0, z: 0})
       
       this.scene = this.graph.scene()
-      this.scene.add(new THREE.DirectionalLight( 0xffffff, 3 ))
+      // this.scene.add(new THREE.DirectionalLight( 0xffffff, 3 ))
       
       this.controls = this.graph.controls()
       this.controls.rotateSpeed = -1
       this.controls.enablePan = false
       this.controls.enableZoom = false
-      
-      this.camera = this.controls.object 
+      this.camera = this.graph.camera()
+      this.cameraControls = this.controls.object 
       this.renderer = this.graph.renderer()
-      this.renderer.toneMapping = THREE.ReinhardToneMapping
+      this.renderer.outputEncoding = THREE.sRGBEncoding
+      this.renderer.toneMapping = THREE.ACESFilmicToneMapping
 
+      const renderTarget = new THREE.WebGLRenderTarget(w, h, {
+        type: THREE.HalfFloatType,
+        format: THREE.RGBAFormat,
+        encoding: THREE.sRGBEncoding,
+      })
+      renderTarget.samples = 8
+      const renderScene = new RenderPass(this.scene, this.camera)
+     
+      const bloomPass = new UnrealBloomPass(undefined, 1, 1, 1)
+
+      const bloomComposer = new EffectComposer( this.renderer );
+			bloomComposer.addPass( renderScene );
+			bloomComposer.addPass( bloomPass );
+      const outputPass = new OutputPass()
+      bloomComposer.addPass(outputPass)
+      
       this.renderer.setAnimationLoop(() => {
+        bloomComposer.render()
         this.#updateCamera()
         this.#thumbnails.forEach(thumbnail => {
           thumbnail.lookAt(scene.position)
@@ -97,12 +132,9 @@ export class ForceGraph {
       
       this.setSize(w, h)
       
-      // const bloomPass = new UnrealBloomPass();
-      // // console.log(bloomPass)
-      // bloomPass.strength = 13
-      // bloomPass.radius = 1
-      // bloomPass.threshold = 0
-      // this.graph.postProcessingComposer().addPass(bloomPass);
+     
+     
+      // this.graph.postProcessingComposer().renderToScreen = false
     }
   }
 
@@ -189,8 +221,10 @@ export class ForceGraph {
       this.#clearFocus()
       
       this.#selectedNode = node
+      
       this.#highlightNodes.add(this.#selectedNode)
       this.#selectedNode.descendants().forEach(node => this.#highlightNodes.add(node))
+
       const selectedPlayer = this.#selectedNode.videoPlayer
       selectedPlayer?.play()
       selectedPlayer?.setVolume(this.#volume)
@@ -198,6 +232,7 @@ export class ForceGraph {
 
       this.#playHighlighted()
       this.#updateHighlight()
+      
       if (x && y && z) {
         cameraTarget.set([this.#selectedNode.x, this.#selectedNode.y, this.#selectedNode.z])
       }
@@ -238,8 +273,8 @@ export class ForceGraph {
       const cameraPosition = cameraTarget.multiplyScalar(distRatio)
       
       this.graph.cameraPosition(cameraPosition, this.scene.position)
-      this.camera.zoom = this.#zoom
-      this.camera.updateProjectionMatrix()
+      this.cameraControls.zoom =  this.#zoom
+      this.cameraControls.updateProjectionMatrix()
 
       this.#cameraNeedsUpdate = false
     }
@@ -312,10 +347,11 @@ export class ForceGraph {
   #updateHighlight() {
     // fix issue reloading node objects
     this.graph
+      .linkMaterial(this.graph.linkMaterial())
       // .nodeThreeObject(this.graph.nodeThreeObject())
-      .linkColor(this.graph.linkColor())
-      .linkWidth(this.graph.linkWidth())
-      .linkOpacity(this.graph.linkOpacity())
+      // .linkColor(this.graph.linkColor())
+      // .linkWidth(this.graph.linkWidth())
+      // .linkOpacity(this.graph.linkOpacity())
   }
 
   #imageNode(node) {
@@ -386,30 +422,6 @@ export class ForceGraph {
     return videoNode
   }
   
-  // unused + broken
-  #video3DNode(node) {
-    const videoUrl = "https://player.vimeo.com/progressive_redirect/playback/854513335/rendition/1080p/file.mp4?loc=external&log_user=0&signature=4403e3e0dea912f874f474ba766db92faea7546ad2a7eb0c1603bdc4c76dde8a"
-    
-    const video = document.createElement('video')
-    video.setAttribute('width', '320')
-    video.setAttribute('height', '320')
-    video.setAttribute('src', videoUrl)
-    
-    const videoTexture = new THREE.VideoTexture( video )
-    
-    videoTexture.colorSpace = THREE.SRGBColorSpace
-    videoTexture.format = THREE.RGBFormat;
-    videoTexture.needsUpdate = true
-
-    const parameters = {color: 0xffffff, map: videoTexture}
-    const material = new THREE.MeshLambertMaterial( parameters );
-    material.needsUpdate = true
-    const geometry = new THREE.BoxGeometry( 36, 36, 36 );
-    const mesh = new THREE.Mesh( geometry, material );
-    
-    return mesh
-  }
-
   #textNode(node) {
     let text = ""
 

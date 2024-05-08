@@ -26,13 +26,13 @@ export class ForceGraph {
   #initialCooldown = true
   #bloomMaterial = new THREE.MeshStandardMaterial({
     toneMapped: false,
-    emissive: "red",
+    emissive: "#F6993C",
     emissiveIntensity: 10
   })
   #defaultMaterial = new THREE.MeshStandardMaterial({
     toneMapped: false,
-    emissive: "blue",
-    emissiveIntensity: 10
+    emissive: "#F6993C",
+    emissiveIntensity: 3
   })
   #transparentMaterial = new THREE.MeshLambertMaterial({
     transparent: true,
@@ -82,7 +82,7 @@ export class ForceGraph {
           return this.#textNode(node)
         }
       })
-      .nodeThreeObjectExtend(d => d.height === 0 ? true : false)
+      // .nodeThreeObjectExtend(d => d.height === 0 ? true : false)
   }
 
   attach(container, w, h) {

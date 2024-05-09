@@ -34,6 +34,7 @@ export async function load({}) {
       ? categories[categoryIndex]
       : categories.push(newCategory) && newCategory
     
+    
     const clientIndex = clients.findIndex(client => client.slug === newClient.slug)
     const client = clientIndex > -1 
       ? clients[clientIndex]
@@ -46,6 +47,7 @@ export async function load({}) {
   })
 
   const graphData = group(works, d => d.category, d => d.client)
+  
   return { works, graphData }
 }  
 

@@ -13,3 +13,8 @@
 .mycontainer {
   pointer-events: none !important;
 }
+
+.mycontainer h1 {
+  color: white;
+  font-size: 18px;
+}

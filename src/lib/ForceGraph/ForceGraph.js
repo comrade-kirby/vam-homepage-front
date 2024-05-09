@@ -22,7 +22,6 @@ export class ForceGraph {
   #selectNeedsUpdate = false
   #cameraNeedsUpdate = false
   #cameraTargetCoordinates = null
-  #zoom
   #initialCooldown = true
   #bloomMaterial = new THREE.MeshStandardMaterial({
     toneMapped: false,
@@ -50,10 +49,13 @@ export class ForceGraph {
       extraRenderers: [new CSS3DRenderer()]
     })
       .dagMode('radialout')
-      .nodeRelSize(34)
+      .nodeRelSize(10)
+      .nodeVal(node => node.depth)
       .nodeId('data')
       .backgroundColor('rgba(0, 0, 0, 0)')
+      .showNavInfo(false)
       .enableNodeDrag(false)
+      .nodeVisibility((node) => node.depth > 0)
       .linkMaterial(link => {
         if (link.source.depth === 0) return this.#transparentMaterial
         return this.#highlightNodes.has(link.source) 
@@ -61,6 +63,7 @@ export class ForceGraph {
           : this.#defaultMaterial
       })
       .onNodeClick((node) => {
+        if (node.depth === 0) return
         const nodeData =  node.data[0] || node.data
         goto(nodeData.slug)
       })
@@ -76,12 +79,12 @@ export class ForceGraph {
         // prevent reloading of videos on highlight update
         if (node.data.oembedData) {
             const thumbnail = this.#video2DNode(node)
-            
             return thumbnail
         } else {
           return this.#textNode(node)
         }
       })
+      .nodeThreeObjectExtend(d => d.height === 0)
       // .nodeThreeObjectExtend(d => d.height === 0 ? true : false)
   }
 
@@ -191,10 +194,8 @@ export class ForceGraph {
   }
 
   setZoom(zoom) {
-    if (this.#zoom === zoom) return 
-
-    this.#zoom = zoom
-    this.#cameraNeedsUpdate = true
+    this.cameraControls.zoom = zoom
+    this.cameraControls.updateProjectionMatrix()
   }
 
   setCameraTargetCoordinates(cameraTargetCoords) {
@@ -273,9 +274,6 @@ export class ForceGraph {
       const cameraPosition = cameraTarget.multiplyScalar(distRatio)
       
       this.graph.cameraPosition(cameraPosition, this.scene.position)
-      this.cameraControls.zoom =  this.#zoom
-      this.cameraControls.updateProjectionMatrix()
-
       this.#cameraNeedsUpdate = false
     }
   }
@@ -321,16 +319,16 @@ export class ForceGraph {
   }
 
   #playHighlighted() {
-    this.#highlightNodes.forEach(node => {
-      if (node.videoPlayer) {
-        node.videoPlayer.play().then(() => {
-          if (node === this.#selectedNode) {
-            this.#updatePauseState()
-            this.#updateVolumeLevel()
-          }
-        })
-      }
-    })
+    // this.#highlightNodes.forEach(node => {
+    //   if (node.videoPlayer) {
+    //     node.videoPlayer.play().then(() => {
+    //       if (node === this.#selectedNode) {
+    //         this.#updatePauseState()
+    //         this.#updateVolumeLevel()
+    //       }
+    //     })
+    //   }
+    // })
   }
 
   #clearFocus() {
@@ -342,45 +340,14 @@ export class ForceGraph {
     }
   }
 
-
-
   #updateHighlight() {
-    // fix issue reloading node objects
-    this.graph
-      .linkMaterial(this.graph.linkMaterial())
-      // .nodeThreeObject(this.graph.nodeThreeObject())
-      // .linkColor(this.graph.linkColor())
-      // .linkWidth(this.graph.linkWidth())
-      // .linkOpacity(this.graph.linkOpacity())
-  }
-
-  #imageNode(node) {
-    let thumbnail = node.data.oembedData.thumbnail
-    const imgTexture = new THREE.TextureLoader().load(thumbnail)
-    imgTexture.colorSpace = THREE.SRGBColorSpace
-    const material = new THREE.MeshBasicMaterial({ map: imgTexture })
-    const plane = new THREE.Mesh(new THREE.PlaneGeometry(64, 36), material)
-    plane.material.side = THREE.DoubleSide
-  
-    return plane
-  }
-
-  #animatedNode(node) {
-    const animatedThumbnails = node.data.animatedThumbnails
-    const hq = animatedThumbnails.data[0].sizes[2]
-    const img = document.createElement('img')
-    img.src = hq.link
-    const thumbnail = new CSS3DObject(img)
-
-    thumbnail.scale.set(0.1, 0.1, 0.1);
-    
-    return thumbnail
+    this.graph.linkMaterial(this.graph.linkMaterial())
   }
 
   #video2DNode(node) {
     const container = document.createElement('div')
-    container.style.padding = '10px'
     container.setAttribute('class', 'mycontainer')
+   
     node.videoPlayer = new Player(container, {
       id: node.data.videoId,
       // id will not work for unlisted videos.
@@ -403,7 +370,11 @@ export class ForceGraph {
       muted: true,
       pip: false
     })
+    const label = document.createElement('h1')
+    label.innerHTML = `${node.data.attributes.client.data.attributes.name}  |  ${node.data.attributes.title}`
+    container.style.padding = '10px'
     
+    container.append(label)
     node.videoPlayer.on('play', () => {
       // TODO: fix no clickable nodes
       if (this.#highlightNodes.has(node)) {
@@ -417,7 +388,6 @@ export class ForceGraph {
     const videoNode = new CSS3DObject(node.videoPlayer.element)
     // add label to video
     videoNode.scale.set(0.1, 0.1, 0.1);
-    
     this.#thumbnails.add(videoNode)
     return videoNode
   }
@@ -432,13 +402,13 @@ export class ForceGraph {
 
     const sprite = new SpriteText(text)
   
-    sprite.borderWidth = text ? 0.3 : 0
     sprite.material.depthWrite = false // make sprite background transparent
     sprite.center = {x: -0.1, y: 0.5}
     sprite.padding = 2
-    sprite.color = '#9C5207'
-    sprite.borderRadius = 2
-    sprite.borderColor = '#9C5207'
+    sprite.color = 'black'
+    sprite.strokeWidth = '0.5'
+    sprite.strokeColor = '#F6993C'
+    sprite.opacity = 1
     sprite.textHeight = 1
     
     return sprite

@@ -1,23 +1,33 @@
 import * as THREE from 'three'
-import { cameraTarget, cameraZoom, selectedPaused, selectedVideoPlayer, selectedVolume } from '$lib/stores'
-import { goto } from '$app/navigation'
-import { forceCollide } from 'd3-force'
-import SpriteText from 'three-spritetext'
 import Player from '@vimeo/player'
-import { backOut, expoInOut } from "svelte/easing"
 
-import { CSS3DRenderer, CSS3DObject, CSS3DSprite } from 'three/examples/jsm/Addons.js'
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/Addons.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
+import SpriteText from 'three-spritetext'
+import { goto } from '$app/navigation'
+import { forceCollide } from 'd3-force'
+import { backOut, expoInOut } from "svelte/easing"
 
+import { 
+  cameraTarget,
+  cameraZoom,
+  selectedPaused,
+  selectedVideoPlayer,
+  selectedVolume
+} from '$lib/stores'
 
 
 export class ForceGraph {
   #volume = 0
   #thumbnails = new Set()
   #highlightNodes = new Set()
+  #clock = new THREE.Clock();
+  #ocean
+  #mixer
   #selectedNode = null
   #selectNeedsUpdate = false
   #cameraNeedsUpdate = false
@@ -38,7 +48,6 @@ export class ForceGraph {
     opacity: 0
   })
   
-
   constructor(ForceGraphConstructor) {
     this.ForceGraphConstructor = ForceGraphConstructor
   }
@@ -88,6 +97,33 @@ export class ForceGraph {
       // .nodeThreeObjectExtend(d => d.height === 0 ? true : false)
   }
 
+  loadOcean = (scene) => {
+    const loader = new GLTFLoader();
+
+    loader.load( '/ocean/scene.gltf', ( gltf ) => {
+      this.#mixer = new THREE.AnimationMixer(gltf.scene);
+      this.#mixer.timeScale = 0.1
+      this.#mixer.clipAction(gltf.animations[0]).play(); 
+
+      this.#ocean = gltf.scene
+      this.#ocean.traverse( (object)=> {
+        if (object.isMesh) {
+          console.log(object.material)
+          object.material.opacity = 0.2
+          object.material.color = new THREE.Color( 0xF7FDFF );
+          object.material.wireframe = true
+        }
+      })
+
+      scene.add(this.#ocean);
+      this.#ocean.scale.set(200, 200, 200)
+    }, 
+    undefined, 
+    ( error ) => {
+      console.error( error );
+    } );
+  }
+
   attach(container, w, h) {
     if (this.graph) {
       this.graph(container)
@@ -97,6 +133,7 @@ export class ForceGraph {
       this.graph.cameraPosition({x: 0, y: 0, z: 0})
       
       this.scene = this.graph.scene()
+      
       // this.scene.add(new THREE.DirectionalLight( 0xffffff, 3 ))
       
       this.controls = this.graph.controls()
@@ -104,6 +141,7 @@ export class ForceGraph {
       this.controls.enablePan = false
       this.controls.enableZoom = false
       this.camera = this.graph.camera()
+      this.loadOcean(this.scene)
       this.cameraControls = this.controls.object 
       this.renderer = this.graph.renderer()
       this.renderer.outputEncoding = THREE.sRGBEncoding
@@ -126,6 +164,20 @@ export class ForceGraph {
       bloomComposer.addPass(outputPass)
       
       this.renderer.setAnimationLoop(() => {
+        if (this.#ocean) {
+
+          const zoom = this.cameraControls.zoom
+          this.#ocean.position.copy( this.camera.position );
+          this.#ocean.rotation.copy( this.camera.rotation );
+          this.#ocean.translateZ((zoom * -200) -500)
+          this.#ocean.translateY((-25 / zoom) - 25 );
+          this.#ocean.updateMatrix();
+          
+        }
+        if (this.#mixer) {
+          this.#mixer.update(this.#clock.getDelta());
+        }
+
         bloomComposer.render()
         this.#updateCamera()
         this.#thumbnails.forEach(thumbnail => {
@@ -134,10 +186,6 @@ export class ForceGraph {
       })
       
       this.setSize(w, h)
-      
-     
-     
-      // this.graph.postProcessingComposer().renderToScreen = false
     }
   }
 

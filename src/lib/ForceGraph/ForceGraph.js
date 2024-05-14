@@ -6,6 +6,7 @@ import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/Addons.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import { BokehPass } from 'three/examples/jsm/postprocessing/BokehPass.js'
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
 import SpriteText from 'three-spritetext'
 import { goto } from '$app/navigation'
@@ -154,12 +155,19 @@ export class ForceGraph {
       })
       renderTarget.samples = 8
       const renderScene = new RenderPass(this.scene, this.camera)
-     
       const bloomPass = new UnrealBloomPass(undefined, 1, 1, 1)
-
       const bloomComposer = new EffectComposer( this.renderer );
 			bloomComposer.addPass( renderScene );
-			bloomComposer.addPass( bloomPass );
+      const bokehPass = new BokehPass( this.scene, this.camera, {
+        focus: 900,
+        aperture: 0.00001,
+        maxblur: 0.001
+      } );
+      bokehPass.needsSwap = true;
+
+      bloomComposer.addPass( bloomPass );
+      bloomComposer.addPass(bokehPass)
+
       const outputPass = new OutputPass()
       bloomComposer.addPass(outputPass)
       

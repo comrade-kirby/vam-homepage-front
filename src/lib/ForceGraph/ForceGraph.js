@@ -446,9 +446,6 @@ export class ForceGraph {
       pip: false
     })
 
-    // node.videoPlayer.loadVideo({id: node.data.videoId}).then(() => console.log('loaded')).catch((err) => console.log(err))
-    
-
     const label = document.createElement('h1')
     label.innerHTML = `${node.data.attributes.client.data.attributes.name}  |  ${node.data.attributes.title}`
     container.style.padding = '10px'

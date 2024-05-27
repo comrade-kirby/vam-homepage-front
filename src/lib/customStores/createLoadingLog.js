@@ -47,14 +47,12 @@ export const createLoadingLog = () => {
       const log = prev[logId]
       
       if (log.multiple) {
-        log.state ||= 'started'
         log.totalCount ++
         log.onStarted = `loading videos... [${log.loadedCount}/${log.totalCount}]`
-      } else {
-        log.state = 'started'
-        log.startTime = new Date()
-      }
+      } 
 
+      log.state ||= 'started'
+      log.startTime ||= new Date()
 
       return prev
     })
@@ -67,12 +65,15 @@ export const createLoadingLog = () => {
       if (log.multiple) {
         log.loadedCount ++
         log.onStarted = `loading videos... [${log.loadedCount}/${log.totalCount}]`
-        if (log.loadedCount === log.totalCount) log.state = 'complete'
+        
+        if (log.loadedCount === log.totalCount) {
+          log.state = 'complete'
+          log.onComplete = `videos loaded. [${log.loadedCount}/${log.totalCount}]`
+        }
       } else {
         log.state = 'complete'
         log.startTime ||= new Date()
       }
-
 
       return prev
     })

@@ -445,12 +445,17 @@ export class ForceGraph {
       muted: true,
       pip: false
     })
+
+    // node.videoPlayer.loadVideo({id: node.data.videoId}).then(() => console.log('loaded')).catch((err) => console.log(err))
+    
+
     const label = document.createElement('h1')
     label.innerHTML = `${node.data.attributes.client.data.attributes.name}  |  ${node.data.attributes.title}`
     container.style.padding = '10px'
     
     container.append(label)
     node.videoPlayer.on('loaded', () => loadingLog.complete('load-videos'))
+    node.videoPlayer.on('error', (err) => console.log(err))
     node.videoPlayer.on('play', () => {
       // TODO: fix no clickable nodes
       if (this.#highlightNodes.has(node)) {

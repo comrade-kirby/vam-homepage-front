@@ -1,13 +1,17 @@
 <script>
   import { onMount } from 'svelte';
-  import { selected, root, cameraZoom, forceGraph, cameraTarget } from '$lib/stores'
+  import { selected, root, cameraZoom, forceGraph, cameraTarget, loadingLog } from '$lib/stores'
   import { ForceGraph } from './ForceGraph';
 
 
   let innerWidth
   let innerHeight
 
-  const onEngineStopCallback = () => $forceGraph?.select($selected)
+  const onEngineStopCallback = () => {
+    // loadingLog: selecting initial video...
+    $forceGraph.select($selected)
+  }
+  
 
   $: $forceGraph?.setSize(innerWidth, innerHeight)
   $: $forceGraph?.setZoom($cameraZoom)
@@ -19,10 +23,11 @@
     const container = document.getElementById('force-graph-container')
     
     import('3d-force-graph').then((module) => {
+      loadingLog.complete('import-3d-force-graph')
       forceGraph.set(new ForceGraph(module))
-
       $forceGraph.initialize(onEngineStopCallback)
       $forceGraph.attach(container, innerWidth, innerHeight)
+      
       $forceGraph.updateWorks($root)
     })
   })

@@ -2,12 +2,15 @@ import { writable } from 'svelte/store'
 import { tweened } from 'svelte/motion'
 import { backOut } from 'svelte/easing'
 
-import { createCameraZoom, createSelected } from './customStores'
+import { createCameraZoom, createSelected, createVideoStates, createLoadingLog } from './customStores'
 
-export const flatNodeList = writable([])
 export const selected = createSelected()
-export const selectedVideoPlayer = writable(null)
+export const videoStates = createVideoStates()
 export const cameraZoom = createCameraZoom()
+export const loadingLog = createLoadingLog()
+export const flatNodeList = writable([])
+export const forceGraphLoaded = writable(false)
+export const selectedVideoPlayer = writable(null)
 export const selectedPaused = writable(false)
 export const selectedVolume = writable(0)
 export const forceGraph = writable(null)

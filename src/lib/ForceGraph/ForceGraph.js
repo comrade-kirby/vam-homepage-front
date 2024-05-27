@@ -18,7 +18,8 @@ import {
   cameraZoom,
   selectedPaused,
   selectedVideoPlayer,
-  selectedVolume
+  selectedVolume,
+  loadingLog
 } from '$lib/stores'
 
 
@@ -54,6 +55,8 @@ export class ForceGraph {
   }
 
   initialize(onEngineStopCallback) {
+    loadingLog.start('force-graph-initialize')
+
     this.graph = this.ForceGraphConstructor.default({
       controlType: 'orbit',
       extraRenderers: [new CSS3DRenderer()]
@@ -77,8 +80,11 @@ export class ForceGraph {
         const nodeData =  node.data[0] || node.data
         goto(nodeData.slug)
       })
-      .warmupTicks(20000)
+      // .warmupTicks(1000)
+      // .cooldownTicks(0)
       .onEngineStop(() => {
+        loadingLog.complete('engine')
+
         if (this.#initialCooldown) {
           this.#selectNeedsUpdate = true
           onEngineStopCallback()
@@ -95,10 +101,15 @@ export class ForceGraph {
         }
       })
       .nodeThreeObjectExtend(d => d.height === 0)
+
+    loadingLog.complete('force-graph-initialize')
+
       // .nodeThreeObjectExtend(d => d.height === 0 ? true : false)
   }
 
   loadOcean = (scene) => {
+    loadingLog.start('load-wave')
+
     const loader = new GLTFLoader();
 
     loader.load( '/ocean/scene.gltf', ( gltf ) => {
@@ -109,7 +120,6 @@ export class ForceGraph {
       this.#ocean = gltf.scene
       this.#ocean.traverse( (object)=> {
         if (object.isMesh) {
-          console.log(object.material)
           object.material.opacity = 0.2
           object.material.color = new THREE.Color( 0xF7FDFF );
           object.material.wireframe = true
@@ -118,6 +128,8 @@ export class ForceGraph {
 
       scene.add(this.#ocean);
       this.#ocean.scale.set(200, 200, 200)
+      loadingLog.complete('load-wave')
+
     }, 
     undefined, 
     ( error ) => {
@@ -126,6 +138,8 @@ export class ForceGraph {
   }
 
   attach(container, w, h) {
+    loadingLog.start('force-graph-attach')
+
     if (this.graph) {
       this.graph(container)
       
@@ -195,6 +209,8 @@ export class ForceGraph {
       
       this.setSize(w, h)
     }
+
+    loadingLog.complete('force-graph-attach')
   }
 
   playSelected = () => {
@@ -237,12 +253,15 @@ export class ForceGraph {
   }
 
   updateWorks(root) {
+    loadingLog.start('add-works')
+
     if (this.graph) {
       this.graph.graphData({
         nodes: root.descendants(),
         links: root.links()
       })
       
+      loadingLog.complete('add-works')
       return true
     } else { 
       return false
@@ -403,7 +422,7 @@ export class ForceGraph {
   #video2DNode(node) {
     const container = document.createElement('div')
     container.setAttribute('class', 'mycontainer')
-   
+    loadingLog.start('load-videos')
     node.videoPlayer = new Player(container, {
       id: node.data.videoId,
       // id will not work for unlisted videos.
@@ -431,6 +450,7 @@ export class ForceGraph {
     container.style.padding = '10px'
     
     container.append(label)
+    node.videoPlayer.on('loaded', () => loadingLog.complete('load-videos'))
     node.videoPlayer.on('play', () => {
       // TODO: fix no clickable nodes
       if (this.#highlightNodes.has(node)) {

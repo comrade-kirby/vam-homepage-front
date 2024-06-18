@@ -5,7 +5,7 @@
 
   import logo from '$lib/images/VAM-logo.png';
   import { selected, root, flatNodeList, loadingLog } from '$lib/stores.js'
-  import { ForceGraph, SiteNav } from '$lib'
+  import { ForceGraph, SiteNav, Progress } from '$lib'
 
   export let data
   
@@ -36,7 +36,7 @@
 <!-- <div class="{$forceGraphLoaded && 'hidden'} w-full h-full top-0 absolute bg-blue-300"> -->
 <div class="w-full h-full top-0 p-4 absolute flex bg-dark">
   <div>
-    {#each Object.values($loadingLog) as log}
+    {#each Object.values($loadingLog.logs) as log}
       {#if log.state}
         <p class="text-white/50 text-2xs">
           {log.state === 'started'
@@ -47,5 +47,6 @@
       {/if}
     {/each}
   </div>
+  <Progress value={$loadingLog.progress}/>
   <img src={logo} class="w-96 place-self-center m-auto" alt="VAM Studio Logo" />
 </div>

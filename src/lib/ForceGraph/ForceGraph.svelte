@@ -20,6 +20,7 @@
   $: $forceGraph?.select($selected)
 
   onMount(() => {
+    loadingLog.start('import-3d-force-graph')
     const container = document.getElementById('force-graph-container')
     
     import('3d-force-graph').then((module) => {

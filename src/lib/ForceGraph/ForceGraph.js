@@ -422,7 +422,8 @@ export class ForceGraph {
   #video2DNode(node) {
     const container = document.createElement('div')
     container.setAttribute('class', 'mycontainer')
-    loadingLog.start('load-videos')
+    loadingLog.start('load-videos', node.data.videoId)
+
     node.videoPlayer = new Player(container, {
       id: node.data.videoId,
       // id will not work for unlisted videos.
@@ -451,7 +452,7 @@ export class ForceGraph {
     container.style.padding = '10px'
     
     container.append(label)
-    node.videoPlayer.on('loaded', () => loadingLog.complete('load-videos'))
+    node.videoPlayer.on('loaded', () => loadingLog.complete('load-videos', node.data.videoId))
     node.videoPlayer.on('error', (err) => console.log(err))
     node.videoPlayer.on('play', () => {
       // TODO: fix no clickable nodes

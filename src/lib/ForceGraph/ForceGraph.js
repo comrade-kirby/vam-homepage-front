@@ -35,6 +35,12 @@ export class ForceGraph {
   #cameraNeedsUpdate = false
   #cameraTargetCoordinates = null
   #initialCooldown = true
+  #Tetrahedron = new THREE.TetrahedronGeometry(1); 
+  #starMaterial = new THREE.MeshStandardMaterial({
+    toneMapped: false,
+    emissive: "#F6993C",
+    emissiveIntensity: 2
+  })
   #bloomMaterial = new THREE.MeshStandardMaterial({
     toneMapped: false,
     emissive: "#F6993C",
@@ -306,7 +312,6 @@ export class ForceGraph {
       selectedPlayer?.setVolume(this.#volume)
       const {x, y, z} = this.#selectedNode
 
-      // this.#playHighlighted()
       this.#updateHighlight()
       
       if (x && y && z) {
@@ -478,13 +483,16 @@ export class ForceGraph {
       sprite.strokeWidth = 2
     }
    
-  
     sprite.material.depthWrite = false // make sprite background transparent
     sprite.center = {x: -0.1, y: 0.5}
     sprite.padding = 2
-    sprite.strokeColor = '#F58F29'
+    sprite.strokeColor = '#F6993C'
     sprite.opacity = 0.9
     
-    return sprite
+    const sphere = new THREE.Mesh( this.#Tetrahedron, this.#starMaterial ); scene.add( sphere );
+    const obj = new THREE.Object3D
+    obj.add(sprite)
+    obj.add(sphere)
+    return obj
   }
 }

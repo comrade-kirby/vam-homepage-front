@@ -306,7 +306,7 @@ export class ForceGraph {
       selectedPlayer?.setVolume(this.#volume)
       const {x, y, z} = this.#selectedNode
 
-      this.#playHighlighted()
+      // this.#playHighlighted()
       this.#updateHighlight()
       
       if (x && y && z) {
@@ -393,19 +393,6 @@ export class ForceGraph {
     })
   }
 
-  #playHighlighted() {
-    // this.#highlightNodes.forEach(node => {
-    //   if (node.videoPlayer) {
-    //     node.videoPlayer.play().then(() => {
-    //       if (node === this.#selectedNode) {
-    //         this.#updatePauseState()
-    //         this.#updateVolumeLevel()
-    //       }
-    //     })
-    //   }
-    // })
-  }
-
   #clearFocus() {
     this.#selectedNode = null
     this.#highlightNodes.clear()
@@ -475,20 +462,28 @@ export class ForceGraph {
     let text = ""
 
     if (node.depth > 0) {
-      text = node.data[0].name || node.data.name
+      text = node.height === 1 
+        ? node.data[0].name
+        : node.data[0]?.name.toUpperCase()
     } 
 
-
     const sprite = new SpriteText(text)
+    if (node.height === 1) {
+      sprite.textHeight = 3
+      sprite.color = '#F6993C'
+      sprite.strokeWidth = 0
+    } else if (node.height === 2) {
+      sprite.textHeight = 6
+      sprite.color = '#3B2002'
+      sprite.strokeWidth = 2
+    }
+   
   
     sprite.material.depthWrite = false // make sprite background transparent
     sprite.center = {x: -0.1, y: 0.5}
     sprite.padding = 2
-    sprite.color = 'black'
-    sprite.strokeWidth = '0.5'
-    sprite.strokeColor = '#F6993C'
-    sprite.opacity = 1
-    sprite.textHeight = 1
+    sprite.strokeColor = '#F58F29'
+    sprite.opacity = 0.9
     
     return sprite
   }

@@ -34,7 +34,9 @@
 </div>
 
 <!-- <div class="{$forceGraphLoaded && 'hidden'} w-full h-full top-0 absolute bg-blue-300"> -->
-<div class="w-full h-full top-0 p-4 absolute flex bg-dark">
+<div class="w-full h-full top-0 p-4 absolute flex flex-col bg-dark justify-center items-center">
+  <img src={logo} class="w-[50%] max-w-160 min-w-80 place-self-center object-contain" alt="VAM Studio Logo" />
+  <Progress logs={$loadingLog} progress={$loadingLog.progress}/>
   <div>
     {#each Object.values($loadingLog.logs) as log}
       {#if log.state}
@@ -47,6 +49,4 @@
       {/if}
     {/each}
   </div>
-  <Progress value={$loadingLog.progress}/>
-  <img src={logo} class="w-96 place-self-center m-auto" alt="VAM Studio Logo" />
 </div>

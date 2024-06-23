@@ -6,7 +6,8 @@ import { createCameraZoom, createSelected, createLoadingLog } from './customStor
 
 export const selected = createSelected()
 export const cameraZoom = createCameraZoom()
-export const loadingLog = createLoadingLog()
+export const loading = writable(true)
+export const loadingLog = createLoadingLog(loading)
 export const flatNodeList = writable([])
 export const forceGraphLoaded = writable(false)
 export const selectedVideoPlayer = writable(null)

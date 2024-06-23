@@ -1,6 +1,6 @@
 import { writable } from "svelte/store"
 
-export const createLoadingLog = () => {
+export const createLoadingLog = (loading) => {
   const { subscribe, update } = writable({
     state: null,
     progress: 0,
@@ -86,7 +86,7 @@ export const createLoadingLog = () => {
       }
 
       prev.complete.add(logKey)
-      return updateProgress(prev)
+      return updateProgress(prev, loading)
     })
   }
 
@@ -101,7 +101,16 @@ export const createLoadingLog = () => {
   return { subscribe, start, complete, progress }
 }
 
-const updateProgress = (logs) => {
-  logs.progress = (logs.complete.size / logs.total.size) * 100
-  return logs
+const updateProgress = (prev, loading) => {
+  prev.progress = (prev.complete.size / prev.total.size) * 100
+  if (prev.total.size > 10 && prev.progress >= 100) {
+    prev.logs["complete"] = {
+      state: 'complete',
+      onComplete: 'Complete.'
+    },
+    setTimeout(() => {
+      loading.set(false)
+    }, 1000)
+  }
+  return prev
 }

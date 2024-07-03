@@ -8,7 +8,7 @@
   export let data
   
   const href = '/clients'
-  const labelText = "ALL CLIENTS"
+  const labelText = "ALL"
   
   $: clients = data.clients
 </script>

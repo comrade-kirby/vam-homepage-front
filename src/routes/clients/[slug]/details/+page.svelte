@@ -1,4 +1,5 @@
 <script>
+  import { minimizeDetails } from '$lib/stores.js'
   import {
     GraphControls,
     SelectList,
@@ -38,7 +39,7 @@
 </DetailsWrapper>
 
 <GraphControls position={
-  minimized 
+  $minimizeDetails 
     ? 'col-start-5 row-end-2 col-span-1 lg:row-start-3'
-    : 'col-start-5 row-start-1 lg:col-start-4 lg:row-start-3'
+    : 'col-start-4 col-span-1 row-end-2 lg:row-start-1 lg:row-start-3'
 } />

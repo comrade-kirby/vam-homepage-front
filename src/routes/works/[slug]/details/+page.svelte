@@ -53,7 +53,7 @@
       <PlaylistItem {node} {isSelected} />
     </SelectList>
   
-    <SectionWrapper dependent={work.attributes.credits}>
+    <SectionWrapper dependent={work.attributes.credits} end>
       <SectionLabel>credits</SectionLabel>
       <ClampParagraph content={work.attributes.credits} short />
     </SectionWrapper>

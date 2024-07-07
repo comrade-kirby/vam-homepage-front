@@ -1,7 +1,7 @@
 <script>
   import { page } from '$app/stores'
   
-  import { minimizeDetails, minimizeNav } from '$lib/stores'
+  import { minimizeDetails, minimizeNav, openContactModal } from '$lib/stores'
   import SiteNavItem from './SiteNavItem/SiteNavItem.svelte'
 
   const routes = ['works', 'clients', 'press', 'about']
@@ -22,5 +22,6 @@
     {#each routes as route, index}
       <SiteNavItem title={route} selected={index === currentRouteIndex} />
     {/each}
+    <SiteNavItem onClick={() => openContactModal.set(true)} title={'contact'} selected={$openContactModal} />
   </ul>
 </nav>

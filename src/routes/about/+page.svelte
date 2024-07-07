@@ -1,14 +1,19 @@
 <script>
-  import { GraphControls, Prose, FullPageWrapper, Link } from '$lib'
+  import { GraphControls, Prose, FullPageWrapper, ButtonStyles } from '$lib'
   import logo from '$lib/images/VAM-logo.png'
   import headshot from '$lib/images/headshot.jpg'
+    import { openContactModal } from '$lib/stores';
 </script>
 
 <FullPageWrapper minimizedLabelText="/about" minimizedIconText="nav" closeUrl='/'>
   <div class="flex justify-center items-start p-12 space-x-12">
-    <div class="flex flex-col items-end space-y-3 sticky top-12">
+    <div class="flex flex-col items-end space-y-6 sticky top-12">
       <img src={logo} class="w-60 object-contain" alt="VAM Studio Logo" />
-      <Link href="/contact" text="contact" large />
+      <button on:click={ () => openContactModal.set(true)} class="w-fit">
+        <ButtonStyles outline layout>
+          <span>Contact</span>
+        </ButtonStyles>
+      </button>
     </div>
     <Prose>
       <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque velit ipsum ab suscipit voluptatum nulla hic quidem illo quam. Voluptatibus eveniet numquam repellat doloremque voluptas, asperiores reprehenderit dolorem molestias vero?</h1>

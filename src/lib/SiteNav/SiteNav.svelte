@@ -10,15 +10,14 @@
   $: currentRoute = $page.route.id
 </script>
 
-<nav class="pointer-events-auto max-w-4 z-10 flex items-end lg:items-start bg-black border-primary-md/80 border-r-2
-  col-start-1 row-start-1 col-span-1 row-span-full ">
-  <ul role="list" class="relative flex flex-col mt-20 max-w-full {
-    $minimizeNav
-      ? $minimizeDetails
-        ? 'mb-26 md:mb-36'
-        : 'mb-14 md:mb-20'
-      : 'mb-4'
-  }">
+<nav class="p-3 max-w-full overflow-scroll pointer-events-auto z-10 flex items-end 
+  bg-black/90 border-primary-md/80  backdrop-blur-sm
+  col-start-1 col-span-full row-start-4 row-span-1 border-t-2
+  md:p-6 md:pr-8 md:w-fit md:items-start md:border-t-0 md:border-r-2
+  md:col-start-1 md:row-start-1 md:col-span-1 md:row-span-full
+    ">
+  <ul role="list" class="relative flex space-x-6 w-full justify-center
+    md:flex-col">
     {#each routes as route, index}
       <SiteNavItem title={route} selected={index === currentRouteIndex} />
     {/each}

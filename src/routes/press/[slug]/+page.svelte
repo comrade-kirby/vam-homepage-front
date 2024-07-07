@@ -15,4 +15,4 @@
   <GraphHud {title} {textBlock} {detailsUrl} {closeUrl} detailsLinkText="full article" />
 {/if}
 
-<GraphControls position="col-start-4 row-start-2 col-span-2"/>
+<GraphControls position="col-start-3 row-start-2 col-span-2"/>

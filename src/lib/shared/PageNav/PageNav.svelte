@@ -23,15 +23,15 @@
 
 
 {#if $minimizeNav}
-  <div class="relative
-    col-start-2 row-start-3 col-span-5 row-span-1
-    lg:p-2 lg:col-start-2 lg:row-start-1 lg:col-span-2 lg:row-span-full lg:pr-1
+  <div class="
+    col-start-2 row-start-3 col-span-full row-span-1 
+     lg:p-2 lg:col-start-2 lg:row-start-1 lg:col-span-1 lg:row-span-full lg:pr-1
   ">
     <Minimized {show} {minimizedIconText} {minimizedLabelText} closeUrl={!slug && '/'} />
   </div>
 {:else}
   <PageNavContainer minimized={$minimizeNav}>
-    <ContentPane pageNav >
+    <ContentPane>
       <PaneNavigation {minimize} closeUrl={!slug && '/'} {minimizedLabelText} />
       <ScrollContainer {show} minimized={$minimizeNav}>
         <div class="md:hidden">

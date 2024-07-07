@@ -31,4 +31,4 @@
 
 </FullPageWrapper>
 
-<GraphControls position="col-start-4 row-start-2 col-span-2" />
+<GraphControls position="col-start-4 row-start-2 col-span-1" />

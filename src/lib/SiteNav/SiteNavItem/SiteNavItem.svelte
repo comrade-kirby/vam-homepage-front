@@ -13,7 +13,7 @@
 <SiteNavItemBorder {selected} >
   <button on:click={() => minimizeNav.set(false)} class="relative {
     selected
-      ? 'text-secondary/90 pl-2'
+      ? 'text-secondary/90 bottom-1 md:bottom-0 md:left-2'
       : 'text-white/70 hover:text-secondary/80'
   }">
     {#if onClick}

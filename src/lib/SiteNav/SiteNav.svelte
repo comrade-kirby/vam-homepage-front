@@ -16,7 +16,7 @@
   md:p-6 md:pr-8 md:w-fit md:items-start md:border-t-0 md:border-r-2
   md:col-start-1 md:row-start-1 md:col-span-1 md:row-span-full
     ">
-  <ul role="list" class="relative flex space-x-6 w-full justify-center
+  <ul role="list" class="relative flex gap-x-6 w-full justify-center
     md:flex-col">
     {#each routes as route, index}
       <SiteNavItem title={route} selected={index === currentRouteIndex} />

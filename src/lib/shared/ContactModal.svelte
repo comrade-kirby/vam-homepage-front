@@ -4,7 +4,7 @@
 </script>
 
 {#if $openContactModal}
-  <div class="pointer-events-auto absolute top-0 left-0 z-50 w-full h-full p-12 flex justify-center ">
+  <div class="pointer-events-auto absolute top-0 left-0 z-50 w-full h-full p-4 md:p-12 flex justify-center ">
     <div class="z-50 flex h-full flex-col grow self-center
       w-full max-w-192 lg:m-12 
       rounded-lg border border-primary-md overflow-hidden
@@ -29,13 +29,11 @@
         </label>
         <label class="flex space-x-2 items-center border-b border-white/60">
           <span>From</span>
-          <input type="text" class="p-3 grow bg-darker border-0 focus:ring-secondary/80" />
+          <input type="text" class="p-3 mb-1 grow bg-darker border-0 focus:outline focus:outline-primary/50" />
         </label>
-        <input type="text" placeholder="Subject" class="pl-0 p-3 bg-darker border-0 border-b border-white/60 placeholder:text-white/60 focus:border-secondary/80 focus:ring-secondary/80" />
+        <input type="text" placeholder="Subject" class="pl-0 mb-1 p-3 bg-darker border-0 border-b border-white/60 placeholder:text-white/60 focus:outline focus:outline-primary/50" />
         
-        <textarea class="text-lg h-full grow bg-darker border-0 resize-none focus:ring-secondary/80">
-
-        </textarea>
+        <textarea class="text-lg h-full grow bg-darker border-0 resize-none focus:outline focus:outline-primary/50" />
         
         <button class="mt-6 w-fit">
           <ButtonStyles xl outline layout>

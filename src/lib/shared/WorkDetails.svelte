@@ -6,6 +6,7 @@
     SectionWrapper,
     PressLink,
     ClampParagraph,
+    SelectListItem,
     SectionLabel,
     PlaylistItem,
     SelectList
@@ -27,7 +28,9 @@
   items={presses}
 >
   {#each presses as press}
-    <PressLink {press} {isSelected} />
+    <SelectListItem item={press}>
+      <PressLink {press} {isSelected} />
+    </SelectListItem>
   {/each}
 </SelectList>
 
@@ -37,7 +40,9 @@
   items={relatedWorks}
 >
   {#each relatedWorks as node}
-    <PlaylistItem {node} {isSelected} />
+    <SelectListItem item={node} selectable>
+      <PlaylistItem {node} {isSelected} />
+    </SelectListItem>
   {/each}
 </SelectList>
 

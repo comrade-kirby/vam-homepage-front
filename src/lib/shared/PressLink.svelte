@@ -10,4 +10,4 @@
   $: isSelected = isSelected && inPressNav
 </script>
 
-<Link {href} {onClick} text={press.attributes.title} subtext={press.attributes.publication} />
+<Link {href} {onClick} text={press.attributes.title} subtext={press.attributes.publication} large />

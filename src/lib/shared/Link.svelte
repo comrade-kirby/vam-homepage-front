@@ -2,7 +2,7 @@
   export let text, subtext, href, clamp1, onHover, isSelected, onClick, large
 </script>
 
-<a {href} on:click={onClick} on:pointerenter={onHover} class="flex flex-col group {
+<a {href} on:click={onClick} on:pointerenter={onHover} class="flex flex-col gap-y-0.5 leading-tight group {
     isSelected 
       ? 'text-primary/95' 
       : 'text-white/90 hover:text-primary/80'
@@ -13,8 +13,8 @@
       : 'line-clamp-2'
   } {
     large 
-      ? 'text-xs md:text-sm'
-      : subtext ? 'text-3xs md:text-2xs' : 'text-2xs md:text-xs' 
+      ? 'text-xs lg:text-sm'
+      : 'text-2xs lg:text-xs' 
   }">
     {text}
   </span>

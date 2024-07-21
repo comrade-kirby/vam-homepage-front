@@ -4,6 +4,7 @@
   export let depth
   export let end = false
   export let isSelected = false
+  export let expanded = false
 
   const accent = depth > 1
   const groupClasses = depth < 2
@@ -12,9 +13,17 @@
 </script>
 
 {#if dependent}
-  <div class="relative flex flex-col gap-y-1 {groupClasses[0]} {end ? 'snap-end' : 'snap-start'} {hFull && 'h-full'}">
+  <div class="relative flex flex-col gap-y-1 lg:gap-y-2 {
+      end ? 'snap-end' : 'snap-start'
+    } {
+      hFull && 'h-full'
+    } {
+      groupClasses[0]}
+    }">
     {#if accent}
-      <div class="absolute flex top-1 h-full pb-1.5 w-0.5">
+      <div class="absolute flex top-1 h-full w-px -ml-px {
+        expanded ? 'pb-3' : 'pb-2' 
+      }">
         <div class="h-full -ml-4 w-full {
           isSelected 
             ? 'bg-orange-500/80' 

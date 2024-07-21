@@ -2,12 +2,14 @@
   export let collapsable, containsCurrent = true
 </script>
 
-<h3 class="group text-lg md:text-xl text-nowrap font-black flex mb-1 md:mb-2 max-w-full tracking-widest {
-  collapsable
-    ? containsCurrent 
-      ? 'text-secondary/70' 
-      : 'text-white/50 hover:text-secondary/60'
-    : 'text-white/80'
+<h3 class="group max-w-full flex
+  font-black text-nowrap tracking-widest 
+  text-lg lg:text-xl {
+  collapsable && containsCurrent && 'text-secondary/70' 
+} {
+  collapsable && !containsCurrent && 'text-white/50 hover:text-secondary/60' 
+} {
+  !collapsable && 'text-white/80'
 }">
   <slot />
 </h3>

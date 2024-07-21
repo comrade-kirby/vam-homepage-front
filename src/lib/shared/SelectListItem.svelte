@@ -9,7 +9,7 @@
 </script>
 
 <li class="relative group">
-  <div class="absolute flex top-1 h-full pb-1.5 w-0.5">
+  <div class="absolute flex top-1 h-full pb-1.5 w-px -ml-px ">
     <div class="h-full -ml-4 w-full {isSelected ? 'bg-orange-500/80' : 'group-hover:bg-orange-500/50'}">
     </div>
   </div>

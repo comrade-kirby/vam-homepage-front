@@ -19,7 +19,7 @@
   $: toggleExpanded = () => expanded = collapsable ? !expanded : true
 </script>
 
-<SectionWrapper dependent={items.length} {depth} {isSelected}>
+<SectionWrapper dependent={items.length} {depth} {isSelected} {expanded}>
   <button on:click={toggleExpanded} class="max-w-full relative">
     <a {href} class="w-full max-w-full truncate ..." >
       <SelectListLabel {containsCurrent} {node} {small} {expanded} {isSelected} {labelText} childCount={items.length} />

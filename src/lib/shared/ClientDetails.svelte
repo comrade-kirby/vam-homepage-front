@@ -2,6 +2,7 @@
   import {
     SelectList,
     PlaylistItem,
+    SelectListItem,
     PressLink,
   } from '$lib'
 
@@ -19,7 +20,9 @@
     items={works}
   >
     {#each works as node}
-      <PlaylistItem {node} />
+      <SelectListItem item={node} selectable>
+        <PlaylistItem {node} />
+      </SelectListItem>
     {/each}
   </SelectList>
   
@@ -30,6 +33,8 @@
     items={presses}
   >
     {#each presses as press}
-      <PressLink {press} />
+      <SelectListItem item={press}>
+        <PressLink {press} />
+      </SelectListItem>
     {/each}
 </SelectList>

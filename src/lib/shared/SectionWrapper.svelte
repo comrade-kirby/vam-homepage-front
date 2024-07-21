@@ -1,14 +1,10 @@
 <script>
   export let dependent = true
   export let hFull = false
-  // export let accent = false
   export let depth
   export let end = false
-  export let index
   export let isSelected = false
 
-  // TODO fix isSelected
-  console.log('sss: ', isSelected)
   const accent = depth > 1
   const groupClasses = depth < 2
     ? ['group/first', 'group-hover/first:bg-orange-500/50'] 

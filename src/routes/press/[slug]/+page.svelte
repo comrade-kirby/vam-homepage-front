@@ -1,4 +1,6 @@
 <script>
+  import { minimizeDetails } from '$lib/stores.js'
+
   import {
     ArticleEmbed,
     DetailsWrapper,
@@ -7,7 +9,6 @@
   
   export let data
 
-  let minimized = false
   
   $: press = data.press.attributes
   $: title = press.title
@@ -15,12 +16,12 @@
   $: closeUrl = '/press' + slug
 </script>
 
-<DetailsWrapper bind:minimized {closeUrl} {title} width='w-full md:w-160' minimizedLabelText={slug} minimizedIconText='article'>
+<DetailsWrapper {closeUrl} {title} width='w-full md:w-160' minimizedLabelText={slug} minimizedIconText='article'>
   <ArticleEmbed {press} />
 </DetailsWrapper>
 
 <GraphControls position={
-  minimized 
+  $minimizeDetails 
     ? 'col-start-4 row-end-2 col-span-1 lg:row-start-3'
     : 'col-start-4 row-start-1 lg:col-start-3 lg:row-start-3'
 } />

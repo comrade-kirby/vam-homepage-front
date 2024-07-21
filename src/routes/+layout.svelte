@@ -22,7 +22,7 @@
 </script>
   
 <div class="pointer-events-none min-h-screen max-w-screen max-h-screen min-w-screen h-screen
-  grid grid-cols-[min-content_1fr_minmax(min-content,_1fr)_1fr] 
+  grid grid-cols-[min-content_auto_minmax(min-content,_1fr)_auto] 
   grid-rows-[minmax(0,_auto)_minmax(0,_1fr)_min-content_min-content]
 ">
   {#if root}

@@ -22,10 +22,12 @@
     <Minimized {show} {closeUrl} {minimizedIconText} {minimizedLabelText} minimized minimizedFloating />
   </div>
 {:else}
-  <main class="pointer-events-auto overflow-hidden rounded-tl lg:mt-2 
-    border border-primary-md lg:border-r-0 lg:border-b-0 lg:overflow-visible
-    max-w-full col-start-2 row-start-1 col-span-full row-span-1
-    lg:max-w-128 lg:col-start-4 lg:row-start-1 lg:col-span-1 lg:row-span-full lg:border-l 
+  <main class="pointer-events-auto overflow-hidden max-w-full 
+    border border-primary-md rounded-tl 
+    col-start-2 row-start-1 col-span-full row-span-1
+    lg:mt-2 lg:border-l lg:border-r-0 lg:border-b-0 lg:overflow-visible
+    lg:min-w-60 lg:max-w-128 
+    lg:col-start-4 lg:row-start-1 lg:col-span-1 lg:row-span-full 
   ">
     <ContentPane>
       <PaneNavigation {minimize} {closeUrl} {title} {subtitle}  />

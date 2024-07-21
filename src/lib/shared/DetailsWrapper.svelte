@@ -17,7 +17,7 @@
 
 {#if $minimizeDetails}
   <div class="col-start-2 row-start-2 col-span-full
-      lg:p-2 lg:col-start-4 lg:row-start-1 lg:col-span-1 lg:row-span-1 lg:pl-1
+      p-2 py-1 lg:col-start-4 lg:row-start-1 lg:col-span-1 lg:row-span-1 lg:pl-1
   ">
     <Minimized {show} {closeUrl} {minimizedIconText} {minimizedLabelText} />
   </div>

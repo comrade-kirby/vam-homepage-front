@@ -7,7 +7,10 @@
   export let minimized, title, subtitle, minimize, minimizedLabelText, show, closeUrl, minimizedIconText
 </script>
 
-<div class="z-10 w-full p-4 flex flex-col bg-dark border-b  border-primary-md">
+<div class="z-10 w-full p-4 flex flex-col bg-dark border-primary-md" 
+  class:border-b={!minimized}
+  class:rounded={minimized}
+  class:border={minimized}>
   <div class="flex {title ? 'justify-between' : 'justify-end'} w-full">
     {#if !minimized}
       <PaneNavigationArt onClick={show} display={title} />

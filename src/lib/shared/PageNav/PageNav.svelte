@@ -24,9 +24,11 @@
 {#if $minimizeNav}
   <div class="
     col-start-2 row-start-3 col-span-full row-span-1 
-     p-2 py-1 lg:col-start-2 lg:row-start-1 lg:col-span-1 lg:row-span-full lg:pr-1
+     lg:p-2 lg:col-start-2 lg:row-start-1 lg:col-span-1 lg:row-span-full lg:pr-1
   ">
-    <Minimized {show} {minimizedIconText} {minimizedLabelText} closeUrl={!slug && '/'} />
+    <Minimized {show} {minimizedIconText} {minimizedLabelText} 
+      closeUrl={!slug && '/'} 
+      minimized minimizedBottom />
   </div>
 {:else}
   <PageNavContainer minimized={$minimizeNav}>

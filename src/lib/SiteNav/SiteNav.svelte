@@ -10,7 +10,7 @@
   $: currentRoute = $page.route.id
 </script>
 
-<nav class="p-3 max-w-full overflow-scroll pointer-events-auto z-10 flex items-end 
+<nav class="p-3 max-w-full h-fit md:h-full overflow-scroll pointer-events-auto z-10 flex items-end 
   bg-black/90 border-primary-md/80  backdrop-blur
   col-start-1 col-span-full row-start-4 row-span-1 border-t-2
   md:px-8 md:py-12 md:w-fit md:items-start md:border-t-0 md:border-r-2

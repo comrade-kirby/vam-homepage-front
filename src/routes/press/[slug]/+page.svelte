@@ -11,12 +11,15 @@
 
   
   $: press = data.press.attributes
-  $: title = press.title
-  $: slug = '/' + press.slug
-  $: closeUrl = '/press' + slug
 </script>
 
-<DetailsWrapper {closeUrl} {title} width='w-full md:w-160' minimizedLabelText={slug} minimizedIconText='article'>
+<DetailsWrapper 
+  title={press.title} 
+  minimizedLabelText="/{press.slug}"
+  width="w-full md:w-160" 
+  closeUrl="/press"
+  minimizedIconText="article"
+>
   <ArticleEmbed {press} />
 </DetailsWrapper>
 

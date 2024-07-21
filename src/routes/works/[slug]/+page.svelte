@@ -19,7 +19,7 @@
 
 {#if contentData}
   <DetailsWrapper 
-    closeUrl={work ? '/works' : 'clients'} 
+    closeUrl='/works' 
     title={work ? attributes.title : attributes.name} 
     subtitle={work && attributes.client.data.attributes.name} 
     minimizedLabelText={slug}>
@@ -33,6 +33,6 @@
 
 <GraphControls position={
   $minimizeDetails 
-    ? 'col-start-4 row-end-2 col-span-1 lg:row-start-3'
-    : 'col-start-4 col-span-1 row-end-2 lg:col-start-3 lg:row-start-1 lg:row-start-3'
+    ? 'col-start-4 row-start-2 col-span-1 lg:row-start-3'
+    : 'col-start-4 col-span-1 row-start-2 lg:col-start-3 lg:row-start-1 lg:row-start-3'
 } />

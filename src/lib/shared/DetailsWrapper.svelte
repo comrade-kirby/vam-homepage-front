@@ -16,15 +16,15 @@
 </script>
 
 {#if $minimizeDetails}
-  <div class="col-start-2 row-start-2 col-span-full
-      p-2 py-1 lg:col-start-4 lg:row-start-1 lg:col-span-1 lg:row-span-1 lg:pl-1
+  <div class="col-start-2 row-start-1 col-span-full self-start
+    p-2 lg:col-start-4 lg:row-start-1 lg:col-span-1 lg:row-span-1 lg:pl-1
   ">
-    <Minimized {show} {closeUrl} {minimizedIconText} {minimizedLabelText} />
+    <Minimized {show} {closeUrl} {minimizedIconText} {minimizedLabelText} minimized minimizedFloating />
   </div>
 {:else}
-  <main class="pointer-events-auto overflow-hidden rounded-tl lg:mt-4 
+  <main class="pointer-events-auto overflow-hidden rounded-tl lg:mt-2 
     border border-primary-md lg:border-r-0 lg:border-b-0 lg:overflow-visible
-    max-w-full col-start-2 row-start-2 col-span-full row-span-1
+    max-w-full col-start-2 row-start-1 col-span-full row-span-1
     lg:max-w-128 lg:col-start-4 lg:row-start-1 lg:col-span-1 lg:row-span-full lg:border-l 
   ">
     <ContentPane>

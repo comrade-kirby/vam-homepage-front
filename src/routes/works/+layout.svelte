@@ -4,12 +4,12 @@
   import { PageNav, SubNav } from '$lib'
 
   export let data
-  const worksHierarchy = data.worksData && hierarchy(data.worksData)
+  const worksHierarchy = hierarchy(data.graphData)
 </script> 
 
-<PageNav let:onClick route="/works">
+<PageNav route="/works">
   {#each worksHierarchy.children as child}
-    <SubNav node={child} {onClick} />
+    <SubNav node={child} expanded />
   {/each}
 </PageNav>
 

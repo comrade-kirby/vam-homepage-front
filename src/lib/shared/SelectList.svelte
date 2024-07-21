@@ -3,32 +3,29 @@
     SectionWrapper,
     SelectListItemContainer,
     SelectListLabel,
-    SelectListItem
   } from '$lib'
 
+  export let node = null
+  export let href = null
+  export let containsCurrent = false
   export let collapsable = false
-  export let selectable = false
-  export let items, containsCurrent, labelText
-  
-  let expanded = true
-  
+  export let small = false
+  export let labelText = false
+  export let items
+  export let expanded = true
+
+  const depth = node && node.depth
   $: toggleExpanded = () => expanded = collapsable ? !expanded : true
 </script>
 
-<SectionWrapper dependent={items.length}>
+<SectionWrapper dependent={items.length} {depth}>
   <button on:click={toggleExpanded} class="max-w-full relative">
-    <SelectListLabel {containsCurrent} {expanded} childCount={items.length}>
-      <slot name="label-link">
-        {labelText}
-      </slot>
-    </SelectListLabel>
+    <a {href} class="w-full max-w-full truncate ..." >
+      <SelectListLabel {containsCurrent} {node} {small} {expanded} {labelText} childCount={items.length} />
+    </a>
   </button>
   
   <SelectListItemContainer {expanded}>
-    {#each items as item}
-      <SelectListItem let:isSelected {item} {selectable}>
-        <slot {item} {isSelected}/>
-      </SelectListItem>
-    {/each}
+    <slot />
   </SelectListItemContainer>
 </SectionWrapper>

@@ -15,14 +15,15 @@
 <PageNav let:onClick route="/press">
   <SelectList {labelText} collapsable selectable containsCurrent
     let:isSelected
-    let:item={press} 
     items={presses}
   >
     <a slot="label-link" {href} class="w-full" >
       {labelText}
     </a>
     
-    <PressLink {press} {isSelected} onClick={onClick} />
+    {#each presses as press}
+      <PressLink {press} {isSelected} onClick={onClick} />
+    {/each}
   </SelectList>
 </PageNav>
 

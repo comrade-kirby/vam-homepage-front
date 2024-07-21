@@ -3,7 +3,7 @@
 </script>
 
 {#if expanded}
-  <ul role="list" class="border-l border-orange-500/20 pl-1 ml-0.5 mb-8">
+  <ul role="list" class="flex flex-col gap-1 border-l border-orange-500/20 pl-4 ml-0.5">
     <slot />
   </ul>
 {/if}

@@ -17,6 +17,7 @@ export async function load({}) {
 
   works = works.data.map(work => {
     const name = work.attributes.title
+    const clientSlug = work.attributes.client.data.attributes.slug
     const slug = '/works/' + work.attributes.slug
     
     const newCategory = {
@@ -26,7 +27,7 @@ export async function load({}) {
     
     const newClient = {
       name: work.attributes.client.data.attributes.name,
-      slug: '/clients/' + work.attributes.client.data.attributes.slug
+      slug: '/works/' + clientSlug
     }
 
     const categoryIndex = categories.findIndex(category => category.slug === newCategory.slug)

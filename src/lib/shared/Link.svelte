@@ -13,7 +13,7 @@
       : 'line-clamp-2'
   } {
     large 
-      ? 'md:text-xl underline underline-offset-4'
+      ? 'text-xs md:text-sm'
       : subtext ? 'text-3xs md:text-2xs' : 'text-2xs md:text-xs' 
   }">
     {text}

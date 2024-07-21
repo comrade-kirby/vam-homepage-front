@@ -2,6 +2,7 @@
   export let show
 </script>
 
-<div on:click={show} class="flex flex-col overflow-y-scroll snap-y mt-8 lg:mt-12 -mr-4 pr-4 flex-auto">
+<div on:click={show} class="flex flex-col gap-y-8 overflow-y-scroll snap-y -mr-4 px-12 py-8
+ flex-auto">
   <slot />
 </div>

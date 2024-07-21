@@ -7,7 +7,7 @@
   <div class="pointer-events-auto absolute top-0 left-0 z-50 w-full h-full p-4 md:p-12 flex justify-center ">
     <div class="z-50 flex h-full flex-col grow self-center
       w-full max-w-192 lg:m-12 
-      rounded-lg border border-primary-md overflow-hidden
+      rounded border border-primary-md overflow-hidden
     ">
       <div class="flex justify-between p-4 bg-dark border-b border-primary-md">
         <h2 class=" text-white/90 text-lg tracking-wide mb-0">

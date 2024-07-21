@@ -1,18 +1,26 @@
 <script>
-  import { GraphControls, GraphHud } from '$lib'
-
+  import {
+    ArticleEmbed,
+    DetailsWrapper,
+    GraphControls
+  } from '$lib'
+  
   export let data
 
-  $: press = data.press
-  $: title = press.attributes.title
-  $: textBlock = press.attributes.snippet
-  $: slug = press.attributes.slug
-  $: closeUrl = '/press'
-  $: detailsUrl = '/press/' + slug + '/full-article'
+  let minimized = false
+  
+  $: press = data.press.attributes
+  $: title = press.title
+  $: slug = '/' + press.slug
+  $: closeUrl = '/press' + slug
 </script>
 
-{#if press}
-  <GraphHud {title} {textBlock} {detailsUrl} {closeUrl} detailsLinkText="full article" />
-{/if}
+<DetailsWrapper bind:minimized {closeUrl} {title} width='w-full md:w-160' minimizedLabelText={slug} minimizedIconText='article'>
+  <ArticleEmbed {press} />
+</DetailsWrapper>
 
-<GraphControls position="col-start-3 row-start-2 col-span-2"/>
+<GraphControls position={
+  minimized 
+    ? 'col-start-4 row-end-2 col-span-1 lg:row-start-3'
+    : 'col-start-4 row-start-1 lg:col-start-3 lg:row-start-3'
+} />

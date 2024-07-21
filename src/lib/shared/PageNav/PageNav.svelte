@@ -21,7 +21,6 @@
   $: minimizedLabelText = route
 </script>
 
-
 {#if $minimizeNav}
   <div class="
     col-start-2 row-start-3 col-span-full row-span-1 
@@ -34,12 +33,7 @@
     <ContentPane>
       <PaneNavigation {minimize} closeUrl={!slug && '/'} {minimizedLabelText} />
       <ScrollContainer {show} minimized={$minimizeNav}>
-        <div class="md:hidden">
-          <slot  onClick={minimize} />
-        </div>
-        <div class="hidden md:block">
           <slot />
-        </div>
       </ScrollContainer>
     </ContentPane>
   </PageNavContainer>

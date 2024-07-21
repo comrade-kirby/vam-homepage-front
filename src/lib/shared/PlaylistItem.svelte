@@ -4,7 +4,7 @@
   $: work = node.data || node.attributes
   $: title = work.attributes?.title || work.title
   $: client =  work.client
-  $: href = work.slug + '/details'
+  $: href = work.slug
   $: oembedData = work.oembedData
 </script>
 

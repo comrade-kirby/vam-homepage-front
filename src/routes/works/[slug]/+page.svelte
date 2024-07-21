@@ -1,18 +1,36 @@
 <script>
-  import { GraphControls, GraphHud } from '$lib'
+  import { minimizeDetails } from '$lib/stores.js'
+
+  import {
+    DetailsWrapper,
+    GraphControls,
+    WorkDetails,
+    ClientDetails,
+  } from '$lib'
 
   export let data
 
-  $: work = data.work
-  $: title = work?.data.attributes.title
-  $: subtitle = work?.data.attributes.client.data.attributes.name
-  $: slug = work?.data.attributes.slug 
-  $: closeUrl = '/works'
-  $: detailsUrl = work ? '/works/' + slug + '/details' : false
+  $: work = data?.work?.data
+  $: client = data?.client
+  $: contentData = work || client
+  $: attributes = contentData.attributes
+  $: slug = attributes.slug
 </script>
 
-{#if work}
-  <GraphHud {title} {subtitle} {detailsUrl} {closeUrl} />
-{/if}
+<DetailsWrapper 
+  closeUrl={work ? '/works' : 'clients'} 
+  title={work ? attributes.title : attributes.name} 
+  subtitle={work && attributes.client.data.attributes.name} 
+  minimizedLabelText={slug}>
+  {#if work}
+    <WorkDetails {work} {slug} />
+  {:else if client}
+    <ClientDetails {client} />
+  {/if}
+  </DetailsWrapper>
 
-<GraphControls position="col-start-4 row-start-2 col-span-1"/>
+<GraphControls position={
+  $minimizeDetails 
+    ? 'col-start-4 row-end-2 col-span-1 lg:row-start-3'
+    : 'col-start-4 col-span-1 row-end-2 lg:row-start-1 lg:row-start-3'
+} />

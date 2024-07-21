@@ -13,21 +13,23 @@
   $: work = data?.work?.data
   $: client = data?.client
   $: contentData = work || client
-  $: attributes = contentData.attributes
-  $: slug = attributes.slug
+  $: attributes = contentData?.attributes
+  $: slug = attributes?.slug
 </script>
 
-<DetailsWrapper 
-  closeUrl={work ? '/works' : 'clients'} 
-  title={work ? attributes.title : attributes.name} 
-  subtitle={work && attributes.client.data.attributes.name} 
-  minimizedLabelText={slug}>
-  {#if work}
-    <WorkDetails {work} {slug} />
-  {:else if client}
-    <ClientDetails {client} />
-  {/if}
-  </DetailsWrapper>
+{#if contentData}
+  <DetailsWrapper 
+    closeUrl={work ? '/works' : 'clients'} 
+    title={work ? attributes.title : attributes.name} 
+    subtitle={work && attributes.client.data.attributes.name} 
+    minimizedLabelText={slug}>
+      {#if work}
+        <WorkDetails {work} {slug} />
+      {:else if client}
+        <ClientDetails {client} />
+      {/if}
+    </DetailsWrapper>
+{/if}
 
 <GraphControls position={
   $minimizeDetails 

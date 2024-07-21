@@ -4,6 +4,7 @@
   import NavLeafCount from './NavLeafCount.svelte'
   
   export let containsCurrent, expanded, childCount, node
+  export let isSelected = false
   export let labelText = false
   export let small = false
   export let onClick = null
@@ -11,7 +12,7 @@
 
 {#if small}
   <div class="group flex items-center gap-x-2">
-    <NavLink {node} {onClick} {childCount} large />
+    <NavLink {node} {onClick} {childCount} {isSelected} large />
     {#if childCount > 1}
       <NavLeafCount show={!expanded} {childCount} />
     {:else}

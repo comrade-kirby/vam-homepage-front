@@ -4,7 +4,8 @@
   export let item, selectable = false
 
   $: pageSlug = $page.url.pathname
-  $: isSelected = selectable && pageSlug.includes(item.data.slug)
+  $: itemSlug = item.data.slug
+  $: isSelected = selectable && pageSlug.includes(itemSlug) 
 </script>
 
 <li class="relative group">
